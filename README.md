@@ -1,27 +1,14 @@
-[![codecov](https://codecov.io/gh/OpenUpSA/muni_portal/branch/master/graph/badge.svg)](https://codecov.io/gh/OpenUpSA/muni_portal/)
-[![Build Status](https://travis-ci.org/OpenUpSA/muni_portal.png)](https://travis-ci.org/OpenUpSA/muni_portal)
+[![codecov](https://codecov.io/gh/OpenUpSA/muni_portal/branch/master/graph/badge.svg)](https://codecov.io/gh/OpenUpSA/muni-portal-backend/)
+[![Build Status](https://travis-ci.org/OpenUpSA/muni_portal.png)](https://travis-ci.org/OpenUpSA/muni-portal-backend)
+
 
 Muni Portal
-===============================
-
-
-Complete project setup
-----------------------
-
-- [ ] Initialise a git repository in this directory
-  - [ ] Explicitly add directories needed for collectstatic to work: `git add -f staticfiles/.gitkeep muni_portal/static/.gitkeep`
-- [ ] Create a repository on [GitHub](https://github.com/OpenUpSA) and add as a remote to this repository
-  - e.g. `git remote add origin git@github.com:OpenUpSA/muni_portal.git`
-- [ ] Enable Continuous Integration checks for the GitHub Repository at [travis-ci.org](https://travis-ci.org)
-  - [ ] Enable periodic builds, e.g. weekly, to detect when dependency changes break your builds before they hurt you.
-- [ ] Enable code coverage reporting for the project at [codecov.io](https://codecov.io)
-  - [ ] Enable GitHub integration - it automatically configures Travis-CI and shows coverage diffs in pull requests
-  - [ ] Verify that you see coverage % on the Commits tab for the project. If it's just zero, check for errors by clicking a commit item.
-- [ ] Clean up this checklist - your project is set up now and you don't need it any more.
+===========
 
 
 Project Layout
 --------------
+
 
 ### Docker
 
