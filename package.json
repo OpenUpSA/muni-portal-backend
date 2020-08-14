@@ -1,5 +1,5 @@
 {
-  "name": "muni_portal",
+  "name": "muni-portal",
   "version": "1.0.0",
   "description": "The backend to the Cape Agulhas Municipality app",
   "main": "assets/js/index.js",

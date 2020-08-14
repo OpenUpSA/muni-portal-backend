@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    "webpush",
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,10 @@ logging.config.dictConfig(
 TAG_MANAGER_ENABLED = env.bool("TAG_MANAGER_ENABLED", True)
 if TAG_MANAGER_ENABLED:
     TAG_MANAGER_CONTAINER_ID = env("TAG_MANAGER_CONTAINER_ID")
+
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "Vapid Public Key",
+    "VAPID_PRIVATE_KEY":"Vapid Private Key",
+    "VAPID_ADMIN_EMAIL": "admin@example.com"
+}
