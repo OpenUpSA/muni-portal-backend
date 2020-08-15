@@ -10,20 +10,6 @@ Project Layout
 --------------
 
 
-### Docker
-
-This directory is mapped as a volume in the app. This can result in file permission errors like `EACCES: permission denied`. File permissions are generally based on UID integers and not usernames, so it doesn't matter what users are called, UIDs have to match or be mapped to the same numbers between the host and container.
-
-We want to avoid running as root in production (even inside a container) and we want production to be as similar as possible to dev and test.
-
-The easiest solution is to make this directory world-writable so that the container user can write to install/update stuff. Be aware of the security implications of this. e.g.
-
-    sudo find . -type d -exec chmod 777 '{}' \;
-    sudo find . -type f -exec chmod 774 '{}' \;
-
-Another good option is to specify the user ID to run as in the container. A persistent way to do that is by specifying `user: ${UID}:${GID}` in a `docker-compose.yml` file, perhaps used as an overlay, and specifying your host user's IDs in an environment file used by docker-compose, e.g. `.env`.
-
-
 ### Django
 
 Apps go in the project directory `muni_portal`
@@ -58,17 +44,17 @@ Make sure to commit updates to package.json and yarn.lock to git.
 Development setup
 -----------------
 
+Requires the environment variables `USER_ID=$(id -u)` and `GROUP_ID=$(id -g)` so that the container shares your UID and GID.
+
 In one shell, run the frontend asset builder
 
     docker-compose run --rm web yarn dev
-
 
 In another shell, initialise and run the django app
 
     docker-compose run --rm web bin/wait-for-postgres.sh
     docker-compose run --rm web python manage.py migrate
     docker-compose up
-
 
 If you need to destroy and recreate your dev setup, e.g. if you've messed up your
 database data or want to switch to a branch with an incompatible database schema,
