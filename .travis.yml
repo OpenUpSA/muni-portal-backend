@@ -9,10 +9,8 @@ install:
   - chmod -R 777 .
   - docker-compose run --rm web yarn
 
-before_script:
-  - export USER_ID=$(id -u) && export GROUP_ID=$(id -g)
-
 script:
+  - export USER_ID=$(id -u) && export GROUP_ID=$(id -g)
   - docker-compose run --rm web yarn build
   - docker-compose run --rm web python manage.py collectstatic --no-input
   - docker-compose run --rm web bin/wait-for-postgres.sh coverage run --source=muni_portal manage.py test
