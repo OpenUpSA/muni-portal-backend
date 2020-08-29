@@ -6,11 +6,10 @@ install:
   - pip install pipenv
   - pipenv install --dev
   # Allow the container user to write to this directory
-  - chmod -R 777 .
+  - export USER_ID=$(id -u) && export GROUP_ID=$(id -g)
   - docker-compose run --rm web yarn
 
 script:
-  - export USER_ID=$(id -u) && export GROUP_ID=$(id -g)
   - docker-compose run --rm web yarn build
   - docker-compose run --rm web python manage.py collectstatic --no-input
   - docker-compose run --rm web bin/wait-for-postgres.sh coverage run --source=muni_portal manage.py test
