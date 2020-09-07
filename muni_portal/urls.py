@@ -6,6 +6,7 @@ from . import views
 
 urlpatterns = [
     path("", views.Index.as_view(), name="index"),
-    path("notifications", include("muni_portal.notifications.urls"),),
+    path("notifications/", include("muni_portal.notifications.urls"),),
     path("admin/", admin.site.urls),
+    path('webpush/', include('webpush.urls'))
 ]

@@ -164,7 +164,7 @@ if TAG_MANAGER_ENABLED:
 
 
 WEBPUSH_SETTINGS = {
-    "VAPID_PUBLIC_KEY": "Vapid Public Key",
-    "VAPID_PRIVATE_KEY":"Vapid Private Key",
-    "VAPID_ADMIN_EMAIL": "admin@example.com"
+    "VAPID_PUBLIC_KEY": env.str("VAPID_PUBLIC_KEY"),
+    "VAPID_PRIVATE_KEY": env.str("VAPID_PRIVATE_KEY"),
+    "VAPID_ADMIN_EMAIL": env.str("VAPID_ADMIN_EMAIL"),
 }

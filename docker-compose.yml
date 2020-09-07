@@ -23,6 +23,20 @@ services:
       - DJANGO_SECRET_KEY=not-secret-in-dev
       - DJANGO_WHITENOISE_AUTOREFRESH=True
       - TAG_MANAGER_ENABLED=False
+      - |
+        VAPID_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
+        MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgNBy2QwbCpsOpD4v3
+        KX/THSCwXaduXylV/znyF3mdPPGhRANCAAS0N+1FLXgHtPyQg8i5gNcdoQtNDtgq
+        MxIRZxey0cxDMQWVfxR0R7ypn5fw7Bc52pQ2shFdmjps5znEmEWSPNyX
+        -----END PRIVATE KEY-----
+      - |
+        VAPID_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEtDftRS14B7T8kIPIuYDXHaELTQ7Y
+        KjMSEWcXstHMQzEFlX8UdEe8qZ+X8OwXOdqUNrIRXZo6bOc5xJhFkjzclw==
+        -----END PUBLIC KEY-----
+      - VAPID_ADMIN_EMAIL=example@example.com
+
+
 
   db:
     image: postgres:11.6
