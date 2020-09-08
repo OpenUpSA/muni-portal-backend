@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
+    "muni_portal.core.apps.CoreConfig",
     "muni_portal.notifications.apps.NotificationsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -46,6 +47,19 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.embeds",
+    "wagtail.sites",
+    "wagtail.users",
+    "wagtail.snippets",
+    "wagtail.documents",
+    "wagtail.images",
+    "wagtail.search",
+    "wagtail.admin",
+    "wagtail.core",
+    "modelcluster",
+    "taggit",
 ]
 
 MIDDLEWARE = [
@@ -57,6 +71,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "wagtail.core.middleware.SiteMiddleware",
+    "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
 ROOT_URLCONF = "muni_portal.urls"
@@ -160,3 +176,6 @@ logging.config.dictConfig(
 TAG_MANAGER_ENABLED = env.bool("TAG_MANAGER_ENABLED", True)
 if TAG_MANAGER_ENABLED:
     TAG_MANAGER_CONTAINER_ID = env("TAG_MANAGER_CONTAINER_ID")
+
+
+WAGTAIL_SITE_NAME = "Muni portal CMS"
