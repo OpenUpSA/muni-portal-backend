@@ -1,6 +1,7 @@
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.api import APIField
 
 
 class HomePage(Page):
@@ -17,3 +18,7 @@ class ServicePage(Page):
     overview = RichTextField()
 
     content_panels = Page.content_panels + [FieldPanel('overview'),]
+
+    api_fields = [
+        APIField('overview'),
+    ]

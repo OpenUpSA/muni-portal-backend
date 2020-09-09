@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
+from .core.api import api_router
 
 from . import views
 
@@ -15,4 +16,5 @@ urlpatterns = [
     path('cms/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
     path('pages/', include(wagtail_urls)),
+    path('api/wagtail/v2/', api_router.urls),
 ]
