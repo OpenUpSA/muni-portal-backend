@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "muni_portal.core.apps.CoreConfig",
     "muni_portal.notifications.apps.NotificationsConfig",
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -58,13 +59,14 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail.core",
-    'wagtail.api.v2',
+    "wagtail.api.v2",
     "modelcluster",
     "taggit",
     "rest_framework",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -181,3 +183,7 @@ if TAG_MANAGER_ENABLED:
 
 
 WAGTAIL_SITE_NAME = "Muni portal CMS"
+
+
+CORS_URLS_REGEX = r"^/api/.*$"
+CORS_ALLOW_ALL_ORIGINS = True
