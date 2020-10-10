@@ -1,0 +1,42 @@
+[
+  {
+    "model": "core.contactdetailtype",
+    "fields": {
+      "label": "Phone",
+      "slug": "phone",
+      "icon_classes": "fas fa-phone-alt"
+    }
+  },
+  {
+    "model": "core.contactdetailtype",
+    "fields": {
+      "label": "Email",
+      "slug": "email",
+      "icon_classes": "fas fa-envelope"
+    }
+  },
+  {
+    "model": "core.contactdetailtype",
+    "fields": {
+      "label": "Physical address",
+      "slug": "physical_address",
+      "icon_classes": "fas fa-map-marked-alt"
+    }
+  },
+  {
+    "model": "core.contactdetailtype",
+    "fields": {
+      "label": "Postal address",
+      "slug": "postal_address",
+      "icon_classes": ""
+    }
+  },
+  {
+    "model": "core.contactdetailtype",
+    "fields": {
+      "label": "Fax",
+      "slug": "fax",
+      "icon_classes": ""
+    }
+  }
+]
