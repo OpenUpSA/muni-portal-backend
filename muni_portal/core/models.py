@@ -46,10 +46,20 @@ class ServiceContact(Orderable, models.Model):
         return self.page.title + " -> " + self.contact
 
 
+class ContactDetailTypeManager(models.Manager):
+    def get_by_natural_key(self, label, something):
+        return self.get(label=label)
+
+
 class ContactDetailType(models.Model):
     label = models.CharField(max_length=100, unique=True)
     slug = models.CharField(max_length=100, unique=True)
     icon_classes = models.CharField(max_length=100, blank=True)
+
+    objects = ContactDetailTypeManager()
+
+    def natural_key(self):
+        return self.slug
 
     def __str__(self):
         return self.label

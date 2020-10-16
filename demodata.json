@@ -1,0 +1,735 @@
+[
+{
+  "model": "core.servicecontact",
+  "pk": 1,
+  "fields": {
+    "sort_order": 0,
+    "page": 6,
+    "contact": 1
+  }
+},
+{
+  "model": "core.servicecontact",
+  "pk": 2,
+  "fields": {
+    "sort_order": 1,
+    "page": 6,
+    "contact": 2
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 1,
+  "fields": {
+    "value": "012 345 1244",
+    "type": "phone",
+    "annotation": "Landline",
+    "purpose": "Water and sanitation office line"
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 2,
+  "fields": {
+    "value": "1 Dirkie Uys",
+    "type": "physical_address",
+    "annotation": null,
+    "purpose": "main office"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Moderators",
+    "permissions": [
+      [
+        "access_admin",
+        "wagtailadmin",
+        "admin"
+      ],
+      [
+        "add_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "change_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "delete_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "add_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "change_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "delete_image",
+        "wagtailimages",
+        "image"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Editors",
+    "permissions": [
+      [
+        "access_admin",
+        "wagtailadmin",
+        "admin"
+      ],
+      [
+        "add_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "change_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "delete_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "add_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "change_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "delete_image",
+        "wagtailimages",
+        "image"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$MF0t1g7mWMr4$G8vkcj3iK18XTst2wqvCodOqH6gBIcy4Y4vH/DFi0oY=",
+    "last_login": "2020-10-06T17:37:15.212Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@localhost",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2020-10-06T17:37:09.512Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "wagtailcore.site",
+  "pk": 2,
+  "fields": {
+    "hostname": "localhost",
+    "port": 8000,
+    "site_name": "Cape Agulhas Municipality",
+    "root_page": 3,
+    "is_default_site": true
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 1,
+  "fields": {
+    "path": "0001",
+    "depth": 1,
+    "numchild": 1,
+    "title": "Root",
+    "draft_title": "Root",
+    "slug": "root",
+    "content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/",
+    "owner": null,
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": null,
+    "last_published_at": null,
+    "latest_revision_created_at": null,
+    "live_revision": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 3,
+  "fields": {
+    "path": "00010002",
+    "depth": 2,
+    "numchild": 1,
+    "title": "Cape Agulhas Municipality",
+    "draft_title": "Cape Agulhas Municipality",
+    "slug": "cape-agulhas-municipality",
+    "content_type": [
+      "core",
+      "homepage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-10-06T17:38:50.182Z",
+    "last_published_at": "2020-10-06T17:38:50.182Z",
+    "latest_revision_created_at": "2020-10-06T17:38:50.171Z",
+    "live_revision": 1
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 4,
+  "fields": {
+    "path": "000100020001",
+    "depth": 3,
+    "numchild": 2,
+    "title": "Services",
+    "draft_title": "Services",
+    "slug": "services",
+    "content_type": [
+      "core",
+      "servicesindexpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/services/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-10-06T17:45:44.931Z",
+    "last_published_at": "2020-10-06T17:45:44.931Z",
+    "latest_revision_created_at": "2020-10-06T17:45:44.921Z",
+    "live_revision": 2
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 5,
+  "fields": {
+    "path": "0001000200010001",
+    "depth": 4,
+    "numchild": 0,
+    "title": "Electrical services",
+    "draft_title": "Electrical services",
+    "slug": "electrical-services",
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/services/electrical-services/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-10-06T17:48:07.823Z",
+    "last_published_at": "2020-10-06T17:48:07.823Z",
+    "latest_revision_created_at": "2020-10-06T17:48:07.813Z",
+    "live_revision": 3
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 6,
+  "fields": {
+    "path": "0001000200010002",
+    "depth": 4,
+    "numchild": 0,
+    "title": "Water and sanitation",
+    "draft_title": "Water and sanitation",
+    "slug": "water-and-sanitation",
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/services/water-and-sanitation/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-10-06T17:48:46.915Z",
+    "last_published_at": "2020-10-10T17:23:49.498Z",
+    "latest_revision_created_at": "2020-10-10T17:23:49.475Z",
+    "live_revision": 5
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 1,
+  "fields": {
+    "page": 3,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-06T17:38:50.171Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 3, \"path\": \"000100010001\", \"depth\": 3, \"numchild\": 0, \"title\": \"Cape Agulhas Municipality\", \"draft_title\": \"Cape Agulhas Municipality\", \"slug\": \"cape-agulhas-municipality\", \"content_type\": 6, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/cape-agulhas-municipality/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 2,
+  "fields": {
+    "page": 4,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-06T17:45:44.921Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 4, \"path\": \"000100020001\", \"depth\": 3, \"numchild\": 0, \"title\": \"Services\", \"draft_title\": \"Services\", \"slug\": \"services\", \"content_type\": 8, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 3,
+  "fields": {
+    "page": 5,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-06T17:48:07.813Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 5, \"path\": \"0001000200010001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Electrical services\", \"draft_title\": \"Electrical services\", \"slug\": \"electrical-services\", \"content_type\": 7, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/electrical-services/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"icon_classes\": \"fas fa-bolt\", \"overview\": \"<p>The Department is responsible for all electricity services, including electrical infrastructure development.</p><p>The Municipality provides electrical distribution and reticulation services and street lighting to all towns in its area of jurisdiction except Struisbaai North (part of Struisbaai), Protem, Klipdale, Kassiesbaai (part of Arniston) and Elim.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 4,
+  "fields": {
+    "page": 6,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-06T17:48:46.906Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 6, \"path\": \"0001000200010002\", \"depth\": 4, \"numchild\": 0, \"title\": \"Water and sanitation\", \"draft_title\": \"Water and sanitation\", \"slug\": \"water-and-sanitation\", \"content_type\": 7, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/water-and-sanitation/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"icon_classes\": \"fas fa-tint\", \"overview\": \"<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 5,
+  "fields": {
+    "page": 6,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-10T17:23:49.475Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 6, \"path\": \"0001000200010002\", \"depth\": 4, \"numchild\": 0, \"title\": \"Water and sanitation\", \"draft_title\": \"Water and sanitation\", \"slug\": \"water-and-sanitation\", \"content_type\": 7, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/water-and-sanitation/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-06T17:48:46.915Z\", \"last_published_at\": \"2020-10-06T17:48:46.915Z\", \"latest_revision_created_at\": \"2020-10-06T17:48:46.906Z\", \"live_revision\": 4, \"icon_classes\": \"fas fa-tint\", \"overview\": \"<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>\", \"service_contacts\": [{\"pk\": null, \"sort_order\": 0, \"page\": 6, \"contact\": 1}, {\"pk\": null, \"sort_order\": 1, \"page\": 6, \"contact\": 2}]}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.collection",
+  "pk": 1,
+  "fields": {
+    "path": "0001",
+    "depth": 1,
+    "numchild": 0,
+    "name": "Root"
+  }
+},
+{
+  "model": "wagtailcore.workflowpage",
+  "pk": 1,
+  "fields": {
+    "workflow": 1
+  }
+},
+{
+  "model": "wagtailcore.workflowtask",
+  "pk": 1,
+  "fields": {
+    "sort_order": 0,
+    "workflow": 1,
+    "task": 1
+  }
+},
+{
+  "model": "wagtailcore.task",
+  "pk": 1,
+  "fields": {
+    "name": "Moderators approval",
+    "content_type": [
+      "wagtailcore",
+      "groupapprovaltask"
+    ],
+    "active": true
+  }
+},
+{
+  "model": "wagtailcore.workflow",
+  "pk": 1,
+  "fields": {
+    "name": "Moderators approval",
+    "active": true
+  }
+},
+{
+  "model": "wagtailcore.groupapprovaltask",
+  "pk": 1,
+  "fields": {
+    "groups": [
+      [
+        "Moderators"
+      ]
+    ]
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 1,
+  "fields": {
+    "content_type": [
+      "core",
+      "homepage"
+    ],
+    "label": "Cape Agulhas Municipality",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2020-10-06T17:38:50.166Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 3,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 2,
+  "fields": {
+    "content_type": [
+      "core",
+      "homepage"
+    ],
+    "label": "Cape Agulhas Municipality",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2020-10-06T17:38:50.192Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 3,
+    "revision": 1
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 3,
+  "fields": {
+    "content_type": [
+      "core",
+      "homepage"
+    ],
+    "label": "Cape Agulhas Municipality",
+    "action": "wagtail.move",
+    "data_json": "{\"source\": {\"id\": 2, \"title\": \"Welcome to your new Wagtail site!\"}, \"destination\": {\"id\": 1, \"title\": \"Root\"}}",
+    "timestamp": "2020-10-06T17:39:10.246Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "page": 3,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 4,
+  "fields": {
+    "content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "label": "Welcome to your new Wagtail site!",
+    "action": "wagtail.delete",
+    "data_json": "\"\"",
+    "timestamp": "2020-10-06T17:39:20.213Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": true,
+    "page": 2,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 5,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicesindexpage"
+    ],
+    "label": "Services",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2020-10-06T17:45:44.916Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 4,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 6,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicesindexpage"
+    ],
+    "label": "Services",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2020-10-06T17:45:44.941Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 4,
+    "revision": 2
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 7,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "label": "Electrical services",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2020-10-06T17:48:07.808Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 5,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 8,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "label": "Electrical services",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2020-10-06T17:48:07.833Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 5,
+    "revision": 3
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 9,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "label": "Water and sanitation",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2020-10-06T17:48:46.902Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 6,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 10,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "label": "Water and sanitation",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2020-10-06T17:48:46.924Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 6,
+    "revision": 4
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 11,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "label": "Water and sanitation",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2020-10-10T17:23:49.486Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 6,
+    "revision": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 12,
+  "fields": {
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "label": "Water and sanitation",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2020-10-10T17:23:49.513Z",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 6,
+    "revision": 5
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 5,
+  "fields": {
+    "icon_classes": "fas fa-bolt",
+    "overview": "<p>The Department is responsible for all electricity services, including electrical infrastructure development.</p><p>The Municipality provides electrical distribution and reticulation services and street lighting to all towns in its area of jurisdiction except Struisbaai North (part of Struisbaai), Protem, Klipdale, Kassiesbaai (part of Arniston) and Elim.</p>"
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 6,
+  "fields": {
+    "icon_classes": "fas fa-tint",
+    "overview": "<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>"
+  }
+},
+{
+  "model": "core.servicesindexpage",
+  "pk": 4,
+  "fields": {}
+},
+{
+  "model": "core.homepage",
+  "pk": 3,
+  "fields": {}
+}
+]
