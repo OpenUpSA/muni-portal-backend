@@ -18,9 +18,13 @@ script:
   - docker-compose run --rm web yarn build
   - docker-compose run --rm web python manage.py collectstatic --no-input
   - docker-compose run --rm web bin/wait-for-postgres.sh coverage run --source=muni_portal manage.py test
+
+  # Ensure that the demodata fixture can be loaded and the data is available in the API
+  # - smoke test
+  # - ensure development environment setup is maintained.
   - docker-compose run --rm web bin/wait-for-postgres.sh python manage.py loaddata seeddata demodata
   - docker-compose up -d
-  - curl --connect-timeout 20 --retry 5 --retry-delay 1 "http://localhost:8000/api/wagtail/v2/pages/?type=core.ServicePage&fields=*" | grep "electrical"
+  - wget --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=10 --tries=10 -O-  "http://localhost:8000/api/wagtail/v2/pages/?type=core.ServicePage&fields=*" | grep "electrical"
 
 
 after_script:
