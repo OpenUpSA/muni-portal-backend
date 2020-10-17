@@ -47,8 +47,8 @@ class ServiceContact(Orderable, models.Model):
 
 
 class ContactDetailTypeManager(models.Manager):
-    def get_by_natural_key(self, label, something):
-        return self.get(label=label)
+    def get_by_natural_key(self, slug):
+        return self.get(slug=slug)
 
 
 class ContactDetailType(models.Model):
@@ -59,7 +59,7 @@ class ContactDetailType(models.Model):
     objects = ContactDetailTypeManager()
 
     def natural_key(self):
-        return self.slug
+        return (self.slug,)
 
     def __str__(self):
         return self.label

@@ -22,7 +22,7 @@
   "pk": 1,
   "fields": {
     "value": "012 345 1244",
-    "type": "phone",
+    "type": ["phone"],
     "annotation": "Landline",
     "purpose": "Water and sanitation office line"
   }
@@ -32,7 +32,7 @@
   "pk": 2,
   "fields": {
     "value": "1 Dirkie Uys",
-    "type": "physical_address",
+    "type": ["physical_address"],
     "annotation": null,
     "purpose": "main office"
   }
