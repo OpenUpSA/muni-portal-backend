@@ -54,7 +54,13 @@ In another shell, initialise and run the django app
 
     docker-compose run --rm web bin/wait-for-postgres.sh
     docker-compose run --rm web python manage.py migrate
+    docker-compose run --rm web python manage.py loaddata seeddata.json demodata.json
     docker-compose up
+
+The demodata fixture should install
+
+- A few basic pages
+- A superuser with username `admin` and password `password`
 
 If you need to destroy and recreate your dev setup, e.g. if you've messed up your
 database data or want to switch to a branch with an incompatible database schema,
@@ -62,6 +68,27 @@ you can destroy all volumes and recreate them by running the following, and runn
 the above again:
 
     docker-compose down --volumes
+
+
+### Maintaining the demo data fixture
+
+The demo data fixture was produced using the command
+
+    docker-compose run --rm web python manage.py dumpdata --natural-foreign --indent 2\
+      -e contenttypes \
+      -e auth.permission \
+      -e auth.user \
+      -e wagtailcore.groupcollectionpermission \
+      -e wagtailcore.grouppagepermission \
+      -e wagtailimages.rendition \
+      -e sessions \
+      -e core.contactdetailtype \
+      > demodata.json
+
+Only the minimal data needed to have a working system to click around in and
+demonstrate all the features should be included. Avoid including massive amounts
+of superfluous data. Update the command above as needed to get as close as possible
+to exporting just the necessary data to get a running system.
 
 
 Running tests
