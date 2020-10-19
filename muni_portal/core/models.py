@@ -202,6 +202,12 @@ class CouncillorPage(PersonPage):
         InlinePanel("person_contacts", label="Contacts"),
     ]
 
+    api_fields = [
+        APIField("overview"),
+        APIField("councillor_groups"),
+        APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
+    ]
+
 
 class CouncillorListPage(Page):
     subpage_types = [
@@ -215,6 +221,10 @@ class CouncillorListPage(Page):
         FieldPanel("overview"),
     ]
 
+    api_fields = [
+        APIField("overview"),
+    ]
+
 
 class CouncillorGroupPage(Page):
     subpage_types = []
@@ -223,6 +233,10 @@ class CouncillorGroupPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+    ]
+
+    api_fields = [
+        APIField("overview"),
     ]
 
 
@@ -242,6 +256,10 @@ class AdministrationIndexPage(Page):
         FieldPanel("overview"),
     ]
 
+    api_fields = [
+        APIField("overview"),
+    ]
+
 
 class PoliticalRepsIndexPage(Page):
     subpage_types = [
@@ -254,6 +272,10 @@ class PoliticalRepsIndexPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+    ]
+
+    api_fields = [
+        APIField("overview"),
     ]
 
 
