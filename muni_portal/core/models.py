@@ -197,7 +197,9 @@ class CouncillorPage(PersonPage):
     councillor_groups = ParentalManyToManyField('core.CouncillorGroupPage', blank=True)
 
     content_panels = Page.content_panels + [
-        PageChooserPanel("councillor_groups"),
+        FieldPanel("overview"),
+        FieldPanel("councillor_groups"),
+        InlinePanel("person_contacts", label="Contacts"),
     ]
 
 
