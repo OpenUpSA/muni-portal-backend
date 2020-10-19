@@ -1,7 +1,7 @@
 from django.db import models
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
 from wagtail.api import APIField
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
@@ -177,7 +177,6 @@ class ContactDetail(models.Model):
 
 class PersonPage(Page):
     overview = RichTextField(features=NON_LINK_FEATURES)
-    name = models.CharField(max_length=300)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
@@ -189,26 +188,40 @@ class PersonPage(Page):
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
     ]
 
+PersonPage._meta.get_field("title").verbose_name = "Name"
+
 
 class CouncillorPage(PersonPage):
     subpage_types = []
 
     councillor_groups = ParentalManyToManyField('core.CouncillorGroupPage', blank=True)
 
+    content_panels = Page.content_panels + [
+        PageChooserPanel("councillor_groups"),
+    ]
+
 
 class CouncillorListPage(Page):
     subpage_types = [
-        "core.CouncillorGroupPage",
+        "core.CouncillorPage",
     ]
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("overview"),
+    ]
 
 
 class CouncillorGroupPage(Page):
     subpage_types = []
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("overview"),
+    ]
 
 
 class AdministratorPage(PersonPage):
@@ -221,6 +234,12 @@ class AdministrationIndexPage(Page):
     ]
     max_count_per_parent = 1
 
+    overview = RichTextField(features=NON_LINK_FEATURES)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("overview"),
+    ]
+
 
 class PoliticalRepsIndexPage(Page):
     subpage_types = [
@@ -230,6 +249,10 @@ class PoliticalRepsIndexPage(Page):
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("overview"),
+    ]
 
 
 class MyMuniPage(Page):
