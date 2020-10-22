@@ -1,3 +1,5 @@
+from django.conf.urls.static import static
+from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from .core.api import api_router
@@ -17,4 +19,4 @@ urlpatterns = [
     path('documents/', include(wagtaildocs_urls)),
     path('api/wagtail/v2/', api_router.urls),
     path('', include(wagtail_urls)),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

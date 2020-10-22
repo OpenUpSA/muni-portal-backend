@@ -1,6 +1,7 @@
 from django.db import models
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
+from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
 from wagtail.api import APIField
 from wagtail.snippets.models import register_snippet
@@ -10,6 +11,7 @@ from wagtail.core.models import Page, Orderable
 from rest_framework import serializers as drf_serializers
 from . import serializers
 from rest_framework.fields import Field
+from wagtail.images.api.fields import ImageRenditionField
 
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
@@ -204,14 +206,17 @@ class ContactDetail(models.Model):
 
 
 class PersonPage(Page):
-    overview = RichTextField(features=NON_LINK_FEATURES)
+    job_title = models.CharField(max_length=200, blank=True)
+    overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
 
     content_panels = Page.content_panels + [
+        FieldPanel("job_title"),
         FieldPanel("overview"),
         InlinePanel("person_contacts", label="Contacts"),
     ]
 
     api_fields = [
+        APIField("job_title"),
         APIField("overview"),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
@@ -222,19 +227,64 @@ class PersonPage(Page):
 PersonPage._meta.get_field("title").verbose_name = "Name"
 
 
+@register_snippet
+class PoliticalParty(models.Model):
+    name = models.CharField(max_length=1000)
+    abbreviation = models.CharField(max_length=20)
+    logo_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('abbreviation'),
+        ImageChooserPanel('logo_image'),
+    ]
+
+    class Meta:
+        verbose_name_plural = "Political parties"
+
+    def __str__(self):
+        return self.name
+
+
+class PoliticalPartySerializer(drf_serializers.ModelSerializer):
+    logo_image_tumbnail = ImageRenditionField("max-100x100", source='logo_image')
+
+    class Meta:
+        model = PoliticalParty
+        exclude = ["id"]
+        depth = 1
+
+
 class CouncillorPage(PersonPage):
     subpage_types = []
 
+    political_party = models.ForeignKey(
+        'core.PoliticalParty',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     councillor_groups = ParentalManyToManyField('core.CouncillorGroupPage', blank=True)
 
     content_panels = Page.content_panels + [
+        FieldPanel("job_title"),
         FieldPanel("overview"),
+        SnippetChooserPanel('political_party'),
         FieldPanel("councillor_groups"),
         InlinePanel("person_contacts", label="Contacts"),
     ]
 
     api_fields = [
+        APIField("job_title"),
         APIField("overview"),
+        APIField("political_party", serializer=PoliticalPartySerializer()),
         APIField("councillor_groups"),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
