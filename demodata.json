@@ -27,6 +27,24 @@
   }
 },
 {
+  "model": "core.servicepointcontact",
+  "pk": 1,
+  "fields": {
+    "sort_order": 0,
+    "page": 19,
+    "contact": 3
+  }
+},
+{
+  "model": "core.servicepointcontact",
+  "pk": 2,
+  "fields": {
+    "sort_order": 0,
+    "page": 20,
+    "contact": 4
+  }
+},
+{
   "model": "core.contactdetail",
   "pk": 1,
   "fields": {
@@ -48,6 +66,30 @@
     ],
     "annotation": null,
     "purpose": "main office"
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 3,
+  "fields": {
+    "value": "BredasdorpLibrary@hotmail.co.za",
+    "type": [
+      "email"
+    ],
+    "annotation": "Library queries",
+    "purpose": "Bredasdorp library email"
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 4,
+  "fields": {
+    "value": "028 435 6538",
+    "type": [
+      "phone"
+    ],
+    "annotation": null,
+    "purpose": "Struisbaai Library"
   }
 },
 {
@@ -343,7 +385,7 @@
   "fields": {
     "path": "000100020001",
     "depth": 3,
-    "numchild": 2,
+    "numchild": 3,
     "title": "Services",
     "draft_title": "Services",
     "slug": "services",
@@ -793,6 +835,111 @@
   }
 },
 {
+  "model": "wagtailcore.page",
+  "pk": 18,
+  "fields": {
+    "path": "0001000200010003",
+    "depth": 4,
+    "numchild": 2,
+    "title": "Libraries",
+    "draft_title": "Libraries",
+    "slug": "libraries",
+    "content_type": [
+      "core",
+      "servicepage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/services/libraries/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-10-22T19:05:58.408Z",
+    "last_published_at": "2020-10-22T19:12:48.464Z",
+    "latest_revision_created_at": "2020-10-22T19:12:48.452Z",
+    "live_revision": 33
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 19,
+  "fields": {
+    "path": "00010002000100030001",
+    "depth": 5,
+    "numchild": 0,
+    "title": "Bredasdorp Library",
+    "draft_title": "Bredasdorp Library",
+    "slug": "bredasdorp-library",
+    "content_type": [
+      "core",
+      "servicepointpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/services/libraries/bredasdorp-library/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-10-22T19:12:31.849Z",
+    "last_published_at": "2020-10-22T19:12:31.849Z",
+    "latest_revision_created_at": "2020-10-22T19:12:31.836Z",
+    "live_revision": 32
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 20,
+  "fields": {
+    "path": "00010002000100030002",
+    "depth": 5,
+    "numchild": 0,
+    "title": "Struisbaai Library",
+    "draft_title": "Struisbaai Library",
+    "slug": "struisbaai-library",
+    "content_type": [
+      "core",
+      "servicepointpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/services/libraries/struisbaai-library/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-10-22T19:14:16.965Z",
+    "last_published_at": "2020-10-22T19:14:16.965Z",
+    "latest_revision_created_at": "2020-10-22T19:14:16.955Z",
+    "live_revision": 34
+  }
+},
+{
   "model": "wagtailcore.pagerevision",
   "pk": 1,
   "fields": {
@@ -1199,6 +1346,62 @@
   }
 },
 {
+  "model": "wagtailcore.pagerevision",
+  "pk": 31,
+  "fields": {
+    "page": 18,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T19:05:58.399Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 18, \"path\": \"0001000200010003\", \"depth\": 4, \"numchild\": 0, \"title\": \"Libraries\", \"draft_title\": \"Libraries\", \"slug\": \"libraries\", \"content_type\": 7, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/libraries/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"icon_classes\": \"fas fa-book-reader\", \"overview\": \"<p>Six libraries are available with books and librarians on hand to help find the information you need. Some libraries also have computers for public use.</p>\", \"head_of_service\": null, \"service_contacts\": []}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 32,
+  "fields": {
+    "page": 19,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T19:12:31.836Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 19, \"path\": \"00010002000100030001\", \"depth\": 5, \"numchild\": 0, \"title\": \"Bredasdorp Library\", \"draft_title\": \"Bredasdorp Library\", \"slug\": \"bredasdorp-library\", \"content_type\": 52, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/libraries/bredasdorp-library/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"overview\": \"<p>Open hours:</p><ul><li>Monday, Wednesday, Friday:\\u00a0 09:00 - 17:00</li><li>Tuesday:\\u00a0 09:00 -18:00</li><li>Thursday:\\u00a0 10:00 -18:00</li><li>Saturday:\\u00a0 09:00 - 12:00</li></ul>\", \"service_point_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 19, \"contact\": 3}]}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 33,
+  "fields": {
+    "page": 18,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T19:12:48.452Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 18, \"path\": \"0001000200010003\", \"depth\": 4, \"numchild\": 1, \"title\": \"Libraries\", \"draft_title\": \"Libraries\", \"slug\": \"libraries\", \"content_type\": 7, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/libraries/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-22T19:05:58.408Z\", \"last_published_at\": \"2020-10-22T19:05:58.408Z\", \"latest_revision_created_at\": \"2020-10-22T19:05:58.399Z\", \"live_revision\": 31, \"icon_classes\": \"fas fa-book-reader\", \"overview\": \"<p><b>Membership Fees</b><br/> The library service is free and fees are charged for the following only:</p><ul><li>Overdue books because members/borrowers keep books for  longer than the loan period specified hereunder. You may renew your  books by telephone or in person.</li><li>Lost library cards</li><li>Photocopies</li><li>Reserved books.</li><li>Use of library hall.</li><li>Visitors may take out books on paying a deposit</li></ul><p><b>How to join our Libraries</b></p><ul><li>You need to bring your ID/Passport to the library and complete an application form.</li><li>Parents/guardians must sign applications for under 18 year olds or for scholars.</li><li>You will receive library cards which you will need each time you want to borrow books, magazines, CDs, records or videos/DVDs.</li></ul><p>Loan Period:<br/> Books: 2 weeks<br/> Magazines: 2 weeks<br/> CDs &amp; tapes: 2 weeks<br/> Videos/DVDs: 1 day</p><p>Please...</p><ul><li>take care of your library card - treat it as you would treat a credit card.</li><li>notify us of any change of your address.</li><li>do not allow anyone else to use your library card.</li></ul>\", \"head_of_service\": null, \"service_contacts\": []}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 34,
+  "fields": {
+    "page": 20,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T19:14:16.955Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 20, \"path\": \"00010002000100030002\", \"depth\": 5, \"numchild\": 0, \"title\": \"Struisbaai Library\", \"draft_title\": \"Struisbaai Library\", \"slug\": \"struisbaai-library\", \"content_type\": 52, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/libraries/struisbaai-library/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"overview\": \"<p>Open hours:</p><ul><li>Monday: 10:00-13:00 and 14:00-18:00</li><li>Tuesday to Friday:\\u00a0 10:00 -13:00 and 14:00 -17:00</li><li>Saturday:\\u00a0 09:00 - 12:00</li></ul>\", \"service_point_contacts\": [{\"pk\": 2, \"sort_order\": 0, \"page\": 20, \"contact\": 4}]}",
+    "approved_go_live_at": null
+  }
+},
+{
   "model": "wagtailcore.collection",
   "pk": 1,
   "fields": {
@@ -1286,6 +1489,29 @@
     "icon_classes": "fas fa-tint",
     "overview": "<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>",
     "head_of_service": 11
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 18,
+  "fields": {
+    "icon_classes": "fas fa-book-reader",
+    "overview": "<p><b>Membership Fees</b><br/> The library service is free and fees are charged for the following only:</p><ul><li>Overdue books because members/borrowers keep books for  longer than the loan period specified hereunder. You may renew your  books by telephone or in person.</li><li>Lost library cards</li><li>Photocopies</li><li>Reserved books.</li><li>Use of library hall.</li><li>Visitors may take out books on paying a deposit</li></ul><p><b>How to join our Libraries</b></p><ul><li>You need to bring your ID/Passport to the library and complete an application form.</li><li>Parents/guardians must sign applications for under 18 year olds or for scholars.</li><li>You will receive library cards which you will need each time you want to borrow books, magazines, CDs, records or videos/DVDs.</li></ul><p>Loan Period:<br/> Books: 2 weeks<br/> Magazines: 2 weeks<br/> CDs &amp; tapes: 2 weeks<br/> Videos/DVDs: 1 day</p><p>Please...</p><ul><li>take care of your library card - treat it as you would treat a credit card.</li><li>notify us of any change of your address.</li><li>do not allow anyone else to use your library card.</li></ul>",
+    "head_of_service": null
+  }
+},
+{
+  "model": "core.servicepointpage",
+  "pk": 19,
+  "fields": {
+    "overview": "<p>Open hours:</p><ul><li>Monday, Wednesday, Friday:\u00a0 09:00 - 17:00</li><li>Tuesday:\u00a0 09:00 -18:00</li><li>Thursday:\u00a0 10:00 -18:00</li><li>Saturday:\u00a0 09:00 - 12:00</li></ul>"
+  }
+},
+{
+  "model": "core.servicepointpage",
+  "pk": 20,
+  "fields": {
+    "overview": "<p>Open hours:</p><ul><li>Monday: 10:00-13:00 and 14:00-18:00</li><li>Tuesday to Friday:\u00a0 10:00 -13:00 and 14:00 -17:00</li><li>Saturday:\u00a0 09:00 - 12:00</li></ul>"
   }
 },
 {
