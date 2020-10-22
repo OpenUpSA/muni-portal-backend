@@ -73,6 +73,26 @@ class PersonContact(Orderable, models.Model):
         return self.page.title + " -> " + self.contact
 
 
+class ServicePointContact(Orderable, models.Model):
+    page = ParentalKey(
+        "core.ServicePointPage", on_delete=models.CASCADE, related_name="service_point_contacts"
+    )
+    contact = models.ForeignKey(
+        "ContactDetail", on_delete=models.CASCADE, related_name="+"
+    )
+
+    class Meta(Orderable.Meta):
+        verbose_name = "service point contact"
+        verbose_name_plural = "service point contacts"
+
+    panels = [
+        SnippetChooserPanel("contact"),
+    ]
+
+    def __str__(self):
+        return self.page.title + " -> " + self.contact
+
+
 class ContactDetailTypeManager(models.Manager):
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
@@ -129,6 +149,11 @@ class PersonContactSerializer(ContactSerializer):
 class ServiceContactSerializer(ContactSerializer):
     class Meta(ContactSerializer.Meta):
         model = ServiceContact
+
+
+class ServicePointContactSerializer(ContactSerializer):
+    class Meta(ContactSerializer.Meta):
+        model = ServicePointContact
 
 
 @register_snippet
@@ -338,11 +363,31 @@ class PoliticalRepsIndexPage(Page):
     ]
 
 
-class ServicePage(Page):
+class ServicePointPage(Page):
     subpage_types = []
 
+    overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("overview"),
+        InlinePanel("service_point_contacts", label="Contacts"),
+    ]
+
+    api_fields = [
+        APIField("overview"),
+        APIField("contacts", serializer=ServicePointContactSerializer(many=True)),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
+
+
+class ServicePage(Page):
+    subpage_types = [
+        "core.ServicePointPage"
+    ]
+
     icon_classes = models.CharField(max_length=250)
-    overview = RichTextField(features=NON_LINK_FEATURES)
+    overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
     head_of_service = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
