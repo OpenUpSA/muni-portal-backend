@@ -23,10 +23,11 @@ class RelatedPagesSerializer(Field):
             'title': page.title,
             'slug': page.slug,
             'url': page.url,
+            'icon_classes': page.icon_classes if hasattr(page, "icon_classes") else None,
         }
 
     def to_representation(self, pages):
-        return [RelatedPagesSerializer.page_representation(page) for page in pages]
+        return [RelatedPagesSerializer.page_representation(page) for page in pages.specific()]
 
 
 class HomePage(Page):
