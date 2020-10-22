@@ -216,6 +216,7 @@ class PersonPage(Page):
     ]
 
     api_fields = [
+        APIField("job_title"),
         APIField("overview"),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
@@ -281,6 +282,7 @@ class CouncillorPage(PersonPage):
     ]
 
     api_fields = [
+        APIField("job_title"),
         APIField("overview"),
         APIField("political_party", serializer=PoliticalPartySerializer()),
         APIField("councillor_groups"),
