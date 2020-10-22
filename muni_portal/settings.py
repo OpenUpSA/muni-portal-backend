@@ -152,7 +152,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 WHITENOISE_AUTOREFRESH = env.bool("DJANGO_WHITENOISE_AUTOREFRESH", False)
 
 MEDIA_ROOT = str(ROOT_DIR.path('development_media'))
-MEDIA_URL = '/media/'
+MEDIA_URL = env.str("MEDIA_URL", '/media/')
 
 import logging.config
 import boto3

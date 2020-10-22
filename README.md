@@ -112,3 +112,10 @@ Undefined settings result in exceptions at startup to let you know they are not 
 | `DJANGO_SECRET_KEY` | undefined | String | Set this to something secret and unguessable in production. The security of your cookies and other crypto stuff in django depends on it. |
 | `TAG_MANAGER_CONTAINER_ID` | undefined | String | [Google Tag Manager](tagmanager.google.com) Container ID. [Use this to set up Google Analytics.](https://support.google.com/tagmanager/answer/6107124?hl=en). Requried unless `TAG_MANAGER_ENABLED` is set to `False` |
 | `TAG_MANAGER_ENABLED` | `True` | Boolean | Use this to disable the Tag Manager snippets, e.g. in dev or sandbox. |
+| `AWS_STORAGE_BUCKET_NAME` | `None` | String | e.g. `muni-portal-backend` |
+| `AWS_SECRET_ACCESS_KEY` | `None` | String | |
+| `AWS_ACCESS_KEY_ID` | `None` | String | e.g. `AKIAYIFP5EK2FOOBAR` |
+| `AWS_S3_REGION_NAME` | `None` | String | e.g. `eu-west-1` |
+| `AWS_S3_CUSTOM_DOMAIN` | `None` | String | e.g. `muni-portal-backend.s3.amazonaws.com` |
+| `MEDIA_URL` | `/media/` | String | e.g. `https://muni-portal-backend.s3.amazonaws.com` |
+| `DEFAULT_FILE_STORAGE` | `'django.core.files.storage.FileSystemStorage'` | String | e.g. `storages.backends.s3boto3.S3Boto3Storage` |
