@@ -2,6 +2,8 @@
 # Project-specific
 
 assets/bundles/
+development_media/
+
 
 #=====================================================================
 # Django-specific

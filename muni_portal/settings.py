@@ -155,6 +155,10 @@ MEDIA_ROOT = str(ROOT_DIR.path('development_media'))
 MEDIA_URL = '/media/'
 
 import logging.config
+import boto3
+
+
+boto3.set_stream_logger("boto3.resources", logging.INFO)
 
 LOGGING_CONFIG = None
 logging.config.dictConfig(
@@ -189,3 +193,15 @@ WAGTAILAPI_BASE_URL = env("WAGTAILAPI_BASE_URL")
 
 CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ALLOW_ALL_ORIGINS = True
+
+DEFAULT_FILE_STORAGE = env.str("DEFAULT_FILE_STORAGE", 'django.core.files.storage.FileSystemStorage')
+AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", None)
+AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", None)
+AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", None)
+AWS_S3_ENDPOINT_URL = env.str("AWS_S3_ENDPOINT_URL", None)
+AWS_S3_REGION_NAME = env.str("AWS_S3_REGION_NAME", None)
+AWS_S3_SECURE_URLS = env.bool("AWS_S3_SECURE_URLS", True)
+AWS_S3_CUSTOM_DOMAIN = env.str("AWS_S3_CUSTOM_DOMAIN", None)
+# "S3Boto3Storage does not correctly handle duplicate filenames in their default configuration."
+# https://docs.wagtail.io/en/v2.7.1/advanced_topics/deploying.html
+AWS_S3_FILE_OVERWRITE = False
