@@ -402,9 +402,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2020-10-06T17:48:07.823Z",
-    "last_published_at": "2020-10-06T17:48:07.823Z",
-    "latest_revision_created_at": "2020-10-06T17:48:07.813Z",
-    "live_revision": 3
+    "last_published_at": "2020-10-22T16:24:13.304Z",
+    "latest_revision_created_at": "2020-10-22T16:24:13.289Z",
+    "live_revision": 28
   }
 },
 {
@@ -437,9 +437,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2020-10-06T17:48:46.915Z",
-    "last_published_at": "2020-10-10T17:23:49.498Z",
-    "latest_revision_created_at": "2020-10-10T17:23:49.475Z",
-    "live_revision": 5
+    "last_published_at": "2020-10-22T16:24:24.191Z",
+    "latest_revision_created_at": "2020-10-22T16:24:24.176Z",
+    "live_revision": 29
   }
 },
 {
@@ -577,9 +577,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2020-10-19T16:14:00.515Z",
-    "last_published_at": "2020-10-19T16:14:00.515Z",
-    "latest_revision_created_at": "2020-10-19T16:14:00.505Z",
-    "live_revision": 10
+    "last_published_at": "2020-10-22T16:34:49.140Z",
+    "latest_revision_created_at": "2020-10-22T16:34:49.124Z",
+    "live_revision": 30
   }
 },
 {
@@ -1157,6 +1157,48 @@
   }
 },
 {
+  "model": "wagtailcore.pagerevision",
+  "pk": 28,
+  "fields": {
+    "page": 5,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T16:24:13.289Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 5, \"path\": \"0001000200010001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Electrical services\", \"draft_title\": \"Electrical services\", \"slug\": \"electrical-services\", \"content_type\": 7, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/electrical-services/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-06T17:48:07.823Z\", \"last_published_at\": \"2020-10-06T17:48:07.823Z\", \"latest_revision_created_at\": \"2020-10-06T17:48:07.813Z\", \"live_revision\": 3, \"icon_classes\": \"fas fa-bolt\", \"overview\": \"<p>The Department is responsible for all electricity services, including electrical infrastructure development.</p><p>The Municipality provides electrical distribution and reticulation services and street lighting to all towns in its area of jurisdiction except Struisbaai North (part of Struisbaai), Protem, Klipdale, Kassiesbaai (part of Arniston) and Elim.</p>\", \"head_of_service\": 10, \"service_contacts\": []}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 29,
+  "fields": {
+    "page": 6,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T16:24:24.176Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 6, \"path\": \"0001000200010002\", \"depth\": 4, \"numchild\": 0, \"title\": \"Water and sanitation\", \"draft_title\": \"Water and sanitation\", \"slug\": \"water-and-sanitation\", \"content_type\": 7, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/services/water-and-sanitation/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-06T17:48:46.915Z\", \"last_published_at\": \"2020-10-10T17:23:49.498Z\", \"latest_revision_created_at\": \"2020-10-10T17:23:49.475Z\", \"live_revision\": 5, \"icon_classes\": \"fas fa-tint\", \"overview\": \"<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>\", \"head_of_service\": 11, \"service_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 6, \"contact\": 1}, {\"pk\": 2, \"sort_order\": 1, \"page\": 6, \"contact\": 2}]}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 30,
+  "fields": {
+    "page": 10,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T16:34:49.124Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 10, \"path\": \"00010002000200010001\", \"depth\": 5, \"numchild\": 0, \"title\": \"Fred Bloggs\", \"draft_title\": \"Fred Bloggs\", \"slug\": \"fred-bloggs\", \"content_type\": 18, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/administration/fred-bloggs/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:14:00.515Z\", \"last_published_at\": \"2020-10-19T16:14:00.515Z\", \"latest_revision_created_at\": \"2020-10-19T16:14:00.505Z\", \"live_revision\": 10, \"job_title\": \"\", \"overview\": \"<p>Fred is nice</p>\", \"profile_image\": 4, \"person_contacts\": []}",
+    "approved_go_live_at": null
+  }
+},
+{
   "model": "wagtailcore.collection",
   "pk": 1,
   "fields": {
@@ -1214,9 +1256,37 @@
   }
 },
 {
+  "model": "core.homepage",
+  "pk": 2,
+  "fields": {}
+},
+{
+  "model": "core.servicesindexpage",
+  "pk": 4,
+  "fields": {}
+},
+{
   "model": "core.mymunipage",
   "pk": 7,
   "fields": {}
+},
+{
+  "model": "core.servicepage",
+  "pk": 5,
+  "fields": {
+    "icon_classes": "fas fa-bolt",
+    "overview": "<p>The Department is responsible for all electricity services, including electrical infrastructure development.</p><p>The Municipality provides electrical distribution and reticulation services and street lighting to all towns in its area of jurisdiction except Struisbaai North (part of Struisbaai), Protem, Klipdale, Kassiesbaai (part of Arniston) and Elim.</p>",
+    "head_of_service": 10
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 6,
+  "fields": {
+    "icon_classes": "fas fa-tint",
+    "overview": "<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>",
+    "head_of_service": 11
+  }
 },
 {
   "model": "core.politicalrepsindexpage",
@@ -1290,7 +1360,7 @@
   "fields": {
     "job_title": "",
     "overview": "<p>Fred is nice</p>",
-    "profile_image": null
+    "profile_image": 4
   }
 },
 {
@@ -1319,31 +1389,5 @@
     "overview": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>",
     "profile_image": 5
   }
-},
-{
-  "model": "core.servicepage",
-  "pk": 5,
-  "fields": {
-    "icon_classes": "fas fa-bolt",
-    "overview": "<p>The Department is responsible for all electricity services, including electrical infrastructure development.</p><p>The Municipality provides electrical distribution and reticulation services and street lighting to all towns in its area of jurisdiction except Struisbaai North (part of Struisbaai), Protem, Klipdale, Kassiesbaai (part of Arniston) and Elim.</p>"
-  }
-},
-{
-  "model": "core.servicepage",
-  "pk": 6,
-  "fields": {
-    "icon_classes": "fas fa-tint",
-    "overview": "<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>"
-  }
-},
-{
-  "model": "core.servicesindexpage",
-  "pk": 4,
-  "fields": {}
-},
-{
-  "model": "core.homepage",
-  "pk": 2,
-  "fields": {}
 }
 ]
