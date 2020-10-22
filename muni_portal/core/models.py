@@ -208,16 +208,26 @@ class ContactDetail(models.Model):
 class PersonPage(Page):
     job_title = models.CharField(max_length=200, blank=True)
     overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
+    profile_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("job_title"),
         FieldPanel("overview"),
+        ImageChooserPanel('profile_image'),
         InlinePanel("person_contacts", label="Contacts"),
     ]
 
     api_fields = [
         APIField("job_title"),
         APIField("overview"),
+        APIField("profile_image"),
+        APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
@@ -276,6 +286,7 @@ class CouncillorPage(PersonPage):
     content_panels = Page.content_panels + [
         FieldPanel("job_title"),
         FieldPanel("overview"),
+        ImageChooserPanel('profile_image'),
         SnippetChooserPanel('political_party'),
         FieldPanel("councillor_groups"),
         InlinePanel("person_contacts", label="Contacts"),
@@ -284,6 +295,8 @@ class CouncillorPage(PersonPage):
     api_fields = [
         APIField("job_title"),
         APIField("overview"),
+        APIField("profile_image"),
+        APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
         APIField("political_party", serializer=PoliticalPartySerializer()),
         APIField("councillor_groups"),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),

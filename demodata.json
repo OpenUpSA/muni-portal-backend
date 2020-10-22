@@ -217,6 +217,48 @@
   }
 },
 {
+  "model": "wagtailimages.image",
+  "pk": 4,
+  "fields": {
+    "collection": 1,
+    "title": "\"Street Portrait: Stranger at Pudu\" by Johnragai-Moment Catcher is licensed under CC BY 2.0",
+    "file": "original_images/11280540133_2ed3cb652d_b.jpg",
+    "width": 768,
+    "height": 1024,
+    "created_at": "2020-10-22T15:53:40.387Z",
+    "uploaded_by_user": [
+      "admin"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 158902,
+    "file_hash": "cc45253bf33237822980569db1001259d2540bc7"
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 5,
+  "fields": {
+    "collection": 1,
+    "title": "\"Portrait of my sister\" by Robby Schulze is licensed under CC BY 2.0",
+    "file": "original_images/8791363560_13a1732de7_b.jpg",
+    "width": 683,
+    "height": 1024,
+    "created_at": "2020-10-22T15:54:17.807Z",
+    "uploaded_by_user": [
+      "admin"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 96223,
+    "file_hash": "80f4f4bdd282f22b76854166883ba02dde3ed8d0"
+  }
+},
+{
   "model": "wagtailcore.site",
   "pk": 1,
   "fields": {
@@ -710,9 +752,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2020-10-19T16:27:39.827Z",
-    "last_published_at": "2020-10-22T11:47:43.287Z",
-    "latest_revision_created_at": "2020-10-22T11:47:43.272Z",
-    "live_revision": 22
+    "last_published_at": "2020-10-22T15:53:45.065Z",
+    "latest_revision_created_at": "2020-10-22T15:53:45.045Z",
+    "live_revision": 26
   }
 },
 {
@@ -745,9 +787,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2020-10-19T16:28:01.611Z",
-    "last_published_at": "2020-10-22T11:47:56.906Z",
-    "latest_revision_created_at": "2020-10-22T11:47:56.889Z",
-    "live_revision": 23
+    "last_published_at": "2020-10-22T15:54:24.411Z",
+    "latest_revision_created_at": "2020-10-22T15:54:24.395Z",
+    "live_revision": 27
   }
 },
 {
@@ -1087,6 +1129,34 @@
   }
 },
 {
+  "model": "wagtailcore.pagerevision",
+  "pk": 26,
+  "fields": {
+    "page": 15,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T15:53:45.045Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 15, \"path\": \"000100020002000200030001\", \"depth\": 6, \"numchild\": 0, \"title\": \"Charles Jennings\", \"draft_title\": \"Charles Jennings\", \"slug\": \"mr-busy-guy\", \"content_type\": 20, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/political-representatives/councillors/mr-busy-guy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:27:39.827Z\", \"last_published_at\": \"2020-10-22T11:47:43.287Z\", \"latest_revision_created_at\": \"2020-10-22T11:47:43.272Z\", \"live_revision\": 22, \"job_title\": \"Executive Mayor\", \"overview\": \"<p>stuff</p>\", \"profile_image\": 4, \"political_party\": 2, \"person_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 15, \"contact\": 2}], \"councillor_groups\": [12, 13]}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 27,
+  "fields": {
+    "page": 16,
+    "submitted_for_moderation": false,
+    "created_at": "2020-10-22T15:54:24.395Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 16, \"path\": \"000100020002000200030002\", \"depth\": 6, \"numchild\": 0, \"title\": \"Eloise Brooks\", \"draft_title\": \"Eloise Brooks\", \"slug\": \"ms-also-busy\", \"content_type\": 20, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/political-representatives/councillors/ms-also-busy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:28:01.611Z\", \"last_published_at\": \"2020-10-22T11:47:56.906Z\", \"latest_revision_created_at\": \"2020-10-22T11:47:56.889Z\", \"live_revision\": 23, \"job_title\": \"Alderlady\", \"overview\": \"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>\", \"profile_image\": 5, \"political_party\": 1, \"person_contacts\": [], \"councillor_groups\": [13]}",
+    "approved_go_live_at": null
+  }
+},
+{
   "model": "wagtailcore.collection",
   "pk": 1,
   "fields": {
@@ -1219,7 +1289,8 @@
   "pk": 10,
   "fields": {
     "job_title": "",
-    "overview": "<p>Fred is nice</p>"
+    "overview": "<p>Fred is nice</p>",
+    "profile_image": null
   }
 },
 {
@@ -1227,7 +1298,8 @@
   "pk": 11,
   "fields": {
     "job_title": "",
-    "overview": "<p>Peteris also nice</p>"
+    "overview": "<p>Peteris also nice</p>",
+    "profile_image": null
   }
 },
 {
@@ -1235,7 +1307,8 @@
   "pk": 15,
   "fields": {
     "job_title": "Executive Mayor",
-    "overview": "<p>stuff</p>"
+    "overview": "<p>stuff</p>",
+    "profile_image": 4
   }
 },
 {
@@ -1243,7 +1316,8 @@
   "pk": 16,
   "fields": {
     "job_title": "Alderlady",
-    "overview": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>"
+    "overview": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>",
+    "profile_image": 5
   }
 },
 {
