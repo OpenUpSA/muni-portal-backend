@@ -12,6 +12,7 @@ from rest_framework import serializers as drf_serializers
 from . import serializers
 from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
+from wagtail.api.v2 import serializers as wagtail_serializers
 
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
@@ -30,31 +31,6 @@ class RelatedPagesSerializer(Field):
 
     def to_representation(self, pages):
         return [RelatedPagesSerializer.page_representation(page) for page in pages.specific()]
-
-
-class HomePage(Page):
-    subpage_types = [
-        "core.ServicesIndexPage",
-        "core.MyMuniPage",
-    ]
-    max_count_per_parent = 1
-
-
-    api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
-    ]
-
-class ServicesIndexPage(Page):
-    subpage_types = [
-        "core.ServicePage",
-    ]
-    max_count_per_parent = 1
-
-    api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
-    ]
 
 
 class ServiceContact(Orderable, models.Model):
@@ -153,27 +129,6 @@ class PersonContactSerializer(ContactSerializer):
 class ServiceContactSerializer(ContactSerializer):
     class Meta(ContactSerializer.Meta):
         model = ServiceContact
-
-
-class ServicePage(Page):
-    subpage_types = []
-
-    icon_classes = models.CharField(max_length=250)
-    overview = RichTextField(features=NON_LINK_FEATURES)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("icon_classes"),
-        FieldPanel("overview"),
-        InlinePanel("service_contacts", label="Contacts"),
-    ]
-
-    api_fields = [
-        APIField("icon_classes"),
-        APIField("overview"),
-        APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
-    ]
 
 
 @register_snippet
@@ -383,12 +338,68 @@ class PoliticalRepsIndexPage(Page):
     ]
 
 
+class ServicePage(Page):
+    subpage_types = []
+
+    icon_classes = models.CharField(max_length=250)
+    overview = RichTextField(features=NON_LINK_FEATURES)
+    head_of_service = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("icon_classes"),
+        FieldPanel("overview"),
+        PageChooserPanel('head_of_service', 'core.AdministratorPage'),
+        InlinePanel("service_contacts", label="Contacts"),
+    ]
+
+    api_fields = [
+        APIField("icon_classes"),
+        APIField("overview"),
+        APIField("head_of_service"),
+        APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
+
+
 class MyMuniPage(Page):
     subpage_types = [
         "core.PoliticalRepsIndexPage",
         "core.AdministrationIndexPage",
     ]
     max_count_per_parent = 1
+
+    api_fields = [
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
+
+
+class ServicesIndexPage(Page):
+    subpage_types = [
+        "core.ServicePage",
+    ]
+    max_count_per_parent = 1
+
+    api_fields = [
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
+
+
+class HomePage(Page):
+    subpage_types = [
+        "core.ServicesIndexPage",
+        "core.MyMuniPage",
+    ]
+    max_count_per_parent = 1
+
 
     api_fields = [
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
