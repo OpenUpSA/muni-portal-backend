@@ -9,9 +9,24 @@ from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.core.models import Page, Orderable
 from rest_framework import serializers as drf_serializers
 from . import serializers
+from rest_framework.fields import Field
 
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
+
+
+class RelatedPagesSerializer(Field):
+    @staticmethod
+    def page_representation(page):
+        return {
+            'id': page.id,
+            'title': page.title,
+            'slug': page.slug,
+            'url': page.url,
+        }
+
+    def to_representation(self, pages):
+        return [RelatedPagesSerializer.page_representation(page) for page in pages]
 
 
 class HomePage(Page):
@@ -22,11 +37,21 @@ class HomePage(Page):
     max_count_per_parent = 1
 
 
+    api_fields = [
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
+
 class ServicesIndexPage(Page):
     subpage_types = [
         "core.ServicePage",
     ]
     max_count_per_parent = 1
+
+    api_fields = [
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
 
 
 class ServiceContact(Orderable, models.Model):
@@ -143,6 +168,8 @@ class ServicePage(Page):
         APIField("icon_classes"),
         APIField("overview"),
         APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
 
 
@@ -186,7 +213,10 @@ class PersonPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
+
 
 PersonPage._meta.get_field("title").verbose_name = "Name"
 
@@ -206,6 +236,8 @@ class CouncillorPage(PersonPage):
         APIField("overview"),
         APIField("councillor_groups"),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
 
 
@@ -223,6 +255,8 @@ class CouncillorListPage(Page):
 
     api_fields = [
         APIField("overview"),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
 
 
@@ -237,6 +271,8 @@ class CouncillorGroupPage(Page):
 
     api_fields = [
         APIField("overview"),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
 
 
@@ -258,6 +294,8 @@ class AdministrationIndexPage(Page):
 
     api_fields = [
         APIField("overview"),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
 
 
@@ -276,6 +314,8 @@ class PoliticalRepsIndexPage(Page):
 
     api_fields = [
         APIField("overview"),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
 
 
@@ -285,3 +325,8 @@ class MyMuniPage(Page):
         "core.AdministrationIndexPage",
     ]
     max_count_per_parent = 1
+
+    api_fields = [
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
