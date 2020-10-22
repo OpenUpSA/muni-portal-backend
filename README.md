@@ -77,9 +77,9 @@ The demo data fixture was produced using the command
     docker-compose run --rm web python manage.py dumpdata --natural-foreign --indent 2\
       -e contenttypes \
       -e auth.permission \
-      -e auth.user \
       -e wagtailcore.groupcollectionpermission \
       -e wagtailcore.grouppagepermission \
+      -e wagtailcore.pagelogentry \
       -e wagtailimages.rendition \
       -e sessions \
       -e core.contactdetailtype \
