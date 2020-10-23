@@ -261,7 +261,11 @@ class CouncillorPage(PersonPage):
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    councillor_groups = ParentalManyToManyField('core.CouncillorGroupPage', blank=True)
+    councillor_groups = ParentalManyToManyField(
+        'core.CouncillorGroupPage',
+        blank=True,
+        related_name="councillors"
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("job_title"),
@@ -308,13 +312,17 @@ class CouncillorGroupPage(Page):
     subpage_types = []
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+    members_label = models.CharField(max_length=100, default="Members of this group are")
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("members_label"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("members_label"),
+        APIField("councillors"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
