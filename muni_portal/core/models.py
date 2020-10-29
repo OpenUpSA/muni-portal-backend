@@ -14,6 +14,7 @@ from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.api.v2 import serializers as wagtail_serializers
 
+from .serializers import AdministratorPageSerializer
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
 
@@ -331,6 +332,11 @@ class CouncillorGroupPage(Page):
 class AdministratorPage(PersonPage):
     subpage_types = []
 
+    api_fields = [
+        APIField("profile_image"),
+        APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
+    ]
+
 
 class AdministrationIndexPage(Page):
     subpage_types = [
@@ -414,7 +420,7 @@ class ServicePage(Page):
     api_fields = [
         APIField("icon_classes"),
         APIField("overview"),
-        APIField("head_of_service"),
+        APIField("head_of_service", serializer=AdministratorPageSerializer(source='*')),
         APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
