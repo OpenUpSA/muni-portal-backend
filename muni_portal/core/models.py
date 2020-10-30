@@ -332,11 +332,6 @@ class CouncillorGroupPage(Page):
 class AdministratorPage(PersonPage):
     subpage_types = []
 
-    api_fields = [
-        APIField("profile_image"),
-        APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
-    ]
-
 
 class AdministrationIndexPage(Page):
     subpage_types = [
