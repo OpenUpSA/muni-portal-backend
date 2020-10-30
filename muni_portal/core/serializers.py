@@ -3,9 +3,6 @@ from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
 from . import models
 
-import logging
-logger = logging.getLogger(__name__)
-
 
 class SerializerMethodNestedSerializer(serializers.SerializerMethodField):
     """
