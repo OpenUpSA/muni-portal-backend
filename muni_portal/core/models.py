@@ -14,7 +14,7 @@ from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.api.v2 import serializers as wagtail_serializers
 
-from .serializers import AdministratorPageSerializer
+from .serializers import RelatedPersonPageSerializer, RelatedPersonPageListSerializer
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
 
@@ -305,7 +305,7 @@ class CouncillorListPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children')),
     ]
 
 
@@ -323,7 +323,7 @@ class CouncillorGroupPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("members_label"),
-        APIField("councillors"),
+        APIField("councillors", serializer=RelatedPersonPageListSerializer()),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
@@ -353,7 +353,7 @@ class AdministrationIndexPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children')),
     ]
 
 
@@ -420,7 +420,7 @@ class ServicePage(Page):
     api_fields = [
         APIField("icon_classes"),
         APIField("overview"),
-        APIField("head_of_service", serializer=AdministratorPageSerializer(source='*')),
+        APIField("head_of_service", serializer=RelatedPersonPageSerializer()),
         APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),

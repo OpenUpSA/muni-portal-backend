@@ -3,6 +3,9 @@ from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
 from . import models
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class SerializerMethodNestedSerializer(serializers.SerializerMethodField):
     """
@@ -33,24 +36,38 @@ class ImageSerializerField(Field):
         }
 
 
-class AdministratorPageSerializer(Field):
-    """A custom serializer for AdministratorPage."""
+class RelatedPersonPageSerializer(Field):
+    """A custom serializer for related PersonPage."""
 
     read_only = True
     write_only = False
 
+    @staticmethod
+    def get_representation(value):
+        return {
+            "id": value.id,
+            "title": value.title,
+            "slug": value.slug,
+            "url": value.url,
+            "icon_classes": value.icon_classes if hasattr(value, "icon_classes") else None,
+        }
+
     def to_representation(self, value):
-        if value.head_of_service and value.head_of_service.specific.profile_image:
-            profile_image = ImageSerializerField().to_representation(
-                value.head_of_service.specific.profile_image
+        result = self.get_representation(value)
+        if value.specific.profile_image:
+            result["profile_image"] = ImageSerializerField().to_representation(
+                value.specific.profile_image
             )
-            profile_image_thumbnail = ImageRenditionField("max-100x100").to_representation(
-                value.head_of_service.specific.profile_image
+            result["profile_image_thumbnail"] = ImageRenditionField("max-100x100").to_representation(
+                value.specific.profile_image
             )
-            return {
-                "id": value.head_of_service.specific.id,
-                "title": value.head_of_service.specific.title,
-                "job_title": value.head_of_service.specific.job_title,
-                "profile_image": profile_image,
-                "profile_image_thumbnail": profile_image_thumbnail,
-            }
+        if value.specific.job_title:
+            result["job_title"] = value.specific.job_title
+        return result
+
+
+class RelatedPersonPageListSerializer(RelatedPersonPageSerializer):
+
+    def to_representation(self, pages):
+        pages = pages if pages is list else pages.all()
+        return [super(RelatedPersonPageListSerializer, self).to_representation(page) for page in pages]
