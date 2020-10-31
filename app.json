@@ -8,7 +8,7 @@
         "DJANGO_SECRET_KEY": "not-so-secret"
       },
       "scripts": {
-        "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata.json demodata"
+        "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata demodata"
       }
     },
     "staging": {
@@ -18,7 +18,7 @@
         "DJANGO_SECRET_KEY": "not-so-secret"
       },
       "scripts": {
-        "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata.json demodata"
+        "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata demodata"
       }
     }
   }
