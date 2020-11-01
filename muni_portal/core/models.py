@@ -384,7 +384,7 @@ class ServicePointPage(Page):
 
     api_fields = [
         APIField("overview"),
-        APIField("contacts", serializer=ServicePointContactSerializer(many=True)),
+        # APIField("contacts", serializer=ServicePointContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]

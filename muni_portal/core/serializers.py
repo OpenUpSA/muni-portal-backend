@@ -47,6 +47,9 @@ class RelatedPersonPageSerializer(Field):
             "slug": value.slug,
             "url": value.url,
             "icon_classes": value.icon_classes if hasattr(value, "icon_classes") else None,
+            "profile_image": None,
+            "profile_image_thumbnail": None,
+            "job_title": None,
         }
 
     def to_representation(self, value):
