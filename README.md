@@ -17,11 +17,11 @@ Apps go in the project directory `muni_portal`
 
 ### Python
 
-Dependencies are managed via Pipfile in the docker container.
+Dependencies are managed via pyproject.toml in the docker container.
 
 Add and lock dependencies in a temporary container:
 
-    docker-compose run --rm web pipenv install pkgname==1.2.3
+    docker-compose run --rm web poetry add pkgname==1.2.3
 
 Rebuild the image to contain the new dependencies:
 
@@ -119,3 +119,4 @@ Undefined settings result in exceptions at startup to let you know they are not 
 | `AWS_S3_CUSTOM_DOMAIN` | `None` | String | e.g. `muni-portal-backend.s3.amazonaws.com` |
 | `MEDIA_URL` | `/media/` | String | e.g. `https://muni-portal-backend.s3.amazonaws.com` |
 | `DEFAULT_FILE_STORAGE` | `'django.core.files.storage.FileSystemStorage'` | String | e.g. `storages.backends.s3boto3.S3Boto3Storage` |
+| `WAGTAILAPI_BASE_URL` | unset | String | e.g. `https://muni-portal-backend.openup.org.za` |

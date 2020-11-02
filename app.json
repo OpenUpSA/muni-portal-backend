@@ -1,0 +1,25 @@
+{
+  "stack": "container",
+  "environments": {
+    "review": {
+      "addons": ["heroku-postgresql:hobby-dev"],
+      "env": {
+        "TAG_MANAGER_ENABLED": "False",
+        "DJANGO_SECRET_KEY": "not-so-secret"
+      },
+      "scripts": {
+        "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata demodata"
+      }
+    },
+    "staging": {
+      "addons": ["heroku-postgresql:hobby-dev"],
+      "env": {
+        "TAG_MANAGER_ENABLED": "False",
+        "DJANGO_SECRET_KEY": "not-so-secret"
+      },
+      "scripts": {
+        "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata demodata"
+      }
+    }
+  }
+}
