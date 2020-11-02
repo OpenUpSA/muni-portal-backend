@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 
 
-class PagesTestCase(TestCase):
+class IndexPagesTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 

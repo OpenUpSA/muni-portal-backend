@@ -1,32 +1,14 @@
 from django.test import Client, TestCase
 from django.urls import reverse
 from rest_framework import status
-from wagtail.core.models import Site, Page
+from wagtail.core.models import Site
 from wagtail.images.models import Image
 from wagtail.images.tests.utils import get_test_image_file
 
 from muni_portal.core.models import ServicePage, AdministratorPage
 
 
-class ApiTestCase(TestCase):
-    fixtures = ("seeddata.json", "demodata.json",)
-
-    def setUp(self):
-        self.client = Client()
-        self.url = reverse("wagtailapi:pages:listing")
-
-    def test_index(self):
-        response = self.client.get(self.url)
-        assert response.status_code == status.HTTP_200_OK
-
-    def test_pages(self):
-        for site in Site.objects.all():
-            for page in site.root_page.get_descendants():
-                response = self.client.get(self.url + f"{page.id}/")
-                assert response.status_code == status.HTTP_200_OK
-
-
-class ApiImagesTestCase(TestCase):
+class ServicePageApiTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
@@ -43,7 +25,7 @@ class ApiImagesTestCase(TestCase):
             depth=2,
             profile_image=profile_image,
         )
-        service_page = ServicePage(
+        page = ServicePage(
             title="Test ServicePage",
             slug="test-service-page",
             path="00012222",
@@ -52,8 +34,8 @@ class ApiImagesTestCase(TestCase):
             icon_classes=[],
             head_of_service=head_of_service
         )
-        Site.objects.first().root_page.add_child(instance=service_page)
-        response = self.client.get(self.url + f"{service_page.id}/")
+        Site.objects.first().root_page.add_child(instance=page)
+        response = self.client.get(self.url + f"{page.id}/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json()["head_of_service"]["profile_image"]
         assert response.json()["head_of_service"]["profile_image_thumbnail"]
