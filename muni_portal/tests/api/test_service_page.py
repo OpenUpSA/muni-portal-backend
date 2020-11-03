@@ -5,7 +5,9 @@ from wagtail.core.models import Site
 from wagtail.images.models import Image
 from wagtail.images.tests.utils import get_test_image_file
 
-from muni_portal.core.models import ServicePage, AdministratorPage, ServicePointPage
+from muni_portal.core.models import (
+    ServicePage, AdministratorPage, ServicePointPage
+)
 
 OFFICE_HOURS_TEST_TEXT = "<div>Office hours text</div>"
 
@@ -53,12 +55,12 @@ class ServicePageApiTestCase(TestCase):
         # NOTE: `assert` is good to use with py.test
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            res_as_dict["head_of_service"]["profile_image"]["url"],
-            f"/media/{self.page.head_of_service.profile_image.file.name}"
+            "profile_image" in res_as_dict["head_of_service"],
+            True
         )
-        self.assertIsNot(
-            res_as_dict["head_of_service"]["profile_image_thumbnail"]["url"],
-            None
+        self.assertEqual(
+            "profile_image_thumbnail" in res_as_dict["head_of_service"],
+            True
         )
 
     def test_service_page_office_hours(self):
@@ -66,6 +68,7 @@ class ServicePageApiTestCase(TestCase):
         res_as_dict = response.json()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual("office_hours" in res_as_dict, True)
         self.assertEqual(res_as_dict["office_hours"], OFFICE_HOURS_TEST_TEXT)
 
     def test_service_point_page_office_hours(self):
@@ -81,4 +84,5 @@ class ServicePageApiTestCase(TestCase):
         res_as_dict = response.json()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual("office_hours" in res_as_dict, True)
         self.assertEqual(res_as_dict["office_hours"], OFFICE_HOURS_TEST_TEXT)
