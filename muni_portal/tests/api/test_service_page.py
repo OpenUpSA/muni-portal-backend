@@ -18,7 +18,6 @@ class ServicePageApiTestCase(TestCase):
     def setUpTestData(cls):
         cls.site = Site.objects.first()
 
-        # TODO: move this outside as common fixture ???
         profile_image = Image.objects.create(
             file=get_test_image_file()
         )
@@ -46,13 +45,10 @@ class ServicePageApiTestCase(TestCase):
         self.client = Client()
         self.url = reverse("wagtailapi:pages:listing")
 
-    def test_service_page_image(self):
+    def test_service_page_serialisation(self):
         response = self.client.get(self.url + f"{self.page.id}/")
         res_as_dict = response.json()
 
-        # using `self.assertEqual` instead of `assert` here is more
-        # common and better way when using unittest
-        # NOTE: `assert` is good to use with py.test
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             "profile_image" in res_as_dict["head_of_service"],
@@ -62,16 +58,11 @@ class ServicePageApiTestCase(TestCase):
             "profile_image_thumbnail" in res_as_dict["head_of_service"],
             True
         )
-
-    def test_service_page_office_hours(self):
-        response = self.client.get(self.url + f"{self.page.id}/")
-        res_as_dict = response.json()
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual("office_hours" in res_as_dict, True)
         self.assertEqual(res_as_dict["office_hours"], OFFICE_HOURS_TEST_TEXT)
 
-    def test_service_point_page_office_hours(self):
+
+    def test_service_point_page_serialisation(self):
         service_point_page = ServicePointPage(
             title="Test ServicePointPage",
             slug="test-service-page",
