@@ -1,5 +1,4 @@
 from django.db import models
-from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
@@ -9,29 +8,16 @@ from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.core.models import Page, Orderable
 from rest_framework import serializers as drf_serializers
-from . import serializers
-from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
-from wagtail.api.v2 import serializers as wagtail_serializers
 
-from .serializers import RelatedPersonPageSerializer, RelatedPersonPageListSerializer
+from muni_portal.core.serializers import (
+    RelatedPagesSerializer,
+    RelatedPersonPageSerializer,
+    RelatedPersonPageListSerializer,
+    SerializerMethodNestedSerializer
+)
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
-
-
-class RelatedPagesSerializer(Field):
-    @staticmethod
-    def page_representation(page):
-        return {
-            'id': page.id,
-            'title': page.title,
-            'slug': page.slug,
-            'url': page.url,
-            'icon_classes': page.icon_classes if hasattr(page, "icon_classes") else None,
-        }
-
-    def to_representation(self, pages):
-        return [RelatedPagesSerializer.page_representation(page) for page in pages.specific()]
 
 
 class ServiceContact(Orderable, models.Model):
@@ -121,7 +107,7 @@ class ContactDetailTypeSerializer(drf_serializers.ModelSerializer):
 
 class ContactSerializer(drf_serializers.Serializer):
     value = drf_serializers.SerializerMethodField()
-    type = serializers.SerializerMethodNestedSerializer(ContactDetailTypeSerializer)
+    type = SerializerMethodNestedSerializer(ContactDetailTypeSerializer)
     annotation = drf_serializers.SerializerMethodField()
 
     class Meta:
@@ -313,15 +299,18 @@ class CouncillorGroupPage(Page):
     subpage_types = []
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+    icon_classes = models.CharField(max_length=250)
     members_label = models.CharField(max_length=100, default="Members of this group are")
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("icon_classes"),
         FieldPanel("members_label"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("icon_classes"),
         APIField("members_label"),
         APIField("councillors", serializer=RelatedPersonPageListSerializer()),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
@@ -453,7 +442,6 @@ class HomePage(Page):
         "core.MyMuniPage",
     ]
     max_count_per_parent = 1
-
 
     api_fields = [
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),

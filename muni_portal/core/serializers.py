@@ -33,6 +33,21 @@ class ImageSerializerField(Field):
         }
 
 
+class RelatedPagesSerializer(Field):
+    @staticmethod
+    def page_representation(page):
+        return {
+            "id": page.id,
+            "title": page.title,
+            "slug": page.slug,
+            "url": page.url,
+            "icon_classes": page.icon_classes if hasattr(page, "icon_classes") else None,
+        }
+
+    def to_representation(self, pages):
+        return [RelatedPagesSerializer.page_representation(page) for page in pages.specific()]
+
+
 class RelatedPersonPageSerializer(Field):
     """A custom serializer for related PersonPage."""
 
