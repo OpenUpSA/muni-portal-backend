@@ -16,7 +16,7 @@ class PoliticalRepsIndexPageApiTestCase(TestCase):
             slug="test-councillor-group-page",
             path="00011111",
             depth=2,
-            icon_classes=["test1", "test2"],
+            icon_classes="test1 test2",
             overview="Test"
         )
         page = PoliticalRepsIndexPage(
@@ -31,4 +31,4 @@ class PoliticalRepsIndexPageApiTestCase(TestCase):
         page.add_child(instance=councillor_group_page)
         response = self.client.get(self.url + f"{page.id}/")
         assert response.status_code == status.HTTP_200_OK
-        assert response.json()["child_pages"][0]["icon_classes"]
+        assert response.json()["child_pages"][0]["icon_classes"] == "test1 test2"
