@@ -32,6 +32,7 @@ class CouncillorGroupPageApiTestCase(TestCase):
             depth=2,
             live=True,
             overview="Test",
+            icon_classes=["test1", "test2"],
         )
         Site.objects.first().root_page.add_child(instance=page)
         page.councillors.add(councillor_page)
