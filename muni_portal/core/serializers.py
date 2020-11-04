@@ -45,7 +45,14 @@ class RelatedPagesSerializer(Field):
         }
 
     def to_representation(self, pages):
-        return [RelatedPagesSerializer.page_representation(page) for page in pages.specific()]
+        return [self.page_representation(page) for page in pages.specific()]
+
+
+class RelatedCouncillorGroupPageSerializer(RelatedPagesSerializer):
+    def page_representation(self, page):
+        representation = super().page_representation(page)
+        representation["councillors_count"] = page.councillors_count if hasattr(page, "councillors_count") else None
+        return representation
 
 
 class RelatedPersonPageSerializer(Field):
