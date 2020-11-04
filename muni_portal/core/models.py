@@ -14,7 +14,8 @@ from muni_portal.core.serializers import (
     RelatedPagesSerializer,
     RelatedPersonPageSerializer,
     RelatedPersonPageListSerializer,
-    SerializerMethodNestedSerializer
+    SerializerMethodNestedSerializer,
+    RelatedCouncillorGroupPageSerializer
 )
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
@@ -317,6 +318,10 @@ class CouncillorGroupPage(Page):
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
 
+    @property
+    def councillors_count(self):
+        return self.councillors.count()
+
 
 class AdministratorPage(PersonPage):
     subpage_types = []
@@ -357,7 +362,7 @@ class PoliticalRepsIndexPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("child_pages", serializer=RelatedCouncillorGroupPageSerializer(source='get_children')),
     ]
 
 
