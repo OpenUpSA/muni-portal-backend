@@ -365,14 +365,17 @@ class ServicePointPage(Page):
     subpage_types = []
 
     overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
+    office_hours = RichTextField(features=NON_LINK_FEATURES, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("office_hours"),
         InlinePanel("service_point_contacts", label="Contacts"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("office_hours"),
         APIField("service_point_contacts", serializer=ServicePointContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
@@ -386,6 +389,7 @@ class ServicePage(Page):
 
     icon_classes = models.CharField(max_length=250)
     overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
+    office_hours = RichTextField(features=NON_LINK_FEATURES, blank=True)
     head_of_service = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
@@ -397,6 +401,7 @@ class ServicePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("icon_classes"),
         FieldPanel("overview"),
+        FieldPanel("office_hours"),
         PageChooserPanel('head_of_service', 'core.AdministratorPage'),
         InlinePanel("service_contacts", label="Contacts"),
     ]
@@ -404,6 +409,7 @@ class ServicePage(Page):
     api_fields = [
         APIField("icon_classes"),
         APIField("overview"),
+        APIField("office_hours"),
         APIField("head_of_service", serializer=RelatedPersonPageSerializer()),
         APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
