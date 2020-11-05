@@ -7,7 +7,7 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from muni_portal.core.api import api_router
-from muni_portal.core.views import Index
+from muni_portal.core.views import Index, WebhooksView
 
 urlpatterns = [
     path("", Index.as_view(), name="index"),
@@ -15,6 +15,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+    path("api/webhooks/", WebhooksView.as_view(), name="webhooks"),
     path("api/wagtail/v2/", api_router.urls),
     path("", include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
