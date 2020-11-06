@@ -1,11 +1,15 @@
+import logging
+
 from django.views import generic
 from rest_framework import serializers, status
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from muni_portal.core.models import Webhook
+
+logger = logging.getLogger(__name__)
 
 
 class Index(generic.TemplateView):
@@ -14,7 +18,7 @@ class Index(generic.TemplateView):
 
 class WebhooksView(CreateAPIView):
 
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.Serializer
 
@@ -23,4 +27,5 @@ class WebhooksView(CreateAPIView):
             Webhook.objects.create(data=request.data)
             return Response(status=status.HTTP_201_CREATED)
         except Exception as e:
+            logger.error(e)
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": e})
