@@ -15,7 +15,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    path("api/webhooks/", WebhooksView.as_view(), name="webhooks"),
+    path("api/webhooks/collaborator/", WebhooksView.as_view(), name="webhooks"),
     path("api/wagtail/v2/", api_router.urls),
     path("", include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
