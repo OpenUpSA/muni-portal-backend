@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from muni_portal.core.models import Webhook
+
+
+@admin.register(Webhook)
+class WebhookAdmin(admin.ModelAdmin):
+    list_display = ("id", "data", "created_at")
+    list_filter = ("created_at",)

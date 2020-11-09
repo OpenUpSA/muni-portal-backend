@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
@@ -98,6 +99,11 @@ class ContactDetailType(models.Model):
 
     def __str__(self):
         return self.label
+
+
+class Webhook(models.Model):
+    data = JSONField()
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
 
 class ContactDetailTypeSerializer(drf_serializers.ModelSerializer):
