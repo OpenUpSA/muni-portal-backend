@@ -67,6 +67,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_registration",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 MIDDLEWARE = [
@@ -229,6 +231,7 @@ REST_REGISTRATION = {
     "REGISTER_EMAIL_VERIFICATION_URL": WAGTAILAPI_BASE_URL + "/api/accounts/verify-email/",
     "VERIFICATION_FROM_EMAIL": DEFAULT_FROM_EMAIL,
     "SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL": True,
+    "LOGIN_RETRIEVE_TOKEN": True,
 }
 
 

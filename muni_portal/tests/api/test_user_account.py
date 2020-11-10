@@ -25,7 +25,6 @@ class ApiUserAccountTestCase(APITestCase):
         assert response.status_code == status.HTTP_201_CREATED
         assert send_notification_mock.called
 
-        # TODO: check verification flow
         verification_url = urlparse(
             create_verification_notification_mock.call_args[0][3]["params_signer"].get_url()
         )
@@ -46,7 +45,6 @@ class ApiUserAccountTestCase(APITestCase):
         assert response.status_code == status.HTTP_200_OK
         assert send_notification_mock.called
 
-        # TODO: check verification flow
         verification_url = urlparse(
             create_verification_notification_mock.call_args[0][3]["params_signer"].get_url()
         )
@@ -57,6 +55,22 @@ class ApiUserAccountTestCase(APITestCase):
 
         reset_password_data["username"] = user.username
         response = self.client.post(reverse("token_obtain_pair"), data=reset_password_data)
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_login(self):
+        user = User.objects.create_user(
+            username="test", email="test@test.com", password=self.password
+        )
+        data = {"login": user.username, "password": self.password}
+        response = self.client.post(reverse("rest_registration:login"), data=data)
+        assert response.status_code == status.HTTP_200_OK
+
+        jwt_token = response.data.get("token")
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {jwt_token}")
+        response = self.client.get(reverse("rest_registration:profile"))
+        assert response.status_code == status.HTTP_200_OK
+
+        response = self.client.post(reverse("rest_registration:logout"), data={"revoke_token": True})
         assert response.status_code == status.HTTP_200_OK
 
     def test_profile(self):
@@ -71,3 +85,7 @@ class ApiUserAccountTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {jwt_token}")
         response = self.client.get(reverse("rest_registration:profile"))
         assert response.status_code == status.HTTP_200_OK
+
+    def test_profile_access_denied(self):
+        response = self.client.get(reverse("rest_registration:profile"))
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
