@@ -22,17 +22,17 @@ class ApiUserAccountTestCase(APITestCase):
             "password_confirm": self.password
         }
         response = self.client.post(reverse("rest_registration:register"), data=data)
-        assert response.status_code == status.HTTP_201_CREATED
-        assert send_notification_mock.called
+        self.assertEquals(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(send_notification_mock.called)
 
         verification_url = urlparse(
             create_verification_notification_mock.call_args[0][3]["params_signer"].get_url()
         )
         response = self.client.post(verification_url.path, data=dict(parse_qsl(verification_url.query)))
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         response = self.client.post(reverse("token_obtain_pair"), data=data)
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
     @patch("rest_registration.notifications.email.send_notification")
     @patch("rest_registration.notifications.email.create_verification_notification")
@@ -42,8 +42,8 @@ class ApiUserAccountTestCase(APITestCase):
         )
         data = {"email": user.email}
         response = self.client.post(reverse("rest_registration:send-reset-password-link"), data=data)
-        assert response.status_code == status.HTTP_200_OK
-        assert send_notification_mock.called
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(send_notification_mock.called)
 
         verification_url = urlparse(
             create_verification_notification_mock.call_args[0][3]["params_signer"].get_url()
@@ -51,11 +51,11 @@ class ApiUserAccountTestCase(APITestCase):
         reset_password_data = dict(parse_qsl(verification_url.query))
         reset_password_data["password"] = Faker().password(length=8)
         response = self.client.post(verification_url.path, data=reset_password_data)
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         reset_password_data["username"] = user.username
         response = self.client.post(reverse("token_obtain_pair"), data=reset_password_data)
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
     def test_login(self):
         user = User.objects.create_user(
@@ -63,15 +63,15 @@ class ApiUserAccountTestCase(APITestCase):
         )
         data = {"login": user.username, "password": self.password}
         response = self.client.post(reverse("rest_registration:login"), data=data)
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         jwt_token = response.data.get("token")
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {jwt_token}")
         response = self.client.get(reverse("rest_registration:profile"))
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         response = self.client.post(reverse("rest_registration:logout"), data={"revoke_token": True})
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
     def test_profile(self):
         user = User.objects.create_user(
@@ -79,13 +79,13 @@ class ApiUserAccountTestCase(APITestCase):
         )
         data = {"username": user.username, "password": self.password}
         response = self.client.post(reverse("token_obtain_pair"), data=data)
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         jwt_token = response.data.get("access")
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {jwt_token}")
         response = self.client.get(reverse("rest_registration:profile"))
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
 
     def test_profile_access_denied(self):
         response = self.client.get(reverse("rest_registration:profile"))
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)

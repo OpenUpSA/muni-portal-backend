@@ -37,6 +37,6 @@ class CouncillorGroupPageApiTestCase(TestCase):
         Site.objects.first().root_page.add_child(instance=page)
         page.councillors.add(councillor_page)
         response = self.client.get(self.url + f"{page.id}/")
-        assert response.status_code == status.HTTP_200_OK
-        assert response.json()["councillors"][0]["profile_image"]
-        assert response.json()["councillors"][0]["profile_image_thumbnail"]
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(response.json()["councillors"][0]["profile_image"])
+        self.assertIsNotNone(response.json()["councillors"][0]["profile_image_thumbnail"])

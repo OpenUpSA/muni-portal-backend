@@ -17,10 +17,10 @@ class ApiJWTTokenTestCase(TestCase):
     def test_token_obtain_pair(self):
         data = {"username": self.user.username, "password": self.password}
         response = self.client.post(reverse("token_obtain_pair"), data=data)
-        assert response.status_code == status.HTTP_200_OK
-        assert "access" in response.data
-        assert "refresh" in response.data
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertIn("access", response.data)
+        self.assertIn("refresh", response.data)
 
         response = self.client.post(reverse("token_refresh"), data=response.data)
-        assert response.status_code == status.HTTP_200_OK
-        assert "access" in response.data
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertIn("access", response.data)

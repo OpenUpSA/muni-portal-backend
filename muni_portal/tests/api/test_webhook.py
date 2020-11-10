@@ -20,10 +20,10 @@ class ApiWebhookTestCase(TestCase):
         self.client.force_authenticate(self.user, self.token)
         test_data = {"test": "test"}
         response = self.client.post(self.url, data=test_data)
-        assert response.status_code == status.HTTP_201_CREATED
-        assert Webhook.objects.first().data == test_data
+        self.assertEquals(response.status_code, status.HTTP_201_CREATED)
+        self.assertEquals(Webhook.objects.first().data, test_data)
 
     def test_api_webhook_not_authenticated(self):
         test_data = {"test": "test"}
         response = self.client.post(self.url, data=test_data)
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)

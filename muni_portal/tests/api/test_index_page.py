@@ -11,4 +11,4 @@ class ApiIndexTestCase(TestCase):
 
     def test_index(self):
         response = self.client.get(self.url)
-        assert response.status_code == status.HTTP_200_OK
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
