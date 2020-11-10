@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import environ
 
+from datetime import timedelta
+
 ROOT_DIR = environ.Path(__file__) - 2
 PROJ_DIR = ROOT_DIR.path("muni_portal")
 
@@ -64,6 +66,7 @@ INSTALLED_APPS = [
     "taggit",
     "rest_framework",
     "rest_framework.authtoken",
+    "rest_registration",
 ]
 
 MIDDLEWARE = [
@@ -205,3 +208,50 @@ AWS_S3_CUSTOM_DOMAIN = env.str("AWS_S3_CUSTOM_DOMAIN", None)
 # "S3Boto3Storage does not correctly handle duplicate filenames in their default configuration."
 # https://docs.wagtail.io/en/v2.7.1/advanced_topics/deploying.html
 AWS_S3_FILE_OVERWRITE = False
+
+
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", None)
+
+
+# https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
+
+
+# https://django-rest-registration.readthedocs.io/en/latest/quickstart.html#preferred-configuration
+REST_REGISTRATION = {
+    "AUTH_TOKEN_MANAGER_CLASS": "muni_portal.core.auth.RestFrameworkAuthJWTTokenManager",
+    "REGISTER_VERIFICATION_URL": WAGTAILAPI_BASE_URL + "/api/accounts/verify-registration/",
+    "RESET_PASSWORD_VERIFICATION_URL": WAGTAILAPI_BASE_URL + "/api/accounts/reset-password/",
+    "REGISTER_EMAIL_VERIFICATION_URL": WAGTAILAPI_BASE_URL + "/api/accounts/verify-email/",
+    "VERIFICATION_FROM_EMAIL": DEFAULT_FROM_EMAIL,
+    "SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL": True,
+}
+
+
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "JTI_CLAIM": "jti",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+}
