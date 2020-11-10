@@ -5,7 +5,8 @@
       "addons": ["heroku-postgresql:hobby-dev"],
       "env": {
         "TAG_MANAGER_ENABLED": "False",
-        "DJANGO_SECRET_KEY": "not-so-secret"
+        "DJANGO_SECRET_KEY": "not-so-secret",
+        "DEFAULT_FROM_EMAIL": "noreply@example.com"
       },
       "scripts": {
         "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata demodata"
@@ -15,7 +16,8 @@
       "addons": ["heroku-postgresql:hobby-dev"],
       "env": {
         "TAG_MANAGER_ENABLED": "False",
-        "DJANGO_SECRET_KEY": "not-so-secret"
+        "DJANGO_SECRET_KEY": "not-so-secret",
+        "DEFAULT_FROM_EMAIL": "noreply@example.com",
       },
       "scripts": {
         "release": "python manage.py flush --no-input && python manage.py migrate && python manage.py loaddata seeddata demodata"
