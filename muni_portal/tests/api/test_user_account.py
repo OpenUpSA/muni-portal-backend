@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core import mail
 from django.urls import reverse
 from faker import Faker
 from rest_framework import status
@@ -12,9 +13,7 @@ class ApiUserAccountTestCase(APITestCase):
     def setUp(self):
         self.password = Faker().password(length=8)
 
-    @patch("rest_registration.notifications.email.send_notification")
-    @patch("rest_registration.notifications.email.create_verification_notification")
-    def test_registration(self, create_verification_notification_mock, send_notification_mock):
+    def test_registration(self):
         data = {
             "email": "test@test.com",
             "username": "test",
@@ -23,34 +22,30 @@ class ApiUserAccountTestCase(APITestCase):
         }
         response = self.client.post(reverse("rest_registration:register"), data=data)
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(send_notification_mock.called)
+        self.assertEquals(len(mail.outbox), 1)
 
-        verification_url = urlparse(
-            create_verification_notification_mock.call_args[0][3]["params_signer"].get_url()
+        verification_url = urlparse(mail.outbox[0].body)
+        response = self.client.post(
+            reverse("rest_registration:verify-registration"), data=dict(parse_qsl(verification_url.query))
         )
-        response = self.client.post(verification_url.path, data=dict(parse_qsl(verification_url.query)))
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         response = self.client.post(reverse("token_obtain_pair"), data=data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
-    @patch("rest_registration.notifications.email.send_notification")
-    @patch("rest_registration.notifications.email.create_verification_notification")
-    def test_reset_password(self, create_verification_notification_mock, send_notification_mock):
+    def test_reset_password(self):
         user = User.objects.create_user(
             username="test", email="test@test.com", password=self.password
         )
         data = {"email": user.email}
         response = self.client.post(reverse("rest_registration:send-reset-password-link"), data=data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(send_notification_mock.called)
+        self.assertEquals(len(mail.outbox), 1)
 
-        verification_url = urlparse(
-            create_verification_notification_mock.call_args[0][3]["params_signer"].get_url()
-        )
+        verification_url = urlparse(mail.outbox[0].body)
         reset_password_data = dict(parse_qsl(verification_url.query))
         reset_password_data["password"] = Faker().password(length=8)
-        response = self.client.post(verification_url.path, data=reset_password_data)
+        response = self.client.post(reverse("rest_registration:reset-password"), data=reset_password_data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         reset_password_data["username"] = user.username

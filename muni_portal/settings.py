@@ -195,6 +195,7 @@ if TAG_MANAGER_ENABLED:
 
 WAGTAIL_SITE_NAME = "Muni portal CMS"
 WAGTAILAPI_BASE_URL = env.str("WAGTAILAPI_BASE_URL", None)
+FRONTEND_BASE_URL = env.str("FRONTEND_BASE_URL", None)
 
 CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ALLOW_ALL_ORIGINS = True
@@ -212,7 +213,13 @@ AWS_S3_CUSTOM_DOMAIN = env.str("AWS_S3_CUSTOM_DOMAIN", None)
 AWS_S3_FILE_OVERWRITE = False
 
 
+# https://docs.djangoproject.com/en/3.1/topics/email/
 DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", None)
+EMAIL_HOST = env.str("EMAIL_HOST", "smtp.sendgrid.net")
+EMAIL_PORT = env.int("EMAIL_PORT", 587)
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", "apikey")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", None)
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", True)
 
 
 # https://www.django-rest-framework.org/api-guide/settings/
@@ -226,9 +233,9 @@ REST_FRAMEWORK = {
 # https://django-rest-registration.readthedocs.io/en/latest/quickstart.html#preferred-configuration
 REST_REGISTRATION = {
     "AUTH_TOKEN_MANAGER_CLASS": "muni_portal.core.auth.RestFrameworkAuthJWTTokenManager",
-    "REGISTER_VERIFICATION_URL": WAGTAILAPI_BASE_URL + "/api/accounts/verify-registration/",
-    "RESET_PASSWORD_VERIFICATION_URL": WAGTAILAPI_BASE_URL + "/api/accounts/reset-password/",
-    "REGISTER_EMAIL_VERIFICATION_URL": WAGTAILAPI_BASE_URL + "/api/accounts/verify-email/",
+    "REGISTER_VERIFICATION_URL": FRONTEND_BASE_URL + "/accounts/verify-registration/",
+    "RESET_PASSWORD_VERIFICATION_URL": FRONTEND_BASE_URL + "/accounts/reset-password/",
+    "REGISTER_EMAIL_VERIFICATION_URL": FRONTEND_BASE_URL + "/accounts/verify-email/",
     "VERIFICATION_FROM_EMAIL": DEFAULT_FROM_EMAIL,
     "SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL": True,
     "LOGIN_RETRIEVE_TOKEN": True,
