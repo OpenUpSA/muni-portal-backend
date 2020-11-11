@@ -37,6 +37,6 @@ class PoliticalRepsIndexPageApiTestCase(TestCase):
         page.add_child(instance=councillor_group_page)
         councillor_group_page.councillors.add(councillor_page)
         response = self.client.get(self.url + f"{page.id}/")
-        assert response.status_code == status.HTTP_200_OK
-        assert response.json()["child_pages"][0]["icon_classes"] == "test1 test2"
-        assert response.json()["child_pages"][0]["councillors_count"] == 1
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(response.json()["child_pages"][0]["icon_classes"], "test1 test2")
+        self.assertEquals(response.json()["child_pages"][0]["councillors_count"], 1)

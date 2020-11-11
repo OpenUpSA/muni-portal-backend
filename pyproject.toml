@@ -24,6 +24,9 @@ sentry-sdk = "==0.14.1"
 wagtail = "==2.10.1"
 werkzeug = "==0.16.0"
 whitenoise = "==5.0.1"
+django-rest-registration = "^0.5.6"
+djangorestframework-simplejwt = "^4.5.0"
+Faker = "^4.14.2"
 
 [tool.poetry.dev-dependencies]
 black = "==19.10b0"
