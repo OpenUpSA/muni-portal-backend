@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.utils.translation import gettext_lazy as _
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
@@ -114,6 +115,10 @@ class Webpush(models.Model):
     p256dh = models.CharField(max_length=100)
     expiration_time = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, db_index=True)
+
+    class Meta:
+        verbose_name = _("Web push")
+        verbose_name_plural = _("Web pushes")
 
 
 class ContactDetailTypeSerializer(drf_serializers.ModelSerializer):

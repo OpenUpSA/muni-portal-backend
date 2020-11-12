@@ -24,5 +24,6 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='webpushes', to=settings.AUTH_USER_MODEL)),
             ],
+            options={'verbose_name': 'Web push', 'verbose_name_plural': 'Web pushes'},
         ),
     ]
