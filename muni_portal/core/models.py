@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from wagtail.core.fields import RichTextField
@@ -104,6 +105,15 @@ class ContactDetailType(models.Model):
 class Webhook(models.Model):
     data = JSONField()
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+
+class Webpush(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="webpushes", on_delete=models.CASCADE)
+    endpoint = models.URLField(max_length=500)
+    auth = models.CharField(max_length=100)
+    p256dh = models.CharField(max_length=100)
+    expiration_time = models.CharField(max_length=100, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, db_index=True)
 
 
 class ContactDetailTypeSerializer(drf_serializers.ModelSerializer):

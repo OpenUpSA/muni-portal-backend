@@ -1,6 +1,5 @@
 import logging
 
-from django.views import generic
 from rest_framework import serializers, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import CreateAPIView
@@ -12,11 +11,7 @@ from muni_portal.core.models import Webhook
 logger = logging.getLogger(__name__)
 
 
-class Index(generic.TemplateView):
-    template_name = "index.html"
-
-
-class WebhooksView(CreateAPIView):
+class WebhooksApiView(CreateAPIView):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
