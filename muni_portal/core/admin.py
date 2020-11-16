@@ -9,7 +9,7 @@ class WebhookAdmin(admin.ModelAdmin):
 
 
 @admin.register(WebPushSubscription)
-class WebhookAdmin(admin.ModelAdmin):
+class WebpushSubscriptionAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "endpoint", "created_at")
     list_filter = ("created_at",)
     raw_id_fields = ("user",)
