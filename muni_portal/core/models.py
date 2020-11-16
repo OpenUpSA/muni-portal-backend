@@ -108,17 +108,13 @@ class Webhook(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
 
-class Webpush(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="webpushes", on_delete=models.CASCADE)
+class WebPushSubscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="webpushsubscriptions", on_delete=models.CASCADE)
     endpoint = models.URLField(max_length=500)
     auth = models.CharField(max_length=100)
     p256dh = models.CharField(max_length=100)
     expiration_time = models.CharField(max_length=100, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, db_index=True)
-
-    class Meta:
-        verbose_name = _("Web push")
-        verbose_name_plural = _("Web pushes")
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
 
 class ContactDetailTypeSerializer(drf_serializers.ModelSerializer):

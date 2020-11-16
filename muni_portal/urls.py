@@ -17,7 +17,7 @@ urlpatterns = [
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("api/webhooks/collaborator/", WebhooksApiView.as_view(), name="webhooks"),
-    path("api/webpush/", WebpushApiView.as_view(), name="webpush"),
+    path("api/webpush/subscription/", WebpushApiView.as_view(), name="webpush"),
     path("api/accounts/", include("rest_registration.api.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

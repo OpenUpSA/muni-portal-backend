@@ -5,7 +5,7 @@ from faker import Faker
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from muni_portal.core.models import Webpush
+from muni_portal.core.models import WebPushSubscription
 from muni_portal.core.serializers import WebpushSerializer
 
 
@@ -33,9 +33,9 @@ class ApiWebpushTestCase(TestCase):
         }
         response = self.client.post(self.url, data=test_data)
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
-        self.assertEquals(Webpush.objects.first().user, self.user)
+        self.assertEquals(WebPushSubscription.objects.first().user, self.user)
 
-        serializer = WebpushSerializer(instance=Webpush.objects.first())
+        serializer = WebpushSerializer(instance=WebPushSubscription.objects.first())
         self.assertEquals(serializer.data, test_data)
 
     def test_api_webpush_not_authenticated(self):
