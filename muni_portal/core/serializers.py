@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
-from . import models
 
 
 class SerializerMethodNestedSerializer(serializers.SerializerMethodField):
@@ -93,3 +92,10 @@ class RelatedPersonPageListSerializer(RelatedPersonPageSerializer):
     def to_representation(self, pages):
         pages = pages if pages is list else pages.all()
         return [super(RelatedPersonPageListSerializer, self).to_representation(page) for page in pages]
+
+
+class WebpushSerializer(serializers.Serializer):
+    endpoint = serializers.URLField()
+    auth = serializers.CharField()
+    p256dh = serializers.CharField()
+    expiration_time = serializers.CharField()

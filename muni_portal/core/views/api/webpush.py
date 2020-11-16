@@ -1,30 +1,26 @@
 import logging
 
-from django.views import generic
-from rest_framework import serializers, status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from muni_portal.core.models import Webhook
+from muni_portal.core.models import WebPushSubscription
+from muni_portal.core.serializers import WebpushSerializer
 
 logger = logging.getLogger(__name__)
 
 
-class Index(generic.TemplateView):
-    template_name = "index.html"
+class WebpushApiView(CreateAPIView):
 
-
-class WebhooksView(CreateAPIView):
-
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    serializer_class = serializers.Serializer
+    serializer_class = WebpushSerializer
 
     def create(self, request, *args, **kwargs):
         try:
-            Webhook.objects.create(data=request.data)
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            WebPushSubscription.objects.create(user=request.user, **serializer.validated_data)
             return Response(status=status.HTTP_201_CREATED)
         except Exception as e:
             logger.error(e)
