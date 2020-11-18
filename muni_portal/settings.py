@@ -109,7 +109,7 @@ WSGI_APPLICATION = "muni_portal.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
-# DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 
 # https://docs.djangoproject.com/en/2.2/topics/cache/#setting-up-the-cache
