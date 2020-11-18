@@ -1,8 +1,6 @@
 import logging
 
 from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django_q.tasks import async_task
 from pywebpush import webpush, WebPushException
 
@@ -25,13 +23,11 @@ def queue_send_webpush_notification(notification_id):
         except WebPushException as e:
             logger.error(f"Can't send web push notification to subscription #{subscription.id}, error {e}")
             result.message = e.message
-            result.status_code = 500
             if e.response and e.response.json():
                 result.status_code = e.response.status_code
                 result.data = e.response.json()
         except Exception as e:
             logger.debug(f"Web push unhandled error for subscription #{subscription.id}, error {e}")
-            result.status_code = 500
             result.message = e
         result.save()
     notification.status = notification.STATUS_COMPLETED

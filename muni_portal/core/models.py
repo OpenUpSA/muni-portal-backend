@@ -158,7 +158,7 @@ class WebPushNotificationResult(models.Model):
     subscription = models.ForeignKey(
         WebPushSubscription, related_name="webpushsubscriptionresults", on_delete=models.CASCADE
     )
-    status_code = models.IntegerField()
+    status_code = models.IntegerField(null=True, blank=True)
     data = JSONField(null=True, blank=True)
     message = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
