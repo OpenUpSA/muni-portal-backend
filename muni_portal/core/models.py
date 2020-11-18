@@ -116,6 +116,53 @@ class WebPushSubscription(models.Model):
     expiration_time = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
+    def serialize(self):
+        return {
+            "endpoint": self.endpoint,
+            "keys": {
+                "p256dh": self.p256dh,
+                "auth": self.auth
+            }
+        }
+
+
+class WebPushNotification(models.Model):
+    STATUS_QUEUED = "QUEUED"
+    STATUS_COMPLETED = "COMPLETED"
+    STATUS_FAILED_INCOMPLETE = "FAILED_INCOMPLETE"
+    STATUS_CHOICES = (
+        (STATUS_QUEUED, "Queued"),
+        (STATUS_COMPLETED, "Completed"),
+        (STATUS_FAILED_INCOMPLETE, "Failed incomplete"),
+    )
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_QUEUED)
+    data = JSONField(null=True, blank=True)
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    url = models.URLField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    def serialize(self):
+        return {
+            "title": self.title,
+            "body": self.body,
+            "url": self.url,
+        }
+
+
+class WebPushNotificationResult(models.Model):
+    notification = models.ForeignKey(
+        WebPushNotification, related_name="webpushnotificationresults", on_delete=models.CASCADE
+    )
+    subscription = models.ForeignKey(
+        WebPushSubscription, related_name="webpushsubscriptionresults", on_delete=models.CASCADE
+    )
+    status_code = models.IntegerField()
+    data = JSONField(null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
 
 class ContactDetailTypeSerializer(drf_serializers.ModelSerializer):
     class Meta:

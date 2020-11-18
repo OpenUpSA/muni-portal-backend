@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "rest_registration",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "django_q",
 ]
 
 MIDDLEWARE = [
@@ -108,7 +109,16 @@ WSGI_APPLICATION = "muni_portal.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
-DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+# DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+
+
+# https://docs.djangoproject.com/en/2.2/topics/cache/#setting-up-the-cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
 
 
 # Password validation
@@ -265,3 +275,23 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
+
+# https://django-q.readthedocs.io/en/latest/
+DJANGO_Q_SYNC = env.bool("DJANGO_Q_SYNC", False)
+Q_CLUSTER = {
+    "name": "muni-portal-backend",
+    "workers": 1,
+    "timeout": 30 * 60,  # 30 minutes, timeout a task after this many seconds
+    "retry": 60 * 60,  # rerun hanging task after 1 hour
+    "queue_limit": 1,
+    "bulk": 1,
+    "orm": "default",  # Use Django ORM as storage backend
+    "poll": 10,  # Check for queued tasks this frequently (seconds)
+    "save_limit": 0,
+    "ack_failures": True,  # Dequeue failed tasks
+    "sync": DJANGO_Q_SYNC,
+}
+
+
+# https://github.com/web-push-libs/pywebpush
+VAPID_PRIVATE_KEY = env.str("VAPID_PRIVATE_KEY", "vapid_private_key.pem")
