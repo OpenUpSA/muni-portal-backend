@@ -120,3 +120,13 @@ Undefined settings result in exceptions at startup to let you know they are not 
 | `MEDIA_URL` | `/media/` | String | e.g. `https://muni-portal-backend.s3.amazonaws.com` |
 | `DEFAULT_FILE_STORAGE` | `'django.core.files.storage.FileSystemStorage'` | String | e.g. `storages.backends.s3boto3.S3Boto3Storage` |
 | `WAGTAILAPI_BASE_URL` | unset | String | e.g. `https://muni-portal-backend.openup.org.za` |
+| `DEFAULT_FROM_EMAIL` | undefined | String | e.g. `Default from email for notifications` |
+| `VAPID_PRIVATE_KEY` | unset | String | e.g. `/home/ubuntu/vapid_private_key.pem` |
+
+
+Web Push Notifications
+----------------------
+
+To generate new vapid private key use the command bellow
+
+    openssl ecparam -name prime256v1 -genkey -noout -out vapid_private_key.pem
