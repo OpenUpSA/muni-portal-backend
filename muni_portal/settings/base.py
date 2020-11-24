@@ -14,7 +14,7 @@ import environ
 
 from datetime import timedelta
 
-ROOT_DIR = environ.Path(__file__) - 2
+ROOT_DIR = environ.Path(__file__) - 3
 PROJ_DIR = ROOT_DIR.path("muni_portal")
 
 # Quick-start development settings - unsuitable for production
