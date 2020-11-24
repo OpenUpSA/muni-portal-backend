@@ -257,3 +257,6 @@ dist
 
 # PyCharm project files
 .idea/
+
+# Local settings
+muni_portal/settings/local.py
