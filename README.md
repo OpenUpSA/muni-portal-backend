@@ -130,3 +130,13 @@ Web Push Notifications
 To generate new vapid private key use the command bellow
 
     openssl ecparam -name prime256v1 -genkey -noout -out vapid_private_key.pem
+
+
+Security
+--------
+
+- CORS_URLS_REGEX - Currently allows access to user account API. [Example here](https://regex101.com/r/Ui3hn2/3).
+
+- CORS_ALLOWED_ORIGIN_REGEXES - Should be configured via environment. [Example here](https://regex101.com/r/q6jWFA/2/).
+
+- List of allowed headers: Accept, Accept-Encoding, Content-Type, Charset, HTTP_AUTHORIZATION, Origin.
