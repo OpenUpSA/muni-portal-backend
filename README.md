@@ -141,6 +141,15 @@ Exploits to watch out for with security of this service (not comprehensive):
   - Do not allow cookie or basic authentication to user-endpoints like fetching/updating their profile or performing actions on their behalf (CORS and CSRF)
     - By only allowing token-based authentication, the browser can not be tricked into supplying credentials
     - CORS by default disallows the browser from automatically supplying credentials - be careful about changing this behaviour
+Specific approach to CORS and CSRF
+
+- the resources relevant to CSRF are the ones protected by automated credential headers like session cookie or basic authentication.
+- our custom resources disallow both those, and are therefore secure against CSRF
+- wagtail (API and CMS) and the django admin uses session cookies
+- any resources that work with automated credential headers like cookies or basic auth must be protected from access by unsafe origins using CORS.
+- CORS must therefore not be allowed for admin or wagtail resources.
+- CORS may only be allowed for our custom resources that only allow token authentication
+
 Important configuration for security
 
 - CORS_URLS_REGEX - Currently allows access to user account API. [Example here](https://regex101.com/r/Ui3hn2/3).
