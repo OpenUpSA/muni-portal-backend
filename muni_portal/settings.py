@@ -14,7 +14,7 @@ import environ
 
 from datetime import timedelta
 
-ROOT_DIR = environ.Path(__file__) - 3
+ROOT_DIR = environ.Path(__file__) - 2
 PROJ_DIR = ROOT_DIR.path("muni_portal")
 
 # Quick-start development settings - unsuitable for production
@@ -285,5 +285,5 @@ Q_CLUSTER = {
 
 
 # https://github.com/web-push-libs/pywebpush
-VAPID_PRIVATE_KEY = env.str("VAPID_PRIVATE_KEY", "vapid_private_key.pem")
-VAPID_PUBLIC_KEY = env.str("VAPID_PUBLIC_KEY", "vapid_public_key.pem")
+VAPID_PRIVATE_KEY = env.str("VAPID_PRIVATE_KEY")
+VAPID_PUBLIC_KEY = env.str("VAPID_PUBLIC_KEY")
