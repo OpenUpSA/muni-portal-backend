@@ -202,7 +202,7 @@ FRONTEND_BASE_URL = env.str("FRONTEND_BASE_URL", None)
 
 CORS_URLS_REGEX = r"^/api/(accounts|token)/.*$"
 CORS_ALLOWED_ORIGIN_REGEXES = [re.compile(x) for x in env.list("CORS_ALLOWED_ORIGIN_REGEXES", [])]
-CORS_ALLOW_HEADERS = default_headers + ["HTTP_AUTHORIZATION"]
+CORS_ALLOW_HEADERS = default_headers + ("HTTP_AUTHORIZATION",)
 
 DEFAULT_FILE_STORAGE = env.str("DEFAULT_FILE_STORAGE", 'django.core.files.storage.FileSystemStorage')
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", None)

@@ -33,6 +33,7 @@ services:
       - AWS_S3_ENDPOINT_URL
       - AWS_S3_REGION_NAME
       - AWS_S3_CUSTOM_DOMAIN
+      - CORS_ALLOWED_ORIGIN_REGEXES="^http://localhost:\d+"
 
   qcluster:
     build:
@@ -63,6 +64,7 @@ services:
       - AWS_S3_ENDPOINT_URL
       - AWS_S3_REGION_NAME
       - AWS_S3_CUSTOM_DOMAIN
+      - CORS_ALLOWED_ORIGIN_REGEXES="^http://localhost:\d+"
 
   db:
     image: postgres:11.6
