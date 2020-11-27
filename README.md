@@ -135,6 +135,14 @@ To generate new vapid private key use the command bellow
 Security
 --------
 
+Exploits to watch out for with security of this service (not comprehensive):
+
+- Do not allow credentialed access to /admin or the Webflow API where an admin might be logged in and an attacker uses their session to fetch or modify information (CORS and CSRF)
+  - Do not allow cookie or basic authentication to user-endpoints like fetching/updating their profile or performing actions on their behalf (CORS and CSRF)
+    - By only allowing token-based authentication, the browser can not be tricked into supplying credentials
+    - CORS by default disallows the browser from automatically supplying credentials - be careful about changing this behaviour
+
+
 - CORS_URLS_REGEX - Currently allows access to user account API. [Example here](https://regex101.com/r/Ui3hn2/3).
 
 - CORS_ALLOWED_ORIGIN_REGEXES - Should be configured via environment. [Example here](https://regex101.com/r/q6jWFA/2/).
