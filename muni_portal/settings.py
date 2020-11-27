@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import environ
+import re
 
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 ROOT_DIR = environ.Path(__file__) - 2
 PROJ_DIR = ROOT_DIR.path("muni_portal")
@@ -198,8 +200,9 @@ WAGTAIL_SITE_NAME = "Muni portal CMS"
 WAGTAILAPI_BASE_URL = env.str("WAGTAILAPI_BASE_URL", None)
 FRONTEND_BASE_URL = env.str("FRONTEND_BASE_URL", None)
 
-CORS_URLS_REGEX = r"^/api/.*$"
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_URLS_REGEX = r"^/api/(accounts|token)/.*$"
+CORS_ALLOWED_ORIGIN_REGEXES = [re.compile(x) for x in env.list("CORS_ALLOWED_ORIGIN_REGEXES", [])]
+CORS_ALLOW_HEADERS = default_headers + ("HTTP_AUTHORIZATION",)
 
 DEFAULT_FILE_STORAGE = env.str("DEFAULT_FILE_STORAGE", 'django.core.files.storage.FileSystemStorage')
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", None)
