@@ -200,7 +200,7 @@ WAGTAIL_SITE_NAME = "Muni portal CMS"
 WAGTAILAPI_BASE_URL = env.str("WAGTAILAPI_BASE_URL", None)
 FRONTEND_BASE_URL = env.str("FRONTEND_BASE_URL", None)
 
-CORS_URLS_REGEX = r"^/api/(accounts|token)/.*$"
+CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ALLOWED_ORIGIN_REGEXES = [re.compile(x) for x in env.list("CORS_ALLOWED_ORIGIN_REGEXES", [])]
 CORS_ALLOW_HEADERS = default_headers + ("HTTP_AUTHORIZATION",)
 
