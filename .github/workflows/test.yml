@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: '0 0 * * 0' # weekly
 
+env:
+  CACHE_IMAGE: openupsa/muni-portal-backend/app
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,8 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Log in to Github Container Registry
+        run: docker login https://docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+
       - name: Configure variables to run container under host user ID
         run: export USER_ID=$(id -u) && export GROUP_ID=$(id -g)
+
+      - run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
 
       # Rebuild static files because we mount to /app overriding those in the image
       - run: docker-compose run --rm web yarn
@@ -31,7 +41,10 @@ jobs:
       # - ensure development environment setup is maintained.
       - name: Load demo data fixture
         run: docker-compose run --rm web bin/wait-for-postgres.sh python manage.py loaddata seeddata demodata
-      - name: Start server
+      - name: "Start server"
         run: docker-compose up -d
       - name: "Smoke test: Check that demo data is returned by typical request to server"
         run: wget --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=10 --tries=10 -O-  "http://localhost:8000/api/wagtail/v2/pages/?type=core.ServicePage&fields=*" | grep "electrical"
+
+      - name: Push to container registry
+        run: docker push $CACHE_IMAGE:latest
