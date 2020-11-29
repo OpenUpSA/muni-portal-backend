@@ -1,4 +1,4 @@
-FROM openup/docker-python-nodejs:python3.7-nodejs12
+FROM nikolaik/python-nodejs:python3.8-nodejs12
 
 ENV POETRY_VIRTUALENVS_CREATE false
 ENV PIP_NO_CACHE_DIR off
