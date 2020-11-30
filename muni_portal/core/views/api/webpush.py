@@ -31,11 +31,9 @@ class WebpushApiView(CreateAPIView):
 
 class VapidApiView(RetrieveAPIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        if not os.path.isfile(settings.VAPID_PUBLIC_KEY):
+        if not settings.VAPID_PUBLIC_KEY:
             Response(status=status.HTTP_404_NOT_FOUND)
-        with open(settings.VAPID_PUBLIC_KEY, "r") as file:
-            vapid_public_key = file.read()
-        return Response({"vapid_public_key": vapid_public_key})
+        return Response({"vapid_public_key": settings.VAPID_PUBLIC_KEY})

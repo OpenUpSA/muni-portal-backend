@@ -28,18 +28,13 @@ RUN set -ex; \
 
 COPY . /app
 
-RUN mkdir -p /var/app/ && \
-  openssl ecparam -name prime256v1 -genkey -noout -out /var/app/vapid_private_key.pem && \
-  openssl ec -in /var/app/vapid_private_key.pem -pubout -out /var/app/vapid_public_key.pem
-
 ARG USER_ID=1001
 ARG GROUP_ID=1001
 
 RUN set -ex; \
   addgroup --gid $GROUP_ID --system django; \
   adduser --system --uid $USER_ID --gid $GROUP_ID django; \
-  chown -R django:django /app && \
-  chown -R django:django /var/app
+  chown -R django:django /app
 USER django
 
 WORKDIR /app

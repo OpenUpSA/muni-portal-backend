@@ -32,13 +32,6 @@ class ApiWebpushTestCase(LoggedInUserTestCase):
 class ApiVapidTestCase(LoggedInUserTestCase):
 
     def test_api_webpush(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.jwt_token}")
         response = self.client.get(reverse("vapid"))
         self.assertEquals(response.status_code, status.HTTP_200_OK)
-        with open(settings.VAPID_PUBLIC_KEY, "r") as file:
-            vapid_public_key = file.read()
-        self.assertEquals(response.data["vapid_public_key"], vapid_public_key)
-
-    def test_api_webpush_not_authenticated(self):
-        response = self.client.get(reverse("vapid"))
-        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEquals(response.data["vapid_public_key"], settings.VAPID_PUBLIC_KEY)

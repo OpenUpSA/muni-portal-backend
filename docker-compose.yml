@@ -36,42 +36,13 @@ services:
       - CORS_ALLOWED_ORIGIN_REGEXES="^http://localhost:\d+"
       - DEBUG_CACHE
       - DJANGO_Q_SYNC=True
-      - VAPID_PRIVATE_KEY=/var/app/vapid_private_key.pem
-      - VAPID_PUBLIC_KEY=/var/app/vapid_public_key.pem
-
-  qcluster:
-    build:
-      context: .
-      args:
-        USER_ID: ${USER_ID:-1001}
-        GROUP_ID: ${GROUP_ID:-1001}
-    volumes:
-      - .:/app
-    command: python manage.py qcluster
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgresql://muni_portal:devpassword@db/muni_portal
-      - DJANGO_DEBUG=True
-      - NODE_ENV=development
-      - DJANGO_DEBUG_TOOLBAR
-      - DJANGO_SECRET_KEY=not-secret-in-dev
-      - DJANGO_WHITENOISE_AUTOREFRESH=True
-      - TAG_MANAGER_ENABLED=False
-      - WAGTAILAPI_BASE_URL=http://localhost:8000
-      - FRONTEND_BASE_URL=http://localhost:8000
-      - DEFAULT_FROM_EMAIL=noreply@example.com
-      - DEFAULT_FILE_STORAGE
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_STORAGE_BUCKET_NAME
-      - AWS_S3_ENDPOINT_URL
-      - AWS_S3_REGION_NAME
-      - AWS_S3_CUSTOM_DOMAIN
-      - CORS_ALLOWED_ORIGIN_REGEXES="^http://localhost:\d+"
-      - DJANGO_Q_SYNC=True
-      - VAPID_PRIVATE_KEY=/var/app/vapid_private_key.pem
-      - VAPID_PUBLIC_KEY=/var/app/vapid_public_key.pem
+      - VAPID_PRIVATE_KEY=
+          MHcCAQEEINzAlQbw6fdyoBx+B6AVcbxeA3aCCt5vZZPN7jahRnJaoAoGCCqGSM49AwEHoUQDQgAE
+          szzDgDdfVsgogVCvDRr6ZxJ8d8xf5FVDzI7270lWYSOFpYS88Y/ILloDZnFIIJl5fF6j5xz/nh6A
+          HbBk3LqRZg==
+      - VAPID_PUBLIC_KEY=
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEszzDgDdfVsgogVCvDRr6ZxJ8d8xf5FVDzI7270lW
+          YSOFpYS88Y/ILloDZnFIIJl5fF6j5xz/nh6AHbBk3LqRZg==
 
   db:
     image: postgres:11.6
