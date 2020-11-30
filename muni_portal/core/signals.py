@@ -6,6 +6,8 @@ from pywebpush import webpush, WebPushException
 
 from muni_portal.core.models import WebPushNotification, WebPushSubscription, WebPushNotificationResult
 
+import json
+
 logger = logging.getLogger(__name__)
 
 
@@ -16,10 +18,10 @@ def queue_send_webpush_notification(notification_id):
         try:
             response = webpush(
                 subscription.serialize(),
-                {
+                json.dumps({
                     "type": "notification",
                     "notification": notification.serialize(),
-                },
+                }),
                 vapid_private_key=settings.VAPID_PRIVATE_KEY,
                 vapid_claims={"sub": f"mailto:{settings.DEFAULT_FROM_EMAIL}"}
             )

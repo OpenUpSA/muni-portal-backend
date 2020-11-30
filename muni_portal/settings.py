@@ -291,6 +291,7 @@ Q_CLUSTER = {
 VAPID_PRIVATE_KEY = env.str("VAPID_PRIVATE_KEY")
 VAPID_PUBLIC_KEY = env.str("VAPID_PUBLIC_KEY")
 
+
 if DEBUG:
     if env.bool("DEBUG_CACHE", False):
         print("\nDEBUG_CACHE=True: Django cache enabled.\n")
