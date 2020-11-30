@@ -287,7 +287,8 @@ Q_CLUSTER = {
 
 
 # https://github.com/web-push-libs/pywebpush
-VAPID_PRIVATE_KEY = env.str("VAPID_PRIVATE_KEY", "vapid_private_key.pem")
+VAPID_PRIVATE_KEY = env.str("VAPID_PRIVATE_KEY")
+VAPID_PUBLIC_KEY = env.str("VAPID_PUBLIC_KEY")
 
 if DEBUG:
     if env.bool("DEBUG_CACHE", False):

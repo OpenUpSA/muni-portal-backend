@@ -21,7 +21,7 @@ def queue_send_webpush_notification(notification_id):
             )
             result.status_code = response.status_code
         except WebPushException as e:
-            logger.error(f"Can't send web push notification to subscription #{subscription.id}, error {e}")
+            logger.error(f"Can't send web push notification to subscription #{subscription.id}, error {e.message}")
             result.message = e.message
             if e.response and e.response.json():
                 result.status_code = e.response.status_code

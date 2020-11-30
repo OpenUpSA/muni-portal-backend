@@ -1,7 +1,9 @@
 import logging
+import os
 
+from django.conf import settings
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -25,3 +27,13 @@ class WebpushApiView(CreateAPIView):
         except Exception as e:
             logger.error(e)
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": e})
+
+
+class VapidApiView(RetrieveAPIView):
+
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        if not settings.VAPID_PUBLIC_KEY:
+            Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"vapid_public_key": settings.VAPID_PUBLIC_KEY})

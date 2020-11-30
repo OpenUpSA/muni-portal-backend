@@ -122,15 +122,17 @@ Undefined settings result in exceptions at startup to let you know they are not 
 | `WAGTAILAPI_BASE_URL` | unset | String | e.g. `https://muni-portal-backend.openup.org.za` |
 | `DEFAULT_FROM_EMAIL` | undefined | String | e.g. `Default from email for notifications` |
 | `VAPID_PRIVATE_KEY` | unset | String | e.g. `/home/ubuntu/vapid_private_key.pem` |
+| `VAPID_PUBLIC_KEY` | unset | String | e.g. `/home/ubuntu/vapid_public_key.pem` |
 | `DEBUG_CACHE` | False | Boolean | Set to true to enable django cache despite DEBUG being True. Then it uses in-memory cache so reset cache by restarting the container. |
 
 
 Web Push Notifications
 ----------------------
 
-To generate new vapid private key use the command bellow
+To generate new vapid private and public keys use commands bellow
 
     openssl ecparam -name prime256v1 -genkey -noout -out vapid_private_key.pem
+    openssl ec -in vapid_private_key.pem -pubout -out vapid_public_key.pem
 
 
 Security
