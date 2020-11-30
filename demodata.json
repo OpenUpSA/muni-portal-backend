@@ -490,7 +490,7 @@
   "fields": {
     "path": "000100020002",
     "depth": 3,
-    "numchild": 2,
+    "numchild": 3,
     "title": "My Muni",
     "draft_title": "My Muni",
     "slug": "my-municipality",
@@ -937,6 +937,111 @@
     "last_published_at": "2020-10-22T19:14:16.965Z",
     "latest_revision_created_at": "2020-10-22T19:14:16.955Z",
     "live_revision": 34
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 21,
+  "fields": {
+    "path": "0001000200020003",
+    "depth": 4,
+    "numchild": 2,
+    "title": "Notifications",
+    "draft_title": "Notifications",
+    "slug": "notifications",
+    "content_type": [
+      "core",
+      "noticeindexpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/my-municipality/notifications/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-11-30T19:59:54.353Z",
+    "last_published_at": "2020-11-30T19:59:54.353Z",
+    "latest_revision_created_at": "2020-11-30T19:59:54.337Z",
+    "live_revision": 35
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 22,
+  "fields": {
+    "path": "00010002000200030001",
+    "depth": 5,
+    "numchild": 0,
+    "title": "Maintenance request",
+    "draft_title": "Maintenance request",
+    "slug": "maintenance-request",
+    "content_type": [
+      "core",
+      "noticepage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/my-municipality/notifications/maintenance-request/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-11-30T20:00:56.663Z",
+    "last_published_at": "2020-11-30T20:00:56.663Z",
+    "latest_revision_created_at": "2020-11-30T20:00:56.651Z",
+    "live_revision": 36
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 23,
+  "fields": {
+    "path": "00010002000200030002",
+    "depth": 5,
+    "numchild": 0,
+    "title": "Changes to road names",
+    "draft_title": "Changes to road names",
+    "slug": "changes-road-names",
+    "content_type": [
+      "core",
+      "noticepage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/my-municipality/notifications/changes-road-names/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2020-11-30T20:01:32.465Z",
+    "last_published_at": "2020-11-30T20:01:32.465Z",
+    "latest_revision_created_at": "2020-11-30T20:01:32.450Z",
+    "live_revision": 37
   }
 },
 {
@@ -1402,6 +1507,48 @@
   }
 },
 {
+  "model": "wagtailcore.pagerevision",
+  "pk": 35,
+  "fields": {
+    "page": 21,
+    "submitted_for_moderation": false,
+    "created_at": "2020-11-30T19:59:54.337Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 21, \"path\": \"0001000200020003\", \"depth\": 4, \"numchild\": 0, \"title\": \"Notifications\", \"draft_title\": \"Notifications\", \"slug\": \"notifications\", \"content_type\": 68, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notifications/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 36,
+  "fields": {
+    "page": 22,
+    "submitted_for_moderation": false,
+    "created_at": "2020-11-30T20:00:56.651Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 22, \"path\": \"00010002000200030001\", \"depth\": 5, \"numchild\": 0, \"title\": \"Maintenance request\", \"draft_title\": \"Maintenance request\", \"slug\": \"maintenance-request\", \"content_type\": 67, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notifications/maintenance-request/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. <a id=\\\"2\\\" linktype=\\\"page\\\">Nullam dictum felis eu pede mollis</a> pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 37,
+  "fields": {
+    "page": 23,
+    "submitted_for_moderation": false,
+    "created_at": "2020-11-30T20:01:32.450Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 23, \"path\": \"00010002000200030002\", \"depth\": 5, \"numchild\": 0, \"title\": \"Changes to road names\", \"draft_title\": \"Changes to road names\", \"slug\": \"changes-road-names\", \"content_type\": 67, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notifications/changes-road-names/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
   "model": "wagtailcore.collection",
   "pk": 1,
   "fields": {
@@ -1459,6 +1606,25 @@
   }
 },
 {
+  "model": "core.noticepage",
+  "pk": 22,
+  "fields": {
+    "body": "<p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. <a id=\"2\" linktype=\"page\">Nullam dictum felis eu pede mollis</a> pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.</p>"
+  }
+},
+{
+  "model": "core.noticepage",
+  "pk": 23,
+  "fields": {
+    "body": "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>"
+  }
+},
+{
+  "model": "core.noticeindexpage",
+  "pk": 21,
+  "fields": {}
+},
+{
   "model": "core.homepage",
   "pk": 2,
   "fields": {}
@@ -1479,6 +1645,7 @@
   "fields": {
     "icon_classes": "fas fa-bolt",
     "overview": "<p>The Department is responsible for all electricity services, including electrical infrastructure development.</p><p>The Municipality provides electrical distribution and reticulation services and street lighting to all towns in its area of jurisdiction except Struisbaai North (part of Struisbaai), Protem, Klipdale, Kassiesbaai (part of Arniston) and Elim.</p>",
+    "office_hours": "",
     "head_of_service": 10
   }
 },
@@ -1488,6 +1655,7 @@
   "fields": {
     "icon_classes": "fas fa-tint",
     "overview": "<p>Ensuring our residents have access to clean water is our priority. Fresh water is a scarce resource in the Western Cape that is heavily dependent on rainfall. We all have a part to play in conserving water as much as possible.</p>",
+    "office_hours": "",
     "head_of_service": 11
   }
 },
@@ -1497,6 +1665,7 @@
   "fields": {
     "icon_classes": "fas fa-book-reader",
     "overview": "<p><b>Membership Fees</b><br/> The library service is free and fees are charged for the following only:</p><ul><li>Overdue books because members/borrowers keep books for  longer than the loan period specified hereunder. You may renew your  books by telephone or in person.</li><li>Lost library cards</li><li>Photocopies</li><li>Reserved books.</li><li>Use of library hall.</li><li>Visitors may take out books on paying a deposit</li></ul><p><b>How to join our Libraries</b></p><ul><li>You need to bring your ID/Passport to the library and complete an application form.</li><li>Parents/guardians must sign applications for under 18 year olds or for scholars.</li><li>You will receive library cards which you will need each time you want to borrow books, magazines, CDs, records or videos/DVDs.</li></ul><p>Loan Period:<br/> Books: 2 weeks<br/> Magazines: 2 weeks<br/> CDs &amp; tapes: 2 weeks<br/> Videos/DVDs: 1 day</p><p>Please...</p><ul><li>take care of your library card - treat it as you would treat a credit card.</li><li>notify us of any change of your address.</li><li>do not allow anyone else to use your library card.</li></ul>",
+    "office_hours": "",
     "head_of_service": null
   }
 },
@@ -1504,14 +1673,16 @@
   "model": "core.servicepointpage",
   "pk": 19,
   "fields": {
-    "overview": "<p>Open hours:</p><ul><li>Monday, Wednesday, Friday:\u00a0 09:00 - 17:00</li><li>Tuesday:\u00a0 09:00 -18:00</li><li>Thursday:\u00a0 10:00 -18:00</li><li>Saturday:\u00a0 09:00 - 12:00</li></ul>"
+    "overview": "<p>Open hours:</p><ul><li>Monday, Wednesday, Friday:\u00a0 09:00 - 17:00</li><li>Tuesday:\u00a0 09:00 -18:00</li><li>Thursday:\u00a0 10:00 -18:00</li><li>Saturday:\u00a0 09:00 - 12:00</li></ul>",
+    "office_hours": ""
   }
 },
 {
   "model": "core.servicepointpage",
   "pk": 20,
   "fields": {
-    "overview": "<p>Open hours:</p><ul><li>Monday: 10:00-13:00 and 14:00-18:00</li><li>Tuesday to Friday:\u00a0 10:00 -13:00 and 14:00 -17:00</li><li>Saturday:\u00a0 09:00 - 12:00</li></ul>"
+    "overview": "<p>Open hours:</p><ul><li>Monday: 10:00-13:00 and 14:00-18:00</li><li>Tuesday to Friday:\u00a0 10:00 -13:00 and 14:00 -17:00</li><li>Saturday:\u00a0 09:00 - 12:00</li></ul>",
+    "office_hours": ""
   }
 },
 {
@@ -1542,14 +1713,18 @@
   "model": "core.councillorgrouppage",
   "pk": 12,
   "fields": {
-    "overview": "<p>The mayor is cool</p>"
+    "overview": "<p>The mayor is cool</p>",
+    "icon_classes": "",
+    "members_label": "Members of this group are"
   }
 },
 {
   "model": "core.councillorgrouppage",
   "pk": 13,
   "fields": {
-    "overview": "<p>There is this committee ne</p>"
+    "overview": "<p>There is this committee ne</p>",
+    "icon_classes": "",
+    "members_label": "Members of this group are"
   }
 },
 {
