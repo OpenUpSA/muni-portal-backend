@@ -137,7 +137,6 @@ class WebPushNotification(models.Model):
     )
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_QUEUED)
-    data = JSONField(null=True, blank=True)
     title = models.CharField(max_length=255)
     body = models.TextField()
     url = models.URLField(max_length=255)

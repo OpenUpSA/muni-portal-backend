@@ -247,8 +247,8 @@ REST_REGISTRATION = {
 
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=300),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
@@ -287,6 +287,7 @@ Q_CLUSTER = {
 
 
 # https://github.com/web-push-libs/pywebpush
+# https://www.npmjs.com/package/web-push#command-line
 VAPID_PRIVATE_KEY = env.str("VAPID_PRIVATE_KEY")
 VAPID_PUBLIC_KEY = env.str("VAPID_PUBLIC_KEY")
 
