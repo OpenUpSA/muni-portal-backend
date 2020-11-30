@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.core import mail
+from django.test import Client as DjangoClient
 from django.urls import reverse
 from faker import Faker
 from rest_framework import status
 from rest_framework.test import APITestCase
-from unittest.mock import patch
 from urllib.parse import urlparse, parse_qsl
 
 
@@ -84,3 +84,17 @@ class ApiUserAccountTestCase(APITestCase):
     def test_profile_access_denied(self):
         response = self.client.get(reverse("rest_registration:profile"))
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        # Create superuser, login and try to get profile from API without JWT token
+        django_client = DjangoClient()
+        user = User.objects.create_superuser(
+            username="test", email="test@test.com", password=self.password
+        )
+        django_client.force_login(user)
+
+        response = django_client.get(reverse("admin:index"), follow=True)
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+
+        response = self.client.get(reverse("rest_registration:profile"))
+        self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
