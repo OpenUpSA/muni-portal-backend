@@ -1,14 +1,18 @@
+import os
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from django_q.models import Success as SuccessTask
 from faker import Faker
+from py_vapid import Vapid
 from rest_framework import status
 from unittest.mock import patch
 
 from muni_portal.core.models import WebPushNotification, WebPushSubscription
 
 faker = Faker()
+vapid = Vapid()
 
 
 class WebPushNotificationIntegrationTestCase(TestCase):
@@ -18,6 +22,13 @@ class WebPushNotificationIntegrationTestCase(TestCase):
         self.user = User.objects.create_superuser(
             username="test", email="test@test.com", password=self.password
         )
+        vapid.generate_keys()
+        vapid.save_key("private_key.pem")
+        vapid.save_public_key("public_key.pem")
+
+    def tearDown(self):
+        os.remove("private_key.pem")
+        os.remove("public_key.pem")
 
     @patch("pywebpush.WebPusher")
     def test_webpush_notification_flow(self, web_pusher_mock):
@@ -41,7 +52,9 @@ class WebPushNotificationIntegrationTestCase(TestCase):
         }
         self.client.force_login(self.user)
 
-        response = self.client.post(admin_add_notification_page, django_admin_form_data)
+        with self.settings(VAPID_PRIVATE_KEY="private_key.pem", VAPID_PUBLIC_KEY="public_key.pem"):
+            response = self.client.post(admin_add_notification_page, django_admin_form_data)
+
         self.assertEquals(response.status_code, status.HTTP_302_FOUND)
         self.assertEquals(WebPushNotification.objects.count(), 1)
         self.assertEquals(SuccessTask.objects.count(), 1)

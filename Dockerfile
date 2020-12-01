@@ -9,7 +9,7 @@ ENV NODE_ENV production
 RUN set -ex; \
   apt-get update; \
   # dependencies for building Python packages \
-  apt-get install -y build-essential python3.8-dev; \
+  apt-get install -y build-essential python3.7-dev; \
   # psycopg2 dependencies \
   apt-get install -y libpq-dev; \
   # git for codecov file listing \
