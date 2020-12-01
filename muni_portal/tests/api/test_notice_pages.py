@@ -12,7 +12,7 @@ class NoticeIndexPageApiTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.url = reverse("wagtailapi:pages:listing")
+        self.url = reverse('wagtailapi:pages:listing')
 
     def test_service_page_image(self):
         notice_page_01 = NoticePage(
@@ -45,7 +45,7 @@ class NoticeIndexPageApiTestCase(TestCase):
         response = self.client.get(self.url + f"{page.id}/")
         self.assertEquals(response.status_code, status.HTTP_200_OK)
         child_pages = response.json()["child_pages"]
-        assert child_pages[1]["publication_date"] < child_pages[0]["publication_date"]
+        self.assertTrue(child_pages[1]["publication_date"] < child_pages[0]["publication_date"])
 
         response = self.client.get(self.url + f"{notice_page_01.id}/")
         self.assertEquals(response.status_code, status.HTTP_200_OK)

@@ -946,16 +946,16 @@
     "path": "0001000200020003",
     "depth": 4,
     "numchild": 2,
-    "title": "Notifications",
-    "draft_title": "Notifications",
-    "slug": "notifications",
+    "title": "Notices",
+    "draft_title": "Notices",
+    "slug": "notices",
     "content_type": [
       "core",
       "noticeindexpage"
     ],
     "live": true,
     "has_unpublished_changes": false,
-    "url_path": "/cape-agulhas-municipality/my-municipality/notifications/",
+    "url_path": "/cape-agulhas-municipality/my-municipality/notices/",
     "owner": [
       "admin"
     ],
@@ -990,7 +990,7 @@
     ],
     "live": true,
     "has_unpublished_changes": false,
-    "url_path": "/cape-agulhas-municipality/my-municipality/notifications/maintenance-request/",
+    "url_path": "/cape-agulhas-municipality/my-municipality/notices/maintenance-request/",
     "owner": [
       "admin"
     ],
@@ -1025,7 +1025,7 @@
     ],
     "live": true,
     "has_unpublished_changes": false,
-    "url_path": "/cape-agulhas-municipality/my-municipality/notifications/changes-road-names/",
+    "url_path": "/cape-agulhas-municipality/my-municipality/notices/changes-road-names/",
     "owner": [
       "admin"
     ],
@@ -1516,7 +1516,7 @@
     "user": [
       "admin"
     ],
-    "content_json": "{\"pk\": 21, \"path\": \"0001000200020003\", \"depth\": 4, \"numchild\": 0, \"title\": \"Notifications\", \"draft_title\": \"Notifications\", \"slug\": \"notifications\", \"content_type\": 68, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notifications/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
+    "content_json": "{\"pk\": 21, \"path\": \"0001000200020003\", \"depth\": 4, \"numchild\": 0, \"title\": \"Notices\", \"draft_title\": \"Notices\", \"slug\": \"notices\", \"content_type\": 68, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notices/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
     "approved_go_live_at": null
   }
 },
@@ -1530,7 +1530,7 @@
     "user": [
       "admin"
     ],
-    "content_json": "{\"pk\": 22, \"path\": \"00010002000200030001\", \"depth\": 5, \"numchild\": 0, \"title\": \"Maintenance request\", \"draft_title\": \"Maintenance request\", \"slug\": \"maintenance-request\", \"content_type\": 67, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notifications/maintenance-request/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. <a id=\\\"2\\\" linktype=\\\"page\\\">Nullam dictum felis eu pede mollis</a> pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.</p>\"}",
+    "content_json": "{\"pk\": 22, \"path\": \"00010002000200030001\", \"depth\": 5, \"numchild\": 0, \"title\": \"Maintenance request\", \"draft_title\": \"Maintenance request\", \"slug\": \"maintenance-request\", \"content_type\": 67, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notices/maintenance-request/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. <a id=\\\"2\\\" linktype=\\\"page\\\">Nullam dictum felis eu pede mollis</a> pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.</p>\"}",
     "approved_go_live_at": null
   }
 },
@@ -1544,7 +1544,7 @@
     "user": [
       "admin"
     ],
-    "content_json": "{\"pk\": 23, \"path\": \"00010002000200030002\", \"depth\": 5, \"numchild\": 0, \"title\": \"Changes to road names\", \"draft_title\": \"Changes to road names\", \"slug\": \"changes-road-names\", \"content_type\": 67, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notifications/changes-road-names/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>\"}",
+    "content_json": "{\"pk\": 23, \"path\": \"00010002000200030002\", \"depth\": 5, \"numchild\": 0, \"title\": \"Changes to road names\", \"draft_title\": \"Changes to road names\", \"slug\": \"changes-road-names\", \"content_type\": 67, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/notices/changes-road-names/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>\"}",
     "approved_go_live_at": null
   }
 },
