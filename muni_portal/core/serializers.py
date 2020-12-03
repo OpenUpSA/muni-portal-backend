@@ -96,7 +96,7 @@ class RelatedPersonPageListSerializer(RelatedPersonPageSerializer):
 
 
 class WebpushSubscriptionSerializer(serializers.Serializer):
-    subscription_object = serializers.JSONField()
+    subscription_object = serializers.DictField()
 
 class RichTextFieldSerializer(Field):
 
