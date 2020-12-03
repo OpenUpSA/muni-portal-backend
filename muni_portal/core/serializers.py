@@ -95,12 +95,8 @@ class RelatedPersonPageListSerializer(RelatedPersonPageSerializer):
         return [super(RelatedPersonPageListSerializer, self).to_representation(page) for page in pages]
 
 
-class WebpushSerializer(serializers.Serializer):
-    endpoint = serializers.URLField()
-    auth = serializers.CharField()
-    p256dh = serializers.CharField()
-    expiration_time = serializers.CharField()
-
+class WebpushSubscriptionSerializer(serializers.Serializer):
+    subscription_object = serializers.JSONField()
 
 class RichTextFieldSerializer(Field):
 

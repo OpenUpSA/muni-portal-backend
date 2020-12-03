@@ -110,21 +110,11 @@ class Webhook(models.Model):
 
 
 class WebPushSubscription(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="webpushsubscriptions", on_delete=models.CASCADE)
-    endpoint = models.URLField(max_length=500)
-    auth = models.CharField(max_length=100)
-    p256dh = models.CharField(max_length=100)
-    expiration_time = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-
-    def serialize(self):
-        return {
-            "endpoint": self.endpoint,
-            "keys": {
-                "p256dh": self.p256dh,
-                "auth": self.auth
-            }
-        }
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="webpushsubscriptions", on_delete=models.CASCADE)
+    # PushSubscription object as returned by subscription.toJSON()
+    # https://developer.mozilla.org/en-US/docs/Web/API/PushSubscription
+    subscription_object = JSONField()
 
 
 class WebPushNotification(models.Model):

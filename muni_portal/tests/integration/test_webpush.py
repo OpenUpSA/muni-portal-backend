@@ -32,10 +32,14 @@ class WebPushNotificationIntegrationTestCase(TestCase):
     def test_webpush_notification_flow(self, web_pusher_mock):
         subscription = WebPushSubscription.objects.create(
             user=self.user,
-            endpoint=faker.uri(),
-            auth=faker.pystr(min_chars=1, max_chars=100),
-            p256dh=faker.pystr(min_chars=1, max_chars=100),
-            expiration_time=faker.date(),
+            subscription_object={
+                "endpoint": faker.uri(),
+                "keys": {
+                    "auth": faker.pystr(min_chars=1, max_chars=100),
+                    "p256dh": faker.pystr(min_chars=1, max_chars=100),
+                },
+                "some_future_key": faker.pystr(min_chars=1, max_chars=100),
+            }
         )
 
         # Create and send notification via Django admin
@@ -58,10 +62,4 @@ class WebPushNotificationIntegrationTestCase(TestCase):
         self.assertEquals(SuccessTask.objects.count(), 1)
 
         # Check webpush notification call
-        web_pusher_mock.assert_called_with({
-            "endpoint": subscription.endpoint,
-            "keys": {
-                "auth": subscription.auth,
-                "p256dh": subscription.p256dh,
-            }
-        }, verbose=False)
+        web_pusher_mock.assert_called_with(subscription.subscription_object, verbose=False)

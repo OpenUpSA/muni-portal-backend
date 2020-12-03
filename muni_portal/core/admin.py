@@ -11,7 +11,7 @@ class WebhookAdmin(admin.ModelAdmin):
 
 @admin.register(WebPushSubscription)
 class WebpushSubscriptionAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "endpoint", "created_at")
+    list_display = ("id", "user", "created_at")
     list_filter = ("created_at",)
     raw_id_fields = ("user",)
 
@@ -20,6 +20,7 @@ class WebpushSubscriptionAdmin(admin.ModelAdmin):
 class WebPushNotificationAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "status", "created_at")
     list_filter = ("created_at",)
+    readonly_fields = ("status",)
 
     def save_model(self, request, obj, form, change):
         super(WebPushNotificationAdmin, self).save_model(request, obj, form, change)

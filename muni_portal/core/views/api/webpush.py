@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from muni_portal.core.models import WebPushSubscription
-from muni_portal.core.serializers import WebpushSerializer
+from muni_portal.core.serializers import WebpushSubscriptionSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class WebpushApiView(CreateAPIView):
 
     permission_classes = [IsAuthenticated]
-    serializer_class = WebpushSerializer
+    serializer_class = WebpushSubscriptionSerializer
 
     def create(self, request, *args, **kwargs):
         try:
