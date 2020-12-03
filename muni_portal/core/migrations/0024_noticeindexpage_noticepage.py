@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wagtailcore', '0052_pagelogentry'),
-        ('core', '0022_auto_20201118_1327'),
+        ('core', '0023_remove_webpushnotification_data'),
     ]
 
     operations = [
