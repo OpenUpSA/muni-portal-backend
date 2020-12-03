@@ -6,6 +6,8 @@ from pywebpush import webpush, WebPushException
 
 from muni_portal.core.models import WebPushNotification, WebPushSubscription, WebPushNotificationResult
 
+import json
+
 logger = logging.getLogger(__name__)
 
 
@@ -15,19 +17,23 @@ def queue_send_webpush_notification(notification_id):
         result = WebPushNotificationResult(subscription=subscription, notification=notification)
         try:
             response = webpush(
-                subscription.serialize(), notification.serialize(),
+                subscription.serialize(),
+                json.dumps({
+                    "type": "notification",
+                    "notification": notification.serialize(),
+                }),
                 vapid_private_key=settings.VAPID_PRIVATE_KEY,
                 vapid_claims={"sub": f"mailto:{settings.DEFAULT_FROM_EMAIL}"}
             )
             result.status_code = response.status_code
         except WebPushException as e:
-            logger.error(f"Can't send web push notification to subscription #{subscription.id}, error {e.message}")
+            logger.exception(f"Can't send web push notification to subscription #{subscription.id}, error {e.message}")
             result.message = e.message
             if e.response and e.response.json():
                 result.status_code = e.response.status_code
                 result.data = e.response.json()
         except Exception as e:
-            logger.debug(f"Web push unhandled error for subscription #{subscription.id}, error {e}")
+            logger.exception(f"Web push unhandled error for subscription #{subscription.id}, error {e}")
             result.message = e
         result.save()
     notification.status = notification.STATUS_COMPLETED

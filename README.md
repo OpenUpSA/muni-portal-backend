@@ -129,11 +129,20 @@ Undefined settings result in exceptions at startup to let you know they are not 
 Web Push Notifications
 ----------------------
 
-To generate new vapid private and public keys use commands bellow
+To generate new vapid private key, run
 
-    openssl ecparam -name prime256v1 -genkey -noout -out vapid_private_key.pem
-    openssl ec -in vapid_private_key.pem -pubout -out vapid_public_key.pem
+    docker-compose run --rm web vapid
 
+That will save the private and public key in PEM format as .pem files. To use the private key as a string, edit it as follows:
+
+- Strip the first and last lines with ---
+- remove all line breaks
+
+To get the public key string you should use, run
+
+    docker-compose run --rm web vapid --applicationServerKey
+
+I have not managed to get the applicationServerKey in the correct format when using OpenSSL.
 
 Security
 --------

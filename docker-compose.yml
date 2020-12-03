@@ -36,13 +36,8 @@ services:
       - CORS_ALLOWED_ORIGIN_REGEXES="^http://localhost:\d+"
       - DEBUG_CACHE
       - DJANGO_Q_SYNC=True
-      - VAPID_PRIVATE_KEY=
-          MHcCAQEEINzAlQbw6fdyoBx+B6AVcbxeA3aCCt5vZZPN7jahRnJaoAoGCCqGSM49AwEHoUQDQgAE
-          szzDgDdfVsgogVCvDRr6ZxJ8d8xf5FVDzI7270lWYSOFpYS88Y/ILloDZnFIIJl5fF6j5xz/nh6A
-          HbBk3LqRZg==
-      - VAPID_PUBLIC_KEY=
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEszzDgDdfVsgogVCvDRr6ZxJ8d8xf5FVDzI7270lW
-          YSOFpYS88Y/ILloDZnFIIJl5fF6j5xz/nh6AHbBk3LqRZg==
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY:-fake_private_key}
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY:-fake_public_key}
 
   db:
     image: postgres:11.6
