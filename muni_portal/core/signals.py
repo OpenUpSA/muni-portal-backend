@@ -17,7 +17,7 @@ def queue_send_webpush_notification(notification_id):
         result = WebPushNotificationResult(subscription=subscription, notification=notification)
         try:
             response = webpush(
-                subscription.serialize(),
+                subscription.subscription_object,
                 json.dumps({
                     "type": "notification",
                     "notification": notification.serialize(),

@@ -18,9 +18,5 @@ class WebhooksApiView(CreateAPIView):
     serializer_class = serializers.Serializer
 
     def create(self, request, *args, **kwargs):
-        try:
-            Webhook.objects.create(data=request.data)
-            return Response(status=status.HTTP_201_CREATED)
-        except Exception as e:
-            logger.error(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": e})
+        Webhook.objects.create(data=request.data)
+        return Response(status=status.HTTP_201_CREATED)

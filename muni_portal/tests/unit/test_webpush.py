@@ -20,10 +20,14 @@ class WebPushNotificationTestCase(TestCase):
         )
         self.subscription = WebPushSubscription.objects.create(
             user=self.user,
-            endpoint=faker.uri(),
-            auth=faker.pystr(max_chars=32),
-            p256dh=faker.pystr(max_chars=32),
-        )
+            subscription_object={
+                "endpoint": faker.uri(),
+                "keys": {
+                    "auth": faker.pystr(min_chars=1, max_chars=100),
+                    "p256dh": faker.pystr(min_chars=1, max_chars=100),
+                },
+                "some_future_key": faker.pystr(min_chars=1, max_chars=100),
+            })
         self.notification = WebPushNotification.objects.create(
             status=WebPushNotification.STATUS_QUEUED,
             title=faker.sentence(),
