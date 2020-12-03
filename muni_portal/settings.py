@@ -277,6 +277,7 @@ Q_CLUSTER = {
     "timeout": 30 * 60,  # 30 minutes, timeout a task after this many seconds
     "retry": 60 * 60,  # rerun hanging task after 1 hour
     "queue_limit": 1,
+    "max_attempts": 1, # Only try a task once to avoid resending notifications
     "bulk": 1,
     "orm": "default",  # Use Django ORM as storage backend
     "poll": 10,  # Check for queued tasks this frequently (seconds)
