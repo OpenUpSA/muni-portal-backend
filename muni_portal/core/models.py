@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.postgres.fields import JSONField
-from django.utils.translation import gettext_lazy as _
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
@@ -11,6 +10,7 @@ from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.core.models import Page, Orderable
 from rest_framework import serializers as drf_serializers
+from rest_framework.fields import DateTimeField
 from wagtail.images.api.fields import ImageRenditionField
 
 from muni_portal.core.serializers import (
@@ -18,10 +18,11 @@ from muni_portal.core.serializers import (
     RelatedPersonPageSerializer,
     RelatedPersonPageListSerializer,
     SerializerMethodNestedSerializer,
-    RelatedCouncillorGroupPageSerializer
+    RelatedCouncillorGroupPageSerializer, RichTextFieldSerializer, RelatedNoticePagesSerializer
 )
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
+NON_EMBEDS_FEATURES = NON_LINK_FEATURES + ["link"]
 
 
 class ServiceContact(Orderable, models.Model):
@@ -489,6 +490,7 @@ class MyMuniPage(Page):
     subpage_types = [
         "core.PoliticalRepsIndexPage",
         "core.AdministrationIndexPage",
+        "core.NoticeIndexPage",
     ]
     max_count_per_parent = 1
 
@@ -518,6 +520,36 @@ class HomePage(Page):
     max_count_per_parent = 1
 
     api_fields = [
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+    ]
+
+
+class NoticeIndexPage(Page):
+    subpage_types = [
+        "core.NoticePage",
+    ]
+
+    api_fields = [
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
+        APIField("child_pages", serializer=RelatedNoticePagesSerializer(source='get_children')),
+    ]
+
+
+class NoticePage(Page):
+    subpage_types = []
+
+    body = RichTextField(features=NON_EMBEDS_FEATURES)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
+
+    api_fields = [
+        APIField("title"),
+        APIField("body"),
+        APIField("body_html", serializer=RichTextFieldSerializer(source="body")),
+        APIField("publication_date", serializer=DateTimeField(source="last_published_at")),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]

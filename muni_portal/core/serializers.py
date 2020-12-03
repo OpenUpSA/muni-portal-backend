@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
+from wagtail.core.templatetags import wagtailcore_tags
 
 
 class SerializerMethodNestedSerializer(serializers.SerializerMethodField):
@@ -99,3 +100,23 @@ class WebpushSerializer(serializers.Serializer):
     auth = serializers.CharField()
     p256dh = serializers.CharField()
     expiration_time = serializers.CharField()
+
+
+class RichTextFieldSerializer(Field):
+
+    def to_representation(self, value):
+        return wagtailcore_tags.richtext(value)
+
+
+class RelatedNoticePagesSerializer(RelatedPagesSerializer):
+    @staticmethod
+    def page_representation(page):
+        return {
+            "id": page.id,
+            "title": page.title,
+            "url": page.url,
+            "publication_date": page.last_published_at,
+        }
+
+    def to_representation(self, pages):
+        return [self.page_representation(page) for page in pages.order_by("-last_published_at").specific()]
