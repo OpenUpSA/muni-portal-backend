@@ -27,7 +27,6 @@ class WebPushNotificationIntegrationTestCase(TestCase):
 
     def tearDown(self):
         os.remove("private_key.pem")
-        os.remove("public_key.pem")
 
     @patch("pywebpush.WebPusher")
     def test_webpush_notification_flow(self, web_pusher_mock):
