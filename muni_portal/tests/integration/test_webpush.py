@@ -52,7 +52,7 @@ class WebPushNotificationIntegrationTestCase(TestCase):
         }
         self.client.force_login(self.user)
 
-        with self.settings(VAPID_PRIVATE_KEY="private_key.pem", VAPID_PUBLIC_KEY="public_key.pem"):
+        with self.settings(VAPID_PRIVATE_KEY="private_key.pem"):
             response = self.client.post(admin_add_notification_page, django_admin_form_data)
 
         self.assertEquals(response.status_code, status.HTTP_302_FOUND)
