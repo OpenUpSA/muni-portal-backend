@@ -24,7 +24,6 @@ class ApiWebpushTestCase(LoggedInUserTestCase):
         response = self.client.post(reverse("webpush"), data=test_data, format="json")
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
         self.assertEquals(WebPushSubscription.objects.first().user, self.user)
-
         serializer = WebpushSubscriptionSerializer(instance=WebPushSubscription.objects.first())
         self.assertEquals(serializer.data["subscription_object"], test_data["subscription_object"])
 

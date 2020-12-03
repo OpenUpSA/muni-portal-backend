@@ -19,14 +19,10 @@ class WebpushApiView(CreateAPIView):
     serializer_class = WebpushSubscriptionSerializer
 
     def create(self, request, *args, **kwargs):
-        try:
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            WebPushSubscription.objects.create(user=request.user, **serializer.validated_data)
-            return Response(status=status.HTTP_201_CREATED)
-        except Exception as e:
-            logger.error(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": e})
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        WebPushSubscription.objects.create(user=request.user, **serializer.validated_data)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class VapidApiView(RetrieveAPIView):
