@@ -21,8 +21,8 @@ class WebpushApiView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        WebPushSubscription.objects.create(user=request.user, **serializer.validated_data)
-        return Response(status=status.HTTP_201_CREATED)
+        object = WebPushSubscription.objects.create(user=request.user, **serializer.validated_data)
+        return Response(self.get_serializer(object).data, status=status.HTTP_201_CREATED)
 
 
 class VapidApiView(RetrieveAPIView):
