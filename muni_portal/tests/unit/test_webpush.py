@@ -11,6 +11,17 @@ from muni_portal.core.signals import queue_send_webpush_notification
 faker = Faker()
 
 
+class Response:
+    def __init__(self, status_code=200, data=None):
+        self.status_code = status_code
+        self.reason = status_code
+        self.text = status_code
+        self.data = data if data else {}
+
+    def json(self):
+        return self.data
+
+
 class WebPushNotificationTestCase(TestCase):
 
     def setUp(self) -> None:
@@ -37,27 +48,26 @@ class WebPushNotificationTestCase(TestCase):
 
     @patch("muni_portal.core.signals.webpush")
     def test_queue_send_webpush_notification(self, webpush_mock):
-        webpush_mock.return_value.status_code = status.HTTP_200_OK
+        webpush_mock.return_value = Response(status_code=status.HTTP_200_OK, data={"error": "Bad Request"})
         send_webpush_result = queue_send_webpush_notification(self.notification.id)
 
         self.assertTrue(send_webpush_result)
         self.assertTrue(webpush_mock.called)
 
+        self.subscription.refresh_from_db()
         self.notification.refresh_from_db()
+        self.assertTrue(self.subscription.enabled)
         self.assertEquals(self.notification.status, WebPushNotification.STATUS_COMPLETED)
-        self.assertEquals(WebPushNotificationResult.objects.first().status_code, status.HTTP_200_OK)
+
+        result = WebPushNotificationResult.objects.first()
+        self.assertEquals(result.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(result.data)
+        self.assertIsNotNone(result.message)
 
     @patch("muni_portal.core.signals.webpush")
     def test_queue_send_webpush_notification_failed(self, webpush_mock):
-        class Response:
-            def __init__(self, status_code=200):
-                self.status_code = status_code
-
-            def json(self):
-                return {"status_code": self.status_code}
-
         def side_effect(*args, **kwargs):
-            response = Response(status_code=400)
+            response = Response(status_code=status.HTTP_400_BAD_REQUEST, data={"error": "Bad Request"})
             raise WebPushException("Bad Request", response=response)
 
         webpush_mock.side_effect = side_effect
@@ -66,6 +76,55 @@ class WebPushNotificationTestCase(TestCase):
         self.assertTrue(send_webpush_result)
         self.assertTrue(webpush_mock.called)
 
+        self.subscription.refresh_from_db()
         self.notification.refresh_from_db()
+        self.assertTrue(self.subscription.enabled)
         self.assertEquals(self.notification.status, WebPushNotification.STATUS_COMPLETED)
-        self.assertEquals(WebPushNotificationResult.objects.first().status_code, status.HTTP_400_BAD_REQUEST)
+
+        result = WebPushNotificationResult.objects.first()
+        self.assertEquals(result.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIsNotNone(result.data)
+        self.assertIsNotNone(result.message)
+
+    @patch("muni_portal.core.signals.webpush")
+    def test_queue_send_webpush_notification_disabled(self, webpush_mock):
+        def side_effect(*args, **kwargs):
+            response = Response(status_code=status.HTTP_410_GONE, data={"error": "Gone"})
+            raise WebPushException("Gone", response=response)
+
+        webpush_mock.side_effect = side_effect
+        send_webpush_result = queue_send_webpush_notification(self.notification.id)
+
+        self.assertTrue(send_webpush_result)
+        self.assertTrue(webpush_mock.called)
+
+        self.subscription.refresh_from_db()
+        self.notification.refresh_from_db()
+        self.assertFalse(self.subscription.enabled)
+        self.assertEquals(self.notification.status, WebPushNotification.STATUS_COMPLETED)
+
+        result = WebPushNotificationResult.objects.first()
+        self.assertEquals(result.status_code, status.HTTP_410_GONE)
+        self.assertIsNotNone(result.data)
+        self.assertIsNotNone(result.message)
+
+    @patch("muni_portal.core.signals.webpush")
+    def test_queue_send_webpush_notification_unhandled(self, webpush_mock):
+        def side_effect(*args, **kwargs):
+            raise Exception("Unhandled exception")
+
+        webpush_mock.side_effect = side_effect
+        send_webpush_result = queue_send_webpush_notification(self.notification.id)
+
+        self.assertTrue(send_webpush_result)
+        self.assertTrue(webpush_mock.called)
+
+        self.subscription.refresh_from_db()
+        self.notification.refresh_from_db()
+        self.assertTrue(self.subscription.enabled)
+        self.assertEquals(self.notification.status, WebPushNotification.STATUS_COMPLETED)
+
+        result = WebPushNotificationResult.objects.first()
+        self.assertIsNone(result.status_code)
+        self.assertIsNone(result.data)
+        self.assertIsNotNone(result.message)
