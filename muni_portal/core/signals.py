@@ -27,7 +27,7 @@ def queue_send_webpush_notification(notification_id):
                 vapid_claims={"sub": f"mailto:{settings.DEFAULT_FROM_EMAIL}"}
             )
             result.status_code = response.status_code
-            result.data = response.json() if response.json() else {}
+            result.data = response.json()
             message = f"Push success: {response.reason}"
         except WebPushException as e:
             if e.response:

@@ -16,7 +16,7 @@ class Response:
         self.status_code = status_code
         self.reason = status_code
         self.text = status_code
-        self.data = data if data else {}
+        self.data = data
 
     def json(self):
         return self.data
