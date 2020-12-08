@@ -110,6 +110,7 @@ class Webhook(models.Model):
 
 
 class WebPushSubscription(models.Model):
+    enabled = models.BooleanField(default=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="webpushsubscriptions", on_delete=models.CASCADE)
     # PushSubscription object as returned by subscription.toJSON()
