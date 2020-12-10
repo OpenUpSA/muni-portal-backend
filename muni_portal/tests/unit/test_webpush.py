@@ -7,19 +7,9 @@ from unittest.mock import patch
 
 from muni_portal.core.models import WebPushNotification, WebPushSubscription, WebPushNotificationResult
 from muni_portal.core.signals import queue_send_webpush_notification
+from muni_portal.tests import Response
 
 faker = Faker()
-
-
-class Response:
-    def __init__(self, status_code=200, data=None):
-        self.status_code = status_code
-        self.reason = status_code
-        self.text = status_code
-        self.data = data
-
-    def json(self):
-        return self.data
 
 
 class WebPushNotificationTestCase(TestCase):
@@ -48,7 +38,7 @@ class WebPushNotificationTestCase(TestCase):
 
     @patch("muni_portal.core.signals.webpush")
     def test_queue_send_webpush_notification(self, webpush_mock):
-        webpush_mock.return_value = Response(status_code=status.HTTP_200_OK, data={"error": "Bad Request"})
+        webpush_mock.return_value = Response(status_code=status.HTTP_200_OK, data={"message": "OK"})
         send_webpush_result = queue_send_webpush_notification(self.notification.id)
 
         self.assertTrue(send_webpush_result)
@@ -67,7 +57,10 @@ class WebPushNotificationTestCase(TestCase):
     @patch("muni_portal.core.signals.webpush")
     def test_queue_send_webpush_notification_failed(self, webpush_mock):
         def side_effect(*args, **kwargs):
-            response = Response(status_code=status.HTTP_400_BAD_REQUEST, data={"error": "Bad Request"})
+            response = Response(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                headers={"content-type": "text/plain"}, text="Bad Request"
+            )
             raise WebPushException("Bad Request", response=response)
 
         webpush_mock.side_effect = side_effect
@@ -89,7 +82,10 @@ class WebPushNotificationTestCase(TestCase):
     @patch("muni_portal.core.signals.webpush")
     def test_queue_send_webpush_notification_disabled(self, webpush_mock):
         def side_effect(*args, **kwargs):
-            response = Response(status_code=status.HTTP_410_GONE, data={"error": "Gone"})
+            response = Response(
+                status_code=status.HTTP_410_GONE,
+                headers={"content-type": "text/plain"}, text="User unsubscribed"
+            )
             raise WebPushException("Gone", response=response)
 
         webpush_mock.side_effect = side_effect
