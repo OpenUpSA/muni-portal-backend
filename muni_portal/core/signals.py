@@ -30,9 +30,12 @@ def queue_send_webpush_notification(notification_id):
             result.data = response.json()
             message = f"Push success: {response.reason}"
         except WebPushException as e:
-            if e.response:
+            if hasattr(e, "response"):
                 result.status_code = e.response.status_code
-                result.data = e.response.json()
+                if e.response.headers.get("content-type", "text/plain") == "application/json":
+                    result.data = e.response.json()
+                else:
+                    result.data = {"text": e.response.text}
                 message = f"Push failed: {e.response.reason}\n"
                 if e.response.status_code == status.HTTP_410_GONE:
                     message += f"Subscription #{subscription.id} has unsubscribed or expired"
