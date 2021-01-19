@@ -46,7 +46,11 @@ Development setup
 
 Requires the environment variables `USER_ID=$(id -u)` and `GROUP_ID=$(id -g)` so that the container shares your UID and GID.
 
-In one shell, run the frontend asset builder
+First, in one shell, install yarn deps by running
+
+    docker-compose run --rm web yarn
+
+Then (in the same shell) run the frontend asset builder
 
     docker-compose run --rm web yarn dev
 
