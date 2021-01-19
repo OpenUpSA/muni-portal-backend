@@ -44,9 +44,19 @@ Make sure to commit updates to package.json and yarn.lock to git.
 Development setup
 -----------------
 
-Requires the environment variables `USER_ID=$(id -u)` and `GROUP_ID=$(id -g)` so that the container shares your UID and GID.
+If you are using Linux, it is recommended that you set the environment variables `USER_ID=$(id -u)` and `GROUP_ID=$(id -g)`
+so that the docker container shares your UID and GID. This is so that you have permission to edit the files created by the container process, e.g. migrations.
 
-In one shell, run the frontend asset builder
+You can do this by exporting the variables in your shell before running docker commands
+
+    export USER_ID=$(id -u)
+    export GROUP_ID=$(id -g)
+
+After that, in one shell, install yarn deps by running
+
+    docker-compose run --rm web yarn
+
+Then (in the same shell) run the frontend asset builder
 
     docker-compose run --rm web yarn dev
 
