@@ -4,26 +4,42 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
-
+import json
 from muni_portal.core.models import Webhook
 
 
 class ApiWebhookTestCase(TestCase):
+    """
+    Ensure that authentication works using the bearer keyword.
+    Ensure that the body object is actually stored.
+    Ensure that nothing is stored when authentication fails, and a useful response is provided.
+    """
 
     def setUp(self):
-        self.client = APIClient()
         self.url = reverse("webhooks")
         self.user = User.objects.create(email="test@test.com")
         self.token = Token.objects.create(user=self.user)
 
     def test_api_webhook(self):
-        self.client.force_authenticate(self.user, self.token)
+        client = APIClient()
         test_data = {"test": "test"}
-        response = self.client.post(self.url, data=test_data)
+        response = client.post(
+            self.url,
+            data=json.dumps(test_data),
+            HTTP_AUTHORIZATION=f"Bearer {self.token}",
+            content_type="application/json",
+        )
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
         self.assertEquals(Webhook.objects.first().data, test_data)
 
     def test_api_webhook_not_authenticated(self):
+        client = APIClient()
         test_data = {"test": "test"}
-        response = self.client.post(self.url, data=test_data)
+        response = client.post(
+            self.url,
+            data=json.dumps(test_data),
+            HTTP_AUTHORIZATION=f"Bearer NONSENSE",
+            content_type="application/json",
+        )
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEquals(Webhook.objects.count(), 0)
