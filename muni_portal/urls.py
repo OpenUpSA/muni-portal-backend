@@ -8,7 +8,12 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from muni_portal.core.api import api_router
-from muni_portal.core.views import IndexView, WebhooksApiView, WebpushApiView, VapidApiView
+from muni_portal.core.views import (
+    IndexView,
+    CollaboratorWebhookApiView,
+    WebpushApiView,
+    VapidApiView,
+)
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
@@ -16,7 +21,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    path("api/webhooks/collaborator/", WebhooksApiView.as_view(), name="webhooks"),
+    path(
+        "api/webhooks/collaborator/",
+        CollaboratorWebhookApiView.as_view(),
+        name="webhooks",
+    ),
     path("api/webpush/subscription/", WebpushApiView.as_view(), name="webpush"),
     path("api/webpush/public-key/", VapidApiView.as_view(), name="vapid"),
     path("api/accounts/", include("rest_registration.api.urls")),
