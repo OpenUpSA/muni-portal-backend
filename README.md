@@ -134,6 +134,9 @@ Undefined settings result in exceptions at startup to let you know they are not 
 | `VAPID_PRIVATE_KEY` | unset | String | e.g. `/home/ubuntu/vapid_private_key.pem` |
 | `VAPID_PUBLIC_KEY` | unset | String | e.g. `/home/ubuntu/vapid_public_key.pem` |
 | `DEBUG_CACHE` | False | Boolean | Set to true to enable django cache despite DEBUG being True. Then it uses in-memory cache so reset cache by restarting the container. |
+| `ENVIRONMENT` | `development` | String | Set to the environment the code is running in, e.g. development, production. |
+| `SENTRY_DSN` | `None` | String | Used for Sentry configuration. [Where to find your DSN?](https://docs.sentry.io/product/sentry-basics/dsn-explainer/#where-to-find-your-dsn) |
+| `SENTRY_PERF_SAMPLE_RATE` | `0.1` | Float | Sentry performance sampling rate. Don't set this too high, or else you might use up your Sentry quota! [What is Sentry Performance?](https://docs.sentry.io/platforms/python/guides/django/performance/) |
 
 
 Web Push Notifications

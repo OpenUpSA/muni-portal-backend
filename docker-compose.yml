@@ -19,6 +19,9 @@ services:
       - DATABASE_URL=postgresql://muni_portal:devpassword@db/muni_portal
       - DJANGO_DEBUG=True
       - NODE_ENV=development
+      - ENVIRONMENT=development
+      - SENTRY_DSN
+      - SENTRY_PERF_SAMPLE_RATE
       - DJANGO_DEBUG_TOOLBAR
       - DJANGO_SECRET_KEY=not-secret-in-dev
       - DJANGO_WHITENOISE_AUTOREFRESH=True
