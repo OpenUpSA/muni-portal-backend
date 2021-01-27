@@ -36,7 +36,9 @@ services:
       - AWS_S3_ENDPOINT_URL
       - AWS_S3_REGION_NAME
       - AWS_S3_CUSTOM_DOMAIN
-      - CORS_ALLOWED_ORIGIN_REGEXES="^http://localhost:\d+"
+      # $$ for end of string regex to escape docker compose variable interpolation
+      # normally starting with $
+      - CORS_ALLOWED_ORIGIN_REGEXES=^http://localhost:\d+$$,^http://127.0.0.1:\d+$$
       - DEBUG_CACHE
       - DJANGO_Q_SYNC=True
       - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY:-fake_private_key}
