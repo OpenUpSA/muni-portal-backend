@@ -30,17 +30,6 @@ Rebuild the image to contain the new dependencies:
 Make sure to commit updates to Pipfile and Pipfile.lock to git
 
 
-### Javascript and CSS
-
-JS and CSS are bundled using [parcel](https://parceljs.org/) - see `package.json`.
-
-Dependencies are managed via `yarn`, e.g.
-
-    docker-compose run --rm web yarn add bootstrap@4.x
-
-Make sure to commit updates to package.json and yarn.lock to git.
-
-
 Development setup
 -----------------
 
@@ -52,15 +41,7 @@ You can do this by exporting the variables in your shell before running docker c
     export USER_ID=$(id -u)
     export GROUP_ID=$(id -g)
 
-After that, in one shell, install yarn deps by running
-
-    docker-compose run --rm web yarn
-
-Then (in the same shell) run the frontend asset builder
-
-    docker-compose run --rm web yarn dev
-
-In another shell, initialise and run the django app
+Initialise and run the django app
 
     docker-compose run --rm web bin/wait-for-postgres.sh
     docker-compose run --rm web python manage.py migrate
