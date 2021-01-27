@@ -60,7 +60,7 @@ class ApiUserAccountTestCase(APITestCase):
         response = self.client.post(reverse("rest_registration:login"), data=data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
-        jwt_token = response.data.get("token")
+        jwt_token = response.data.get("token").get("access")
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {jwt_token}")
         response = self.client.get(reverse("rest_registration:profile"))
         self.assertEquals(response.status_code, status.HTTP_200_OK)
@@ -97,4 +97,3 @@ class ApiUserAccountTestCase(APITestCase):
 
         response = self.client.get(reverse("rest_registration:profile"))
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
