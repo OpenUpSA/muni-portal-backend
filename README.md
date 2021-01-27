@@ -103,6 +103,11 @@ to exporting just the necessary data to get a running system.
 
 Running tests
 -------------
+If you haven't yet, you'll first need to run `collectstatic` before running tests
+
+    docker-compose run --rm web python manage.py collectstatic --no-input
+
+Then run the test suite
 
     docker-compose run --rm web python manage.py test
 
