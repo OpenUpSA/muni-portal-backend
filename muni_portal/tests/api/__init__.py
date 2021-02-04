@@ -16,4 +16,4 @@ class LoggedInUserTestCase(TestCase):
         )
         data = {"login": self.user.username, "password": self.password}
         response = self.client.post(reverse("rest_registration:login"), data=data)
-        self.jwt_token = response.data.get("token")
+        self.jwt_token = response.data.get("token").get("access")
