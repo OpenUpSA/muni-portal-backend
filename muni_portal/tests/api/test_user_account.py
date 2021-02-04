@@ -52,6 +52,16 @@ class ApiUserAccountTestCase(APITestCase):
         response = self.client.post(reverse("token_obtain_pair"), data=reset_password_data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
+    def test_reset_password_invalid_user(self):
+        """ Test that the response is positive if the user is not found. """
+        User.objects.create_user(
+            username="test", email="test@test.com", password=self.password
+        )
+        data = {"email": "fake@fake.com"}
+        response = self.client.post(reverse("rest_registration:send-reset-password-link"), data=data)
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(len(mail.outbox), 0)
+
     def test_login(self):
         user = User.objects.create_user(
             username="test", email="test@test.com", password=self.password
