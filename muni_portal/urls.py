@@ -11,8 +11,6 @@ from muni_portal.core.api import api_router
 from muni_portal.core.views import (
     IndexView,
     CollaboratorWebhookApiView,
-    WebpushApiView,
-    VapidApiView,
 )
 
 urlpatterns = [
@@ -26,8 +24,6 @@ urlpatterns = [
         CollaboratorWebhookApiView.as_view(),
         name="webhooks",
     ),
-    path("api/webpush/subscription/", WebpushApiView.as_view(), name="webpush"),
-    path("api/webpush/public-key/", VapidApiView.as_view(), name="vapid"),
     path("api/accounts/", include("rest_registration.api.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
