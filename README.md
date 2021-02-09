@@ -95,6 +95,15 @@ Then run the test suite
 Tests might fail to connect to the databse if the docker-compose `db` service wasn't running and configured yet. Just check the logs for the `db` service and run the tests again.
 
 
+Migrations in deployment
+------------------------
+
+Migrations are not run automatically through dokku or any other build process, so if you have made changes that require
+migrations to be run, you'll have to SSH into the server where the app is deployed and run the migrations in the
+docker container
+
+    dokku --rm run muni-portal-backend-{env} python manage.py migrate
+
 Settings
 --------
 
