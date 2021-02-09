@@ -1,6 +1,5 @@
 from django.contrib import admin
 from muni_portal.core.models import Webhook, WebPushSubscription, WebPushNotification, WebPushNotificationResult
-from muni_portal.core.signals import send_webpush_notification
 
 
 @admin.register(Webhook)

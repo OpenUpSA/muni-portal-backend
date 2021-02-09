@@ -6,7 +6,6 @@ from rest_framework import status
 from unittest.mock import patch
 
 from muni_portal.core.models import WebPushNotification, WebPushSubscription, WebPushNotificationResult
-from muni_portal.core.signals import queue_send_webpush_notification
 from muni_portal.tests import Response
 
 faker = Faker()
