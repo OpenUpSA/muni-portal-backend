@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 from wagtail.core.fields import RichTextField
@@ -106,52 +105,6 @@ class ContactDetailType(models.Model):
 
 class Webhook(models.Model):
     data = JSONField()
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-
-
-class WebPushSubscription(models.Model):
-    enabled = models.BooleanField(default=True, db_index=True)
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="webpushsubscriptions", on_delete=models.CASCADE)
-    # PushSubscription object as returned by subscription.toJSON()
-    # https://developer.mozilla.org/en-US/docs/Web/API/PushSubscription
-    subscription_object = JSONField()
-
-
-class WebPushNotification(models.Model):
-    STATUS_QUEUED = "QUEUED"
-    STATUS_COMPLETED = "COMPLETED"
-    STATUS_FAILED_INCOMPLETE = "FAILED_INCOMPLETE"
-    STATUS_CHOICES = (
-        (STATUS_QUEUED, "Queued"),
-        (STATUS_COMPLETED, "Completed"),
-        (STATUS_FAILED_INCOMPLETE, "Failed incomplete"),
-    )
-
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_QUEUED)
-    title = models.CharField(max_length=255)
-    body = models.TextField()
-    url = models.URLField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-
-    def serialize(self):
-        return {
-            "title": self.title,
-            "body": self.body,
-            "url": self.url,
-        }
-
-
-class WebPushNotificationResult(models.Model):
-    notification = models.ForeignKey(
-        WebPushNotification, related_name="webpushnotificationresults", on_delete=models.CASCADE
-    )
-    subscription = models.ForeignKey(
-        WebPushSubscription, related_name="webpushsubscriptionresults", on_delete=models.CASCADE
-    )
-    status_code = models.IntegerField(null=True, blank=True)
-    data = JSONField(null=True, blank=True)
-    message = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
 
