@@ -44,23 +44,26 @@ class Client:
         self.password = password
         self.token = None
 
-    def authenticate(self) -> None:
+    def authenticate(self) -> requests.Response:
         """
         Authenticate with the provided username and password from class instantiation.
 
-        TODO: Force failed login and note response to ensure we know when it fails.
         """
         url = f"{COLLAB_API_BASE_URL}/webAPI/api/MobileToken/GetTokenForUser"
         request_data = {
             "username": self.username,
             "password": self.password,
         }
-        result = requests.post(url, headers=self.request_headers, json=request_data)
-        result.raise_for_status()  # Watch out, they do return 200 for "Auth Failed"
-        if result.text == "Auth Failed":
-            raise Exception("Auth Failed")
-        self.token = result.json()
+        response = requests.post(url, headers=self.request_headers, json=request_data)
+        response.raise_for_status()  # Watch out, they do return 200 for "Auth Failed"
+
+        # Response text has quotes inside the string..
+        if str(response.text).lower() == "\"auth failed\"":
+            raise Exception("Authentication failed with the provided username and password.")
+
+        self.token = response.json()
         self.request_headers.update({"authorization": f"Bearer {self.token}"})
+        return response
 
     def create_task(self, template_id: int = 9, bp_id: int = 3, percent_complete: int = 10,
                     comments: str = "OpenUp Test") -> None:
