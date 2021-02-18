@@ -26,6 +26,7 @@ COLLAB_FIELD_MAP = {
     "status": "F15",
     "demarcation_code": "F20",
 }
+# TODO: Responses have F19 and F25. No F20?
 
 # TODO: Move these into settings.py
 COLLAB_API_BASE_URL = "https://consumercollab.collaboratoronline.com"
@@ -73,7 +74,7 @@ class Client:
             "password": self.password,
         }
         response = requests.post(url, headers=self.request_headers, json=request_data)
-        response.raise_for_status()  # Watch out, they do return 200 for "Auth Failed"
+        response.raise_for_status()
 
         # Response text has quotes inside the string..
         if str(response.text).lower() == "\"auth failed\"":
