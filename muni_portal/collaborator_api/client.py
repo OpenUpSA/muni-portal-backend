@@ -84,7 +84,7 @@ class Client:
         return response
 
     def create_task(self, template_id: int = 9, bp_id: int = 3, percent_complete: int = 10,
-                    comments: str = "OpenUp Test", form_fields : List[FormField] = None) -> None:
+                    comments: str = "OpenUp Test", form_fields : List[FormField] = None) -> requests.Response:
         """
         Create a task object
 
@@ -109,15 +109,16 @@ class Client:
         request = requests.Request("POST", url, headers=self.request_headers, json=request_data)
         prepared_request = request.prepare()
         pretty_print_prepared_request(prepared_request)
-        result = self.session.send(prepared_request)
+        response = self.session.send(prepared_request)
 
         # Returns 401 when auth header not provided.
         # Returns 500 for some error with text {"Message":"An error has occurred."}
-        print(result.text)
-        result.raise_for_status()
-        print(result.json())
+        print(response.text)
+        response.raise_for_status()
+        print(response.json())
+        return response
 
-    def get_task(self, obj_id: int, template_id: int = 9, fields: list = None):
+    def get_task(self, obj_id: int, template_id: int = 9, fields: list = None) -> requests.Response:
         """ Retrieve detail about a task object. """
         self.__assert_auth__()
 
@@ -134,13 +135,14 @@ class Client:
         request = requests.Request("POST", url, headers=self.request_headers, json=request_data)
         prepared_request = request.prepare()
         pretty_print_prepared_request(prepared_request)
-        result = self.session.send(prepared_request)
+        response = self.session.send(prepared_request)
 
         # returns 401 when auth header not provided.
         # Returns 500 for some error with text {"Message":"An error has occurred."}
-        print(result.text)
-        result.raise_for_status()
-        print(result.json())
+        print(response.text)
+        response.raise_for_status()
+        print(response.json())
+        return response
 
 
 def pretty_print_prepared_request(req):
