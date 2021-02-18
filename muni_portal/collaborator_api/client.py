@@ -84,7 +84,7 @@ class Client:
         return response
 
     def create_task(self, template_id: int = 9, bp_id: int = 3, percent_complete: int = 10,
-                    comments: str = "OpenUp Test", form_fields : List[FormField] = None) -> requests.Response:
+                    comments: str = "OpenUp Test", form_fields: List[FormField] = None) -> requests.Response:
         """
         Create a task object
 
@@ -110,12 +110,7 @@ class Client:
         prepared_request = request.prepare()
         pretty_print_prepared_request(prepared_request)
         response = self.session.send(prepared_request)
-
-        # Returns 401 when auth header not provided.
-        # Returns 500 for some error with text {"Message":"An error has occurred."}
-        print(response.text)
         response.raise_for_status()
-        print(response.json())
         return response
 
     def get_task(self, obj_id: int, template_id: int = 9, fields: list = None) -> requests.Response:
@@ -136,12 +131,7 @@ class Client:
         prepared_request = request.prepare()
         pretty_print_prepared_request(prepared_request)
         response = self.session.send(prepared_request)
-
-        # returns 401 when auth header not provided.
-        # Returns 500 for some error with text {"Message":"An error has occurred."}
-        print(response.text)
         response.raise_for_status()
-        print(response.json())
         return response
 
 
