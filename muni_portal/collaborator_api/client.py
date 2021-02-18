@@ -34,6 +34,7 @@ DEVICE_ID = "OpenUp"
 
 
 class FormField(TypedDict):
+    """ A FormField as defined by Collaborator Web API """
     FieldID: str
     FieldValue: str
 
@@ -65,7 +66,6 @@ class Client:
     def authenticate(self) -> requests.Response:
         """
         Authenticate with the provided username and password from class instantiation.
-
         """
         url = f"{COLLAB_API_BASE_URL}/webAPI/api/MobileToken/GetTokenForUser"
         request_data = {
@@ -113,7 +113,7 @@ class Client:
         response.raise_for_status()
         return response
 
-    def get_task(self, obj_id: int, template_id: int = 9, fields: list = None) -> requests.Response:
+    def get_task(self, obj_id: int, template_id: int = 9, fields: List[FormField] = None) -> requests.Response:
         """ Retrieve detail about a task object. """
         self.__assert_auth__()
 
