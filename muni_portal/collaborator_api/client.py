@@ -1,4 +1,5 @@
 import requests
+from typing import TypedDict, List
 
 # TODO: remove this before merging PR
 EXISTING_TASK_OBJECT_IDS = [
@@ -7,7 +8,7 @@ EXISTING_TASK_OBJECT_IDS = [
     556706
 ]
 
-code_table = {
+COLLAB_FIELD_MAP = {
     "type": "F1",
     "user_name": "F2",
     "user_surname": "F3",
@@ -26,9 +27,15 @@ code_table = {
     "demarcation_code": "F20",
 }
 
+# TODO: Move these into settings.py
 COLLAB_API_BASE_URL = "https://consumercollab.collaboratoronline.com"
 APP_VERSION = "0.1.0"
 DEVICE_ID = "OpenUp"
+
+
+class FormField(TypedDict):
+    FieldID: str
+    FieldValue: str
 
 
 class Client:
@@ -50,6 +57,10 @@ class Client:
         self.username = username
         self.password = password
         self.token = None
+
+    def __assert_auth__(self) -> None:
+        if not self.token:
+            raise Exception("Auth Token not set. Did you login with authenticate()?")
 
     def authenticate(self) -> requests.Response:
         """
@@ -73,33 +84,26 @@ class Client:
         return response
 
     def create_task(self, template_id: int = 9, bp_id: int = 3, percent_complete: int = 10,
-                    comments: str = "OpenUp Test") -> None:
+                    comments: str = "OpenUp Test", form_fields : List[FormField] = None) -> None:
         """
         Create a task object
 
         template_id: Object template reference. We're working with a Service Request workflow, which has ID = 9
-        bp_id: Workflow reference. That's all we know so far.
+        bp_id: Workflow reference. (?)
         percent_complete: Not sure. (Guessing it's the 'progress' of the issue? Not sure how to use it yet.)
         """
+        self.__assert_auth__()
+
+        if not form_fields:
+            form_fields = []
+
         url = f"{COLLAB_API_BASE_URL}/webAPIConsumer/api/Task/SaveNewTaskFeedback"
         request_data = {
             "TemplateId": template_id,
             "BPID": bp_id,
             "PercentComplete": percent_complete,
             "Comments": comments,
-            "FormFields": [
-                {"FieldID": "F1", "FieldValue": "Roads"},
-                {"FieldID": "F2", "FieldValue": "JD"},
-                {"FieldID": "F3", "FieldValue": "Bothma"},
-                {"FieldID": "F4", "FieldValue": "0792816737"},
-                {"FieldID": "F5", "FieldValue": "jd@openup.org.za"},
-                {"FieldID": "F6", "FieldValue": "1234567"},
-                {"FieldID": "F7", "FieldValue": "Here street"},
-                {"FieldID": "F8", "FieldValue": "123"},
-                {"FieldID": "F9", "FieldValue": "there suburb"},
-                {"FieldID": "F10", "FieldValue": "This is a test. If you see this, please email me."},
-                {"FieldID": "F12", "FieldValue": "2020-11-03"},
-            ],
+            "FormFields": form_fields,
         }
 
         request = requests.Request("POST", url, headers=self.request_headers, json=request_data)
@@ -107,20 +111,19 @@ class Client:
         pretty_print_prepared_request(prepared_request)
         result = self.session.send(prepared_request)
 
-        # returns 401 when auth header not provided.
+        # Returns 401 when auth header not provided.
         # Returns 500 for some error with text {"Message":"An error has occurred."}
         print(result.text)
         result.raise_for_status()
-
         print(result.json())
 
     def get_task(self, obj_id: int, template_id: int = 9, fields: list = None):
         """ Retrieve detail about a task object. """
+        self.__assert_auth__()
+
         url = f"{COLLAB_API_BASE_URL}/webapi/api/Objects/GetObject"
         if fields is None:
             fields = []
-        if not self.token:
-            raise Exception("Auth Token not set. Did you login with authenticate()?")
 
         request_data = {
             "template_id": template_id,
