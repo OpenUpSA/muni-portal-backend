@@ -497,3 +497,32 @@ class NoticePage(Page):
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
+
+
+class ServiceRequest(models.Model):
+    """ Service Request as defined by the Collaborator Web API template object (id=9) """
+
+    ASSIGNED = "assigned"
+    REGISTERED = "registered"
+
+    STATUS_CHOICES = (
+        (ASSIGNED, "Assigned"),
+        (REGISTERED, "Registered"),
+    )
+
+    type = models.CharField(max_length=254, blank=True, null=True)
+    user_name = models.CharField(max_length=254, )
+    user_surname = models.CharField(max_length=254)
+    user_mobile_number = models.CharField(max_length=30)
+    user_email_address = models.EmailField(max_length=254)
+    municipal_account_number = models.CharField(max_length=254, blank=True, null=True)
+    street_name = models.CharField(max_length=254)
+    street_number = models.CharField(max_length=254)
+    suburb = models.CharField(max_length=254)
+    description = models.CharField(max_length=1024, blank=True, null=True)
+    coordinates = models.CharField(max_length=254, blank=True, null=True)
+    request_date = models.DateField(default=None, blank=True, null=True)
+    mobile_reference = models.CharField(max_length=254, blank=True, null=True)
+    on_premis_reference = models.CharField(max_length=254, blank=True, null=True)
+    status = models.CharField(max_length=254, choices=STATUS_CHOICES, default=None, blank=True, null=True)
+    demarcation_code = models.CharField(max_length=254, blank=True, null=True)
