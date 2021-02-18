@@ -1,5 +1,12 @@
 import requests
 
+# TODO: remove this before merging PR
+EXISTING_TASK_OBJECT_IDS = [
+    556704,
+    556705,
+    556706
+]
+
 code_table = {
     "type": "F1",
     "user_name": "F2",
