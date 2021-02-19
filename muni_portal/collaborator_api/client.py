@@ -61,6 +61,7 @@ class Client:
         self.token = None
 
     def __assert_auth__(self) -> None:
+        """ Assert that the client has logged in and has a token set. """
         if not self.token:
             raise Exception("Auth Token not set. Did you login with authenticate()?")
 
