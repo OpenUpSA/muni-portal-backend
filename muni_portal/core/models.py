@@ -514,7 +514,9 @@ class ServiceRequest(models.Model):
         (COMPLETED, "Completed"),
     )
 
-    object_id = models.PositiveIntegerField()
+    collaborator_object_id = models.PositiveIntegerField(
+        help_text="The Object ID for this object in the Collaborator Web API"
+    )
     type = models.CharField(max_length=254, blank=True, null=True)
     user_name = models.CharField(max_length=254, )
     user_surname = models.CharField(max_length=254)
