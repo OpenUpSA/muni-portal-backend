@@ -510,6 +510,7 @@ class ServiceRequest(models.Model):
         (REGISTERED, "Registered"),
     )
 
+    object_id = models.PositiveIntegerField()
     type = models.CharField(max_length=254, blank=True, null=True)
     user_name = models.CharField(max_length=254, )
     user_surname = models.CharField(max_length=254)
@@ -519,9 +520,9 @@ class ServiceRequest(models.Model):
     street_name = models.CharField(max_length=254)
     street_number = models.CharField(max_length=254)
     suburb = models.CharField(max_length=254)
-    description = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.CharField(max_length=1024)
     coordinates = models.CharField(max_length=254, blank=True, null=True)
-    request_date = models.DateField(default=None, blank=True, null=True)
+    request_date = models.DateField(default=None)
     mobile_reference = models.CharField(max_length=254, blank=True, null=True)
     on_premis_reference = models.CharField(max_length=254, blank=True, null=True)
     status = models.CharField(max_length=254, choices=STATUS_CHOICES, default=None, blank=True, null=True)
