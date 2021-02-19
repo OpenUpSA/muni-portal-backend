@@ -1,5 +1,5 @@
 import requests
-from typing import TypedDict, List
+from typing import TypedDict, List, Dict
 
 # TODO: remove this before merging PR
 EXISTING_TASK_OBJECT_IDS = [
@@ -115,7 +115,7 @@ class Client:
         response.raise_for_status()
         return response
 
-    def get_task(self, obj_id: int, template_id: int = 9, fields: List[FormField] = None) -> requests.Response:
+    def get_task(self, obj_id: int, template_id: int = 9, fields: List[FormField] = None) -> Dict:
         """ Retrieve detail about a task object. """
         self.__assert_auth__()
 
@@ -134,7 +134,15 @@ class Client:
         pretty_print_prepared_request(prepared_request)
         response = self.session.send(prepared_request)
         response.raise_for_status()
-        return response
+
+        obj_list = response.json().get("Data").get("ObjectList")
+        if len(obj_list) > 1:
+            raise AssertionError("Returned object list has more than one object")
+        elif len(obj_list) < 1:
+            raise AssertionError("Returned object list has less than one object")
+        obj = obj_list[0]
+
+        return obj
 
 
 def pretty_print_prepared_request(req):
