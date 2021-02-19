@@ -502,12 +502,16 @@ class NoticePage(Page):
 class ServiceRequest(models.Model):
     """ Service Request as defined by the Collaborator Web API template object (id=9) """
 
-    ASSIGNED = "assigned"
-    REGISTERED = "registered"
+    QUEUED = "queued"
+    CREATED = "created"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
 
     STATUS_CHOICES = (
-        (ASSIGNED, "Assigned"),
-        (REGISTERED, "Registered"),
+        (QUEUED, "Queued"),
+        (CREATED, "Created"),
+        (IN_PROGRESS, "In Progress"),
+        (COMPLETED, "Completed"),
     )
 
     object_id = models.PositiveIntegerField()
