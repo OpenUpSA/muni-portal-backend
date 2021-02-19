@@ -3,6 +3,8 @@ from rest_framework.fields import Field
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.core.templatetags import wagtailcore_tags
 
+from muni_portal.core.models import ServiceRequest
+
 
 class SerializerMethodNestedSerializer(serializers.SerializerMethodField):
     """
@@ -116,3 +118,10 @@ class RelatedNoticePagesSerializer(RelatedPagesSerializer):
 
     def to_representation(self, pages):
         return [self.page_representation(page) for page in pages.order_by("-last_published_at").specific()]
+
+
+class ServiceRequestSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ServiceRequest
+        fields = ['__all__']
