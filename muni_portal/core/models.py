@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.conf import settings
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
@@ -11,7 +12,6 @@ from wagtail.core.models import Page, Orderable
 from rest_framework import serializers as drf_serializers
 from rest_framework.fields import DateTimeField
 from wagtail.images.api.fields import ImageRenditionField
-
 from muni_portal.core.wagtail_serializers import (
     RelatedPagesSerializer,
     RelatedPersonPageSerializer,
@@ -517,6 +517,7 @@ class ServiceRequest(models.Model):
     collaborator_object_id = models.PositiveIntegerField(
         help_text="The Object ID for this object in the Collaborator Web API"
     )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=254, blank=True, null=True)
     user_name = models.CharField(max_length=254, )
     user_surname = models.CharField(max_length=254)
