@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import mixins, views
+from rest_framework import views
 from muni_portal.collaborator_api.client import Client
 from muni_portal.core.models import ServiceRequest
 from muni_portal.core.model_serializers import ServiceRequestSerializer
