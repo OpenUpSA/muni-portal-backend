@@ -135,7 +135,7 @@ class Client:
         elif len(obj_list) < 1:
             raise AssertionError("Returned object list has less than one object")
 
-        obj = obj_list[0]
+        obj = obj_list[0][0]
         return obj
 
 
