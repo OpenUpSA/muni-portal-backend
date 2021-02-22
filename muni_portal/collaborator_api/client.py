@@ -1,6 +1,7 @@
 import requests
-from typing import TypedDict, List
+from typing import List
 from django.conf import settings
+from . import types
 
 # TODO: remove this before merging PR
 EXISTING_TASK_OBJECT_IDS = [
@@ -31,33 +32,6 @@ COLLAB_FIELD_MAP = {
 
 APP_VERSION = "0.1.0"
 DEVICE_ID = "OpenUp"
-
-
-class FormField(TypedDict):
-    """ A FormField as defined by Collaborator Web API """
-    FieldID: str
-    FieldValue: str
-
-
-class ServiceRequestObject(TypedDict):
-    """ Service Request object as returned by Collaborator Web API """
-    obj_id: int
-    template_id: int
-    F0: str
-    F1: str
-    F2: str
-    F3: str
-    F4: str
-    F5: str
-    F7: str
-    F8: str
-    F9: str
-    F10: str
-    F11: str
-    F12: str
-    F15: str
-    F19: str
-    F25: str
 
 
 class Client:
@@ -106,7 +80,7 @@ class Client:
         return response
 
     def create_task(self, template_id: int = 9, bp_id: int = 3, percent_complete: int = 10,
-                    comments: str = "OpenUp Test", form_fields: List[FormField] = None) -> requests.Response:
+                    comments: str = "OpenUp Test", form_fields: List[types.FormField] = None) -> requests.Response:
         """
         Create a task object
 
@@ -135,7 +109,7 @@ class Client:
         response.raise_for_status()
         return response
 
-    def get_task(self, obj_id: int, template_id: int = 9, fields: List[FormField] = None) -> ServiceRequestObject:
+    def get_task(self, obj_id: int, template_id: int = 9, fields: List[types.FormField] = None) -> types.ServiceRequestObject:
         """ Retrieve detail about a task object. """
         self.__assert_auth__()
 
