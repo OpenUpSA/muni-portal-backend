@@ -12,6 +12,7 @@ from muni_portal.core.views import (
     IndexView,
     CollaboratorWebhookApiView,
 )
+from muni_portal.core.views.api.service_requests import ServiceRequestApiView
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
@@ -23,6 +24,11 @@ urlpatterns = [
         "api/webhooks/collaborator/",
         CollaboratorWebhookApiView.as_view(),
         name="webhooks",
+    ),
+    path(
+        "api/service-requests/<int:pk>/",
+        ServiceRequestApiView.as_view(),
+        name="service-request",
     ),
     path("api/accounts/", include("rest_registration.api.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
