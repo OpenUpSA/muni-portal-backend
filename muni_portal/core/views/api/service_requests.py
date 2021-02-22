@@ -9,7 +9,17 @@ from muni_portal.core.model_serializers import ServiceRequestSerializer
 from django.conf import settings
 
 
-class ServiceRequestDetailView(views.APIView):
+class ServiceRequestAPIView(views.APIView):
+
+    @staticmethod
+    def get_object(pk: int) -> ServiceRequest:
+        try:
+            return ServiceRequest.objects.get(pk=pk)
+        except ServiceRequest.DoesNotExist:
+            raise Http404
+
+
+class ServiceRequestDetailView(ServiceRequestAPIView):
     """
     Return detail of ServiceRequest object.
 
@@ -19,13 +29,6 @@ class ServiceRequestDetailView(views.APIView):
 
     # TODO: uncomment this (how is settings done currently?)
     # permission_classes = [IsAuthenticated]
-
-    @staticmethod
-    def get_object(pk: int) -> ServiceRequest:
-        try:
-            return ServiceRequest.objects.get(pk=pk)
-        except ServiceRequest.DoesNotExist:
-            raise Http404
 
     def get(self, request, pk: int) -> Response:
         local_object = self.get_object(pk)
@@ -39,20 +42,13 @@ class ServiceRequestDetailView(views.APIView):
         return Response(serializer.data)
 
 
-class ServiceRequestListView(views.APIView):
+class ServiceRequestListView(ServiceRequestAPIView):
     """
     Return list of ServiceRequest objects.
 
     We build the list by retrieving all local ServiceRequest objects for this user and requesting a detail view
     of each object from Collaborator Web API and returning it as a list.
     """
-
-    @staticmethod
-    def get_object(pk: int) -> ServiceRequest:
-        try:
-            return ServiceRequest.objects.get(pk=pk)
-        except ServiceRequest.DoesNotExist:
-            raise Http404
 
     def get(self, request) -> Response:
         response_list = []
