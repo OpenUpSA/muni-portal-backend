@@ -12,7 +12,7 @@ from rest_framework import serializers as drf_serializers
 from rest_framework.fields import DateTimeField
 from wagtail.images.api.fields import ImageRenditionField
 
-from muni_portal.core.serializers import (
+from muni_portal.core.wagtail_serializers import (
     RelatedPagesSerializer,
     RelatedPersonPageSerializer,
     RelatedPersonPageListSerializer,
