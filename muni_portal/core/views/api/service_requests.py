@@ -1,4 +1,5 @@
 from django.http import Http404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from muni_portal.collaborator_api.client import Client
@@ -9,7 +10,7 @@ from django.conf import settings
 
 class ServiceRequestApiView(APIView):
 
-    # TODO: perms? depends what the default is
+    permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get_object(pk: int):
