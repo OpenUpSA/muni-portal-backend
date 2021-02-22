@@ -1,5 +1,6 @@
 import requests
-from typing import TypedDict, List, Dict
+from typing import TypedDict, List
+from django.conf import settings
 
 # TODO: remove this before merging PR
 EXISTING_TASK_OBJECT_IDS = [
@@ -28,8 +29,6 @@ COLLAB_FIELD_MAP = {
 }
 # TODO: Responses have F19 and F25. No F20?
 
-# TODO: Move these into settings.py
-COLLAB_API_BASE_URL = "https://consumercollab.collaboratoronline.com"
 APP_VERSION = "0.1.0"
 DEVICE_ID = "OpenUp"
 
@@ -90,7 +89,7 @@ class Client:
         """
         Authenticate with the provided username and password from class instantiation.
         """
-        url = f"{COLLAB_API_BASE_URL}/webAPI/api/MobileToken/GetTokenForUser"
+        url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/MobileToken/GetTokenForUser"
         request_data = {
             "username": self.username,
             "password": self.password,
@@ -120,7 +119,7 @@ class Client:
         if not form_fields:
             form_fields = []
 
-        url = f"{COLLAB_API_BASE_URL}/webAPIConsumer/api/Task/SaveNewTaskFeedback"
+        url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPIConsumer/api/Task/SaveNewTaskFeedback"
         request_data = {
             "TemplateId": template_id,
             "BPID": bp_id,
@@ -140,7 +139,7 @@ class Client:
         """ Retrieve detail about a task object. """
         self.__assert_auth__()
 
-        url = f"{COLLAB_API_BASE_URL}/webapi/api/Objects/GetObject"
+        url = f"{settings.COLLABORATOR_API_BASE_URL}/webapi/api/Objects/GetObject"
         if fields is None:
             fields = []
 
