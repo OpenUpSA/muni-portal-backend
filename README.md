@@ -74,6 +74,8 @@ The demo data fixture was produced using the command
       -e wagtailimages.rendition \
       -e sessions \
       -e core.contactdetailtype \
+      -e admin.logentry \
+      -e token_blacklist \
       > demodata.json
 
 Only the minimal data needed to have a working system to click around in and
