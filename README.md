@@ -136,7 +136,7 @@ connecting to the prod DB in development.
 | `SENTRY_PERF_SAMPLE_RATE` | `0.1` | Float | Sentry performance sampling rate. Don't set this too high, or else you might use up your Sentry quota! [What is Sentry Performance?](https://docs.sentry.io/platforms/python/guides/django/performance/) |
 | `COLLABORATOR_API_USERNAME` | `None` | String | Username for Collaborator Web API (Service Requests) |
 | `COLLABORATOR_API_PASSWORD` | `None` | String | Password for Collaborator Web API (Service Requests) |
-| `COLLABORATOR_API_BASE_URL` | `None` | String | Base API URL for Collaborator Web API (Service Requests) |
+| `COLLABORATOR_API_BASE_URL` | `https://consumercollab.collaboratoronline.com` | String | Base API URL for Collaborator Web API (Service Requests) |
 
 
 Security
