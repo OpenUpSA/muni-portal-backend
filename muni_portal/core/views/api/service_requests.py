@@ -12,9 +12,9 @@ from django.conf import settings
 class ServiceRequestAPIView(views.APIView):
 
     @staticmethod
-    def get_object(pk: int) -> ServiceRequest:
+    def get_object(pk: int, user: User) -> ServiceRequest:
         try:
-            return ServiceRequest.objects.get(pk=pk)
+            return ServiceRequest.objects.get(pk=pk, user=user)
         except ServiceRequest.DoesNotExist:
             raise Http404
 
@@ -27,11 +27,13 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
     returns local instance.
     """
 
-    # TODO: uncomment this (how is settings done currently?)
+    # TODO: uncomment this
     # permission_classes = [IsAuthenticated]
 
     def get(self, request, pk: int) -> Response:
-        local_object = self.get_object(pk)
+        # local_object = self.get_object(pk, request.user)
+        # TODO: Swap bottom line for top line
+        local_object = self.get_object(pk, User.objects.first())
         object_id = local_object.collaborator_object_id
         serializer = ServiceRequestSerializer(local_object)
 
@@ -49,6 +51,9 @@ class ServiceRequestListView(ServiceRequestAPIView):
     We build the list by retrieving all local ServiceRequest objects for this user and requesting a detail view
     of each object from Collaborator Web API and returning it as a list.
     """
+
+    # TODO: uncomment this
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request) -> Response:
         response_list = []
