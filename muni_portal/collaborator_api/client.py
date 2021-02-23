@@ -79,8 +79,8 @@ class Client:
         self.request_headers.update({"authorization": f"Bearer {self.token}"})
         return response
 
-    def create_task(self, template_id: int = 9, bp_id: int = 3, percent_complete: int = 10,
-                    comments: str = "OpenUp Test", form_fields: List[types.FormField] = None) -> requests.Response:
+    def create_task(self, form_fields: List[types.FormField], template_id: int = 9, bp_id: int = 3,
+                    percent_complete: int = 10, comments: str = "") -> requests.Response:
         """
         Create a task object
 
@@ -92,6 +92,9 @@ class Client:
 
         if not form_fields:
             form_fields = []
+
+        if settings.ENVIRONMENT != "production":
+            comments += f"  (Created by Cape Agulhas App {settings.ENVIRONMENT} environment)"
 
         url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPIConsumer/api/Task/SaveNewTaskFeedback"
         request_data = {
