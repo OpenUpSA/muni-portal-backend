@@ -519,7 +519,7 @@ class ServiceRequest(models.Model):
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=254, blank=True, null=True)
-    user_name = models.CharField(max_length=254, )
+    user_name = models.CharField(max_length=254)
     user_surname = models.CharField(max_length=254)
     user_mobile_number = models.CharField(max_length=30)
     user_email_address = models.EmailField(max_length=254)

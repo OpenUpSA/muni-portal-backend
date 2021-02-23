@@ -107,23 +107,46 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
                 error_response_dict[field] = "This field is required."
             return Response(error_response_dict, status=400)
 
+        user_name = request.data.get("user_name")
+        user_surname = request.data.get("user_surname")
+        user_mobile_number = request.data.get("user_mobile_number")
+        user_email_address = request.data.get("user_email_address")
+        street_name = request.data.get("street_name")
+        street_number = request.data.get("street_number")
+        suburb = request.data.get("suburb")
+        description = request.data.get("description")
+        coordinates = request.data.get("coordinates")
+
         # Translate POST parameters received into Collaborator Web API form fields
         form_fields: List[FormField] = [
-            {"FieldID": "F2", "FieldValue": request.data.get("user_name")},
-            {"FieldID": "F3", "FieldValue": request.data.get("user_surname")},
-            {"FieldID": "F4", "FieldValue": request.data.get("user_mobile_number")},
-            {"FieldID": "F5", "FieldValue": request.user.email},
-            {"FieldID": "F7", "FieldValue": request.data.get("street_name")},
-            {"FieldID": "F8", "FieldValue": request.data.get("street_number")},
-            {"FieldID": "F9", "FieldValue": request.data.get("suburb")},
-            {"FieldID": "F10", "FieldValue": request.data.get("description")},
-            {"FieldID": "F11", "FieldValue": request.data.get("coordinates")},
+            {"FieldID": "F2", "FieldValue": user_name},
+            {"FieldID": "F3", "FieldValue": user_surname},
+            {"FieldID": "F4", "FieldValue": user_mobile_number},
+            {"FieldID": "F5", "FieldValue": user_email_address},
+            {"FieldID": "F7", "FieldValue": street_name},
+            {"FieldID": "F8", "FieldValue": street_number},
+            {"FieldID": "F9", "FieldValue": suburb},
+            {"FieldID": "F10", "FieldValue": description},
+            {"FieldID": "F11", "FieldValue": coordinates},
         ]
 
         response = client.create_task(form_fields)
-        print('RESPONSE BELOW')
-        print(response)
-        print('RESPONSE JSON BELOW')
-        print(response.json())
+        collaborator_object_id = response.json().get("Data").get("ObjID")
 
-        return Response(request.data)
+        # TODO: Instead of creating here, queue creation with Django Q
+
+        ServiceRequest.objects.create(
+            user=request.user,
+            collaborator_object_id=collaborator_object_id,
+            user_name=user_name,
+            user_surname=user_surname,
+            user_mobile_number=user_mobile_number,
+            user_email_address=user_email_address,
+            street_name=street_name,
+            street_number=street_number,
+            suburb=suburb,
+            description=description,
+            coordinates=coordinates
+        )
+
+        return Response(status=201)
