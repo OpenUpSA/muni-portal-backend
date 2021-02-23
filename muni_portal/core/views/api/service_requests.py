@@ -68,7 +68,7 @@ class ServiceRequestListView(ServiceRequestAPIView):
             return Response([])
 
         for service_request in local_objects:
-            local_object = self.get_object(service_request.pk)
+            local_object = self.get_object(service_request.pk, User.objects.first())
             serializer = ServiceRequestSerializer(local_object)
             remote_object = client.get_task(local_object.collaborator_object_id)
             serializer.update(local_object, remote_object)
