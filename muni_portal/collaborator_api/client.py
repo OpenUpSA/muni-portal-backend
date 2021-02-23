@@ -96,7 +96,7 @@ class Client:
         if settings.ENVIRONMENT != "production":
             comments += f"  (Created by Cape Agulhas App {settings.ENVIRONMENT} environment)"
 
-        url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPIConsumer/api/Task/SaveNewTaskFeedback"
+        url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/Task/SaveNewTaskFeedback"
         request_data = {
             "TemplateId": template_id,
             "BPID": bp_id,
