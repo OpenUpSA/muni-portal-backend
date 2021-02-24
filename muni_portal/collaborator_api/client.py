@@ -3,33 +3,6 @@ from typing import List
 from django.conf import settings
 from . import types
 
-# TODO: remove this before merging PR
-EXISTING_TASK_OBJECT_IDS = [
-    556704,
-    556705,
-    556706
-]
-
-COLLAB_FIELD_MAP = {
-    "type": "F1",
-    "user_name": "F2",
-    "user_surname": "F3",
-    "user_mobile_number": "F4",
-    "user_email_address": "F5",
-    "municipal_account_number": "F6",
-    "street_name": "F7",
-    "street_number": "F8",
-    "suburb": "F9",
-    "description": "F10",
-    "coordinates": "F11",
-    "request_date": "F12",
-    "mobile_reference": "F13",
-    "on_premis_reference": "F14",
-    "status": "F15",
-    "demarcation_code": "F20",
-}
-# TODO: Responses have F19 and F25. No F20?
-
 APP_VERSION = "0.1.0"
 DEVICE_ID = "OpenUp"
 

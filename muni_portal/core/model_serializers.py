@@ -11,10 +11,6 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
 
     def update(self, instance: ServiceRequest, validated_data: ServiceRequestObject):
         """ Update a local object instance with a remote object instance. """
-
-        # obj_id = validated_data.get("obj_id", None)
-        # template_id = validated_data.get("template_id", None)
-        # f0 = validated_data.get("F0", None)
         instance.type = validated_data.get("F1", instance.type)
         instance.user_name = validated_data.get("F2", instance.user_name)
         instance.user_surname = validated_data.get("F3", instance.user_surname)
@@ -29,12 +25,9 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
         instance.request_date = validated_data.get("F12", instance.request_date)
         instance.on_premis_reference = validated_data.get("F14", instance.on_premis_reference)
         instance.collaborator_status = validated_data.get("F15", instance.collaborator_status).lower()
-        # f18 = validated_data.get("F18", None)
-        # f19 = validated_data.get("F19", None)
         instance.demarcation_code = validated_data.get("F25", instance.demarcation_code)
 
         instance.set_status()
-
         instance.save()
 
         return instance
