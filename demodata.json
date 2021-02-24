@@ -1625,9 +1625,9 @@
     "description": "This one has the date 2020-02-01 sent from the app",
     "coordinates": "12.3, 45.6",
     "request_date": "2020-02-01",
-    "mobile_reference": null,
     "on_premis_reference": "373761",
-    "status": "Assigned",
+    "collaborator_status": "assigned",
+    "status": "in_progress",
     "demarcation_code": "WC033"
   }
 },
@@ -1651,9 +1651,9 @@
     "description": "This one has the date 2020-02-04 sent from the app",
     "coordinates": "12.3, 45.6",
     "request_date": "2020-02-04",
-    "mobile_reference": null,
     "on_premis_reference": "373762",
-    "status": "Assigned",
+    "collaborator_status": "assigned",
+    "status": "in_progress",
     "demarcation_code": "WC033"
   }
 },
@@ -1677,9 +1677,9 @@
     "description": "Iets is fout",
     "coordinates": null,
     "request_date": "2020-01-01",
-    "mobile_reference": "12345",
     "on_premis_reference": "373834",
-    "status": "Registered",
+    "collaborator_status": "registered",
+    "status": "in_progress",
     "demarcation_code": "WC033"
   }
 },
