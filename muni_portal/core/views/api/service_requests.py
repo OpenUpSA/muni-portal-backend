@@ -7,9 +7,11 @@ from typing import List
 
 from muni_portal.collaborator_api.client import Client
 from muni_portal.collaborator_api.types import FormField
+from muni_portal.core.django_q_tasks import create_service_request
 from muni_portal.core.models import ServiceRequest
 from muni_portal.core.model_serializers import ServiceRequestSerializer
 from django.conf import settings
+from django_q.tasks import async_task
 
 
 class ServiceRequestAPIView(views.APIView):
@@ -129,23 +131,10 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F11", "FieldValue": coordinates},
         ]
 
-        response = client.create_task(form_fields)
-        collaborator_object_id = response.json().get("Data").get("ObjID")
-
-        # TODO: Instead of creating here, queue creation with Django Q
-
-        ServiceRequest.objects.create(
-            user=request.user,
-            collaborator_object_id=collaborator_object_id,
-            user_name=user_name,
-            user_surname=user_surname,
-            user_mobile_number=user_mobile_number,
-            user_email_address=user_email_address,
-            street_name=street_name,
-            street_number=street_number,
-            suburb=suburb,
-            description=description,
-            coordinates=coordinates
+        service_request = ServiceRequest.objects.create(
+            user=request.user
         )
+
+        async_task(create_service_request, service_request.id, form_fields)
 
         return Response(status=201)

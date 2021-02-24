@@ -530,21 +530,21 @@ class ServiceRequest(models.Model):
     )
 
     collaborator_object_id = models.PositiveIntegerField(
-        help_text="The Object ID for this object in the Collaborator Web API"
+        help_text="The Object ID for this object in the Collaborator Web API", blank=True, null=True
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=254, blank=True, null=True)
-    user_name = models.CharField(max_length=254)
-    user_surname = models.CharField(max_length=254)
-    user_mobile_number = models.CharField(max_length=30)
-    user_email_address = models.EmailField(max_length=254)
+    user_name = models.CharField(max_length=254, blank=True, null=True)
+    user_surname = models.CharField(max_length=254, blank=True, null=True)
+    user_mobile_number = models.CharField(max_length=30, blank=True, null=True)
+    user_email_address = models.EmailField(max_length=254, blank=True, null=True)
     municipal_account_number = models.CharField(max_length=254, blank=True, null=True)
-    street_name = models.CharField(max_length=254)
-    street_number = models.CharField(max_length=254)
-    suburb = models.CharField(max_length=254)
-    description = models.CharField(max_length=1024)
+    street_name = models.CharField(max_length=254, blank=True, null=True)
+    street_number = models.CharField(max_length=254, blank=True, null=True)
+    suburb = models.CharField(max_length=254, blank=True, null=True)
+    description = models.CharField(max_length=1024, blank=True, null=True)
     coordinates = models.CharField(max_length=254, blank=True, null=True)
-    request_date = models.DateField(default=None)
+    request_date = models.DateField(default=None, blank=True, null=True)
     on_premis_reference = models.CharField(max_length=254, blank=True, null=True)
     collaborator_status = models.CharField(
         max_length=254, choices=COLLABORATOR_STATUS_CHOICES, default=None, blank=True, null=True
