@@ -8,6 +8,7 @@ from typing import List
 from muni_portal.collaborator_api.client import Client
 from muni_portal.collaborator_api.types import FormField
 from muni_portal.core.django_q_tasks import create_service_request
+from muni_portal.core.django_q_hooks import handle_service_request_create
 from muni_portal.core.models import ServiceRequest
 from muni_portal.core.model_serializers import ServiceRequestSerializer
 from django.conf import settings
@@ -66,9 +67,9 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         of each object from Collaborator Web API and returning it as a list.
         """
         response_list = []
-        # local_objects = ServiceRequest.objects.filter(user=request.user)
+        # local_objects = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=False)
         # TODO: use request.user as above
-        local_objects = ServiceRequest.objects.filter(user=User.objects.first())
+        local_objects = ServiceRequest.objects.filter(user=User.objects.first(), collaborator_object_id__isnull=False)
 
         if local_objects:
             client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
@@ -92,10 +93,6 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         The object will first be created in Collaborator Web API, and if successful,
         it will be created in this API.
         """
-
-        client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
-        client.authenticate()
-
         # Return error if any of the fields are missing
         received_fields = request.data.keys()
         missing_fields = []
@@ -132,9 +129,9 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         ]
 
         service_request = ServiceRequest.objects.create(
-            user=request.user
+            user=User.objects.first()
         )
 
-        async_task(create_service_request, service_request.id, form_fields)
+        async_task(create_service_request, service_request.id, form_fields, hook=handle_service_request_create)
 
         return Response(status=201)
