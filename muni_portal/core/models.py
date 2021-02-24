@@ -554,8 +554,9 @@ class ServiceRequest(models.Model):
 
     def set_status(self) -> None:
         """ Set 'status' based on 'collaborator_status' and 'on_premis_reference' values. """
-        is_initial_or_registered = self.collaborator_status == (
-                self.COLLABORATOR_INITIAL or self.collaborator_status == self.COLLABORATOR_REGISTERED
+        is_initial_or_registered = (
+                self.collaborator_status == self.COLLABORATOR_INITIAL or
+                self.collaborator_status == self.COLLABORATOR_REGISTERED
         )
 
         is_registered_or_assigned = (
