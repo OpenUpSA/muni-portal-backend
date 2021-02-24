@@ -33,13 +33,10 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
     returns local instance.
     """
 
-    # TODO: uncomment this
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk: int) -> Response:
-        # local_object = self.get_object(pk, request.user)
-        # TODO: Swap bottom line for top line
-        local_object = self.get_object(pk, User.objects.first())
+        local_object = self.get_object(pk, request.user)
         object_id = local_object.collaborator_object_id
         serializer = ServiceRequestSerializer(local_object)
 
@@ -52,8 +49,8 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
 
 class ServiceRequestListCreateView(ServiceRequestAPIView):
 
-    # TODO: uncomment this
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
+
     CREATE_REQUIRED_FIELDS = (
             "user_name", "user_surname", "user_mobile_number",
             "street_name", "street_number", "suburb", "description"
@@ -67,9 +64,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         of each object from Collaborator Web API and returning it as a list.
         """
         response_list = []
-        # local_objects = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=False)
-        # TODO: use request.user as above
-        local_objects = ServiceRequest.objects.filter(user=User.objects.first(), collaborator_object_id__isnull=False)
+        local_objects = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=False)
 
         if local_objects:
             client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
@@ -78,7 +73,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             return Response([])
 
         for service_request in local_objects:
-            local_object = self.get_object(service_request.pk, User.objects.first())
+            local_object = self.get_object(service_request.pk, request.user)
             serializer = ServiceRequestSerializer(local_object)
             remote_object = client.get_task(local_object.collaborator_object_id)
             serializer.update(local_object, remote_object)
@@ -129,7 +124,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         ]
 
         service_request = ServiceRequest.objects.create(
-            user=User.objects.first()
+            user=request.user
         )
 
         async_task(create_service_request, service_request.id, form_fields, hook=handle_service_request_create)
