@@ -51,6 +51,10 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
 
     # TODO: uncomment this
     # permission_classes = [IsAuthenticated]
+    CREATE_REQUIRED_FIELDS = (
+            "user_name", "user_surname", "user_mobile_number",
+            "street_name", "street_number", "suburb", "description"
+        )
 
     def get(self, request) -> Response:
         """
@@ -90,15 +94,10 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
         client.authenticate()
 
-        required_fields = (
-            "user_name", "user_surname", "user_mobile_number",
-            "street_name", "street_number", "suburb", "description"
-        )
-
         # Return error if any of the fields are missing
         received_fields = request.data.keys()
         missing_fields = []
-        for field in required_fields:
+        for field in self.CREATE_REQUIRED_FIELDS:
             if field not in received_fields:
                 missing_fields.append(field)
         if missing_fields:
