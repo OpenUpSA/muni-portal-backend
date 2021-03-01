@@ -52,7 +52,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
     permission_classes = [IsAuthenticated]
 
     CREATE_REQUIRED_FIELDS = (
-            "user_name", "user_surname", "user_mobile_number",
+            "type", "user_name", "user_surname", "user_mobile_number",
             "street_name", "street_number", "suburb", "description"
         )
 
