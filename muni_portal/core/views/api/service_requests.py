@@ -121,6 +121,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F9", "FieldValue": suburb},
             {"FieldID": "F10", "FieldValue": description},
             {"FieldID": "F11", "FieldValue": coordinates},
+            {"FieldID": "F25", "FieldValue": settings.COLLABORATOR_DEMARCATION_CODE}
         ]
 
         service_request = ServiceRequest.objects.create(

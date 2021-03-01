@@ -232,6 +232,7 @@ WAGTAILAPI_LIMIT_MAX = 500
 COLLABORATOR_API_USERNAME = env.str("COLLABORATOR_API_USERNAME", None)
 COLLABORATOR_API_PASSWORD = env.str("COLLABORATOR_API_PASSWORD", None)
 COLLABORATOR_API_BASE_URL = env.str("COLLABORATOR_API_BASE_URL", "https://consumercollab.collaboratoronline.com")
+COLLABORATOR_DEMARCATION_CODE = "WC033"
 
 # https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
