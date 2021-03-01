@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import views
@@ -109,6 +110,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         suburb = request.data.get("suburb")
         description = request.data.get("description")
         coordinates = request.data.get("coordinates")
+        request_date_iso = timezone.now().isoformat()
 
         # Translate POST parameters received into Collaborator Web API form fields
         form_fields: List[FormField] = [
@@ -121,6 +123,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F9", "FieldValue": suburb},
             {"FieldID": "F10", "FieldValue": description},
             {"FieldID": "F11", "FieldValue": coordinates},
+            {"FieldID": "F12", "FieldValue": request_date_iso},
             {"FieldID": "F25", "FieldValue": settings.COLLABORATOR_DEMARCATION_CODE}
         ]
 

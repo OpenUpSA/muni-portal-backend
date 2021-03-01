@@ -543,7 +543,7 @@ class ServiceRequest(models.Model):
     suburb = models.CharField(max_length=254, blank=True, null=True)
     description = models.CharField(max_length=1024, blank=True, null=True)
     coordinates = models.CharField(max_length=254, blank=True, null=True)
-    request_date = models.DateField(default=None, blank=True, null=True)
+    request_date = models.DateTimeField(default=None, blank=True, null=True)
     on_premis_reference = models.CharField(max_length=254, blank=True, null=True)
     collaborator_status = models.CharField(
         max_length=254, choices=COLLABORATOR_STATUS_CHOICES, default=None, blank=True, null=True

@@ -1,3 +1,4 @@
+from datetime import datetime
 from muni_portal.core.models import ServiceRequest
 from rest_framework import serializers
 from muni_portal.collaborator_api.types import ServiceRequestObject
@@ -11,6 +12,13 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
 
     def update(self, instance: ServiceRequest, validated_data: ServiceRequestObject):
         """ Update a local object instance with a remote object instance. """
+
+        # Parse ISO datetime format (default to instance value if not present)
+        request_date = instance.request_date
+        request_date_iso_fmt = validated_data.get("F12", None)
+        if request_date_iso_fmt:
+            request_date = datetime.fromisoformat(request_date_iso_fmt)
+
         instance.type = validated_data.get("F1", instance.type)
         instance.user_name = validated_data.get("F2", instance.user_name)
         instance.user_surname = validated_data.get("F3", instance.user_surname)
@@ -22,7 +30,7 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
         instance.suburb = validated_data.get("F9", instance.suburb)
         instance.description = validated_data.get("F10", instance.description)
         instance.coordinates = validated_data.get("F11", instance.coordinates)
-        instance.request_date = validated_data.get("F12", instance.request_date)
+        instance.request_date = request_date
         instance.on_premis_reference = validated_data.get("F14", instance.on_premis_reference)
         instance.collaborator_status = validated_data.get("F15", instance.collaborator_status).lower()
         instance.demarcation_code = validated_data.get("F25", instance.demarcation_code)
