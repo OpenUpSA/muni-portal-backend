@@ -507,7 +507,6 @@ class ServiceRequest(models.Model):
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
 
-    # TODO: might need a failed state if queuing didn't succeed in creation
     STATUS_CHOICES = (
         (QUEUED, "Queued"),
         (CREATED, "Created"),
