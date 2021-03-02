@@ -101,6 +101,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
                 error_response_dict[field] = "This field is required."
             return Response(error_response_dict, status=400)
 
+        request_type = request.data.get("type")
         user_name = request.data.get("user_name")
         user_surname = request.data.get("user_surname")
         user_mobile_number = request.data.get("user_mobile_number")
@@ -110,10 +111,13 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         suburb = request.data.get("suburb")
         description = request.data.get("description")
         coordinates = request.data.get("coordinates")
+
         request_date_iso = timezone.now().isoformat()
+        demarcation_code = "WC033"
 
         # Translate POST parameters received into Collaborator Web API form fields
         form_fields: List[FormField] = [
+            {"FieldID": "F1", "FieldValue": request_type},
             {"FieldID": "F2", "FieldValue": user_name},
             {"FieldID": "F3", "FieldValue": user_surname},
             {"FieldID": "F4", "FieldValue": user_mobile_number},
@@ -124,7 +128,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F10", "FieldValue": description},
             {"FieldID": "F11", "FieldValue": coordinates},
             {"FieldID": "F12", "FieldValue": request_date_iso},
-            {"FieldID": "F25", "FieldValue": settings.COLLABORATOR_DEMARCATION_CODE}
+            {"FieldID": "F25", "FieldValue": demarcation_code}
         ]
 
         service_request = ServiceRequest.objects.create(
