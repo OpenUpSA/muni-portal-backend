@@ -99,10 +99,7 @@ class Client:
             "Fields": fields,
         }
 
-        request = requests.Request("POST", url, headers=self.request_headers, json=request_data)
-        prepared_request = request.prepare()
-        pretty_print_prepared_request(prepared_request)
-        response = self.session.send(prepared_request)
+        response = self.session.post(url, headers=self.request_headers, json=request_data)
         response.raise_for_status()
 
         obj_list = response.json().get("Data").get("ObjectList")
