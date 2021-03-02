@@ -229,3 +229,31 @@ class ApiServiceRequestTestCase(APITestCase):
         sorted_response = sorted(response.data, key=lambda k: k['id'])
         self.assertDictEqual(sorted_response[0], expected_response_data[0])
         self.assertDictEqual(sorted_response[1], expected_response_data[1])
+
+    @mock.patch("muni_portal.collaborator_api.client.requests.post")
+    @mock.patch.object(Session, 'post')
+    def test_post_create(self, mock_session_post, mock_post):
+        mock_auth_response = mock.Mock()
+        mock_auth_response.status_code = 200
+        mock_auth_response.json.return_value = "testToken"
+        mock_post.return_value = mock_auth_response
+
+        mock_detail_response = mock.Mock()
+        mock_detail_response.status_code = 200
+        mock_detail_response.json.return_value = MOCK_GET_TASK_DETAIL_RESPONSE_JSON
+        mock_session_post.return_value = mock_detail_response
+
+        self.authenticate()
+
+        data = {
+            "type": "test-type",
+            "user_name": "test name",
+            "user_surname": "test surname",
+            "user_mobile_number": "test number",
+            "street_name": "test street",
+            "street_number": "test number",
+            "suburb": "JD's burb :)",
+            "description": "test description"
+        }
+        response = self.client.post(reverse("service-request-list-create"), data=data)
+        self.assertEquals(response.status_code, status.HTTP_201_CREATED)
