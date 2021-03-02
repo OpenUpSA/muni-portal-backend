@@ -16,6 +16,7 @@ class Client:
         >> client.get_task(1)
 
     """
+
     def __init__(self, username: str, password: str) -> None:
         self.request_headers = {
             "accept": "application/json",
@@ -78,14 +79,12 @@ class Client:
             "FormFields": form_fields,
         }
 
-        request = requests.Request("POST", url, headers=self.request_headers, json=request_data)
-        prepared_request = request.prepare()
-        pretty_print_prepared_request(prepared_request)
-        response = self.session.send(prepared_request)
+        response = self.session.post(url, headers=self.request_headers, json=request_data)
         response.raise_for_status()
         return response
 
-    def get_task(self, obj_id: int, template_id: int = 9, fields: List[types.FormField] = None) -> types.ServiceRequestObject:
+    def get_task(self, obj_id: int, template_id: int = 9,
+                 fields: List[types.FormField] = None) -> types.ServiceRequestObject:
         """ Retrieve detail about a task object. """
         self.__assert_auth__()
 
@@ -110,22 +109,3 @@ class Client:
 
         obj = obj_list[0][0]
         return obj
-
-
-def pretty_print_prepared_request(req):
-    """
-    At this point it is completely built and ready
-    to be fired; it is "prepared".
-
-    However pay attention at the formatting used in
-    this function because it is programmed to be pretty
-    printed and may differ from the actual request.
-
-    https://stackoverflow.com/a/23816211
-    """
-    print('{}\n{}\r\n{}\r\n\r\n{}'.format(
-        '-----------START-----------',
-        req.method + ' ' + req.url,
-        '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
-        req.body,
-    ))
