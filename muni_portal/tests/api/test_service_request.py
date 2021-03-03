@@ -41,7 +41,7 @@ MOCK_GET_TASK_DETAIL_RESPONSE_JSON = {
                     "F15": "Assigned",
                     "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
                     "F19": "556704",
-                    "F25": "WC033"
+                    "F20": "WC033"
                 }
             ]
         ]
@@ -80,7 +80,7 @@ MOCK_GET_TASK_LIST_RESPONSE_JSON = {
                     "F15": "Assigned",
                     "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
                     "F19": "556704",
-                    "F25": "WC033"
+                    "F20": "WC033"
                 },
                 {
                     "obj_id": 2,
@@ -101,7 +101,7 @@ MOCK_GET_TASK_LIST_RESPONSE_JSON = {
                     "F15": "Assigned",
                     "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
                     "F19": "556704",
-                    "F25": "WC033"
+                    "F20": "WC033"
                 }
             ]
         ]

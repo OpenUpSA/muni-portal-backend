@@ -33,7 +33,7 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
         instance.request_date = request_date
         instance.on_premis_reference = validated_data.get("F14", instance.on_premis_reference)
         instance.collaborator_status = validated_data.get("F15", instance.collaborator_status).lower()
-        instance.demarcation_code = validated_data.get("F25", instance.demarcation_code)
+        instance.demarcation_code = validated_data.get("F20", instance.demarcation_code)
 
         instance.set_status()
         instance.save()

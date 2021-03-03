@@ -128,7 +128,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F10", "FieldValue": description},
             {"FieldID": "F11", "FieldValue": coordinates},
             {"FieldID": "F12", "FieldValue": request_date_iso},
-            {"FieldID": "F25", "FieldValue": demarcation_code}
+            {"FieldID": "F20", "FieldValue": demarcation_code}
         ]
 
         service_request = ServiceRequest.objects.create(
