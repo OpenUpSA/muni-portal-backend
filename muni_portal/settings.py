@@ -229,8 +229,8 @@ WAGTAILAPI_LIMIT_MAX = 500
 # Collaborator Web API
 # https://github.com/OpenUpSA/muni-portal-backend/pull/68
 # https://openup.gitbook.io/cape-agulhas-app/collaborator-integration
-COLLABORATOR_API_USERNAME = env.str("COLLABORATOR_API_USERNAME", None)
-COLLABORATOR_API_PASSWORD = env.str("COLLABORATOR_API_PASSWORD", None)
+COLLABORATOR_API_USERNAME = env.str("COLLABORATOR_API_USERNAME")
+COLLABORATOR_API_PASSWORD = env.str("COLLABORATOR_API_PASSWORD")
 COLLABORATOR_API_BASE_URL = env.str("COLLABORATOR_API_BASE_URL", "https://consumercollab.collaboratoronline.com")
 
 # https://www.django-rest-framework.org/api-guide/settings/
