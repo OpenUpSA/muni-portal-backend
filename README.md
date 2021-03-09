@@ -27,10 +27,10 @@ Remove dependencies by executing as `root`, like this:
 
     docker-compose run --rm -u root web poetry remove pkgname
 
-> NOTE: Removing packages requires sudo privileges because Poetry is installed as root before the django user is created,
-> resulting in the django user not having permission to remove system files in the container
+> NOTE: Removing packages requires root privileges because Poetry is installed as root before the django user is created,
+> resulting in the normal container user not having permission to remove system files in the container
 
-Rebuild the image to contain the new dependencies:
+Rebuild the image to ensure subsequent containers are based on the updated dependencies:
 
     docker-compose build web
 
