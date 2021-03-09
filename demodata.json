@@ -203,7 +203,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$150000$VsRUSXgD3VvW$HRwU6P4Yu7XNQJJ0lLss7VjfQe8BarA1O2z0XJSJhFU=",
-    "last_login": "2020-10-22T12:11:06.516Z",
+    "last_login": "2021-02-22T10:02:31.428Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
@@ -1603,6 +1603,84 @@
         "Moderators"
       ]
     ]
+  }
+},
+{
+  "model": "core.servicerequest",
+  "pk": 1,
+  "fields": {
+    "collaborator_object_id": 556704,
+    "user": [
+      "admin"
+    ],
+    "type": "Sewerage",
+    "user_name": "Mr JD",
+    "user_surname": "Bothma",
+    "user_mobile_number": "0792816737",
+    "user_email_address": "jd@openup.org.za",
+    "municipal_account_number": null,
+    "street_name": "Geen Straat",
+    "street_number": "123",
+    "suburb": "Daar",
+    "description": "This one has the date 2020-02-01 sent from the app",
+    "coordinates": "12.3, 45.6",
+    "request_date": "2020-02-01",
+    "on_premis_reference": "373761",
+    "collaborator_status": "assigned",
+    "status": "in_progress",
+    "demarcation_code": "WC033"
+  }
+},
+{
+  "model": "core.servicerequest",
+  "pk": 2,
+  "fields": {
+    "collaborator_object_id": 556705,
+    "user": [
+      "admin"
+    ],
+    "type": "Sewerage",
+    "user_name": "Mr JD",
+    "user_surname": "Bothma",
+    "user_mobile_number": "0792816737",
+    "user_email_address": "jd@openup.org.za",
+    "municipal_account_number": null,
+    "street_name": "Geen Straat",
+    "street_number": "123",
+    "suburb": "Daar",
+    "description": "This one has the date 2020-02-04 sent from the app",
+    "coordinates": "12.3, 45.6",
+    "request_date": "2020-02-04",
+    "on_premis_reference": "373762",
+    "collaborator_status": "assigned",
+    "status": "in_progress",
+    "demarcation_code": "WC033"
+  }
+},
+{
+  "model": "core.servicerequest",
+  "pk": 3,
+  "fields": {
+    "collaborator_object_id": 556706,
+    "user": [
+      "admin"
+    ],
+    "type": "Roads",
+    "user_name": "Mr Test",
+    "user_surname": "Surname",
+    "user_mobile_number": "0792816737",
+    "user_email_address": "user@example.com",
+    "municipal_account_number": null,
+    "street_name": "Geen Straat",
+    "street_number": "123",
+    "suburb": "Daar",
+    "description": "Iets is fout",
+    "coordinates": null,
+    "request_date": "2020-01-01",
+    "on_premis_reference": "373834",
+    "collaborator_status": "registered",
+    "status": "in_progress",
+    "demarcation_code": "WC033"
   }
 },
 {

@@ -74,6 +74,8 @@ The demo data fixture was produced using the command
       -e wagtailimages.rendition \
       -e sessions \
       -e core.contactdetailtype \
+      -e admin.logentry \
+      -e token_blacklist \
       > demodata.json
 
 Only the minimal data needed to have a working system to click around in and
@@ -107,7 +109,9 @@ docker container
 Settings
 --------
 
-Undefined settings result in exceptions at startup to let you know they are not configured properly. It's one this way so that the defaults don't accidentally let bad things happen like forgetting analytics or connecting to the prod DB in development.
+Undefined settings result in exceptions at startup to let you know they are not configured properly. 
+It's this way so that the defaults don't accidentally let bad things happen like forgetting analytics or 
+connecting to the prod DB in development.
 
 
 | Key | Default | Type | Description |
@@ -130,6 +134,9 @@ Undefined settings result in exceptions at startup to let you know they are not 
 | `ENVIRONMENT` | `development` | String | Set to the environment the code is running in, e.g. development, production. |
 | `SENTRY_DSN` | `None` | String | Used for Sentry configuration. [Where to find your DSN?](https://docs.sentry.io/product/sentry-basics/dsn-explainer/#where-to-find-your-dsn) |
 | `SENTRY_PERF_SAMPLE_RATE` | `0.1` | Float | Sentry performance sampling rate. Don't set this too high, or else you might use up your Sentry quota! [What is Sentry Performance?](https://docs.sentry.io/platforms/python/guides/django/performance/) |
+| `COLLABORATOR_API_USERNAME` | `None` | String | Username for Collaborator Web API (Service Requests) |
+| `COLLABORATOR_API_PASSWORD` | `None` | String | Password for Collaborator Web API (Service Requests) |
+| `COLLABORATOR_API_BASE_URL` | `https://consumercollab.collaboratoronline.com` | String | Base API URL for Collaborator Web API (Service Requests) |
 
 
 Security

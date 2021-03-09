@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.conf import settings
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
@@ -11,8 +12,7 @@ from wagtail.core.models import Page, Orderable
 from rest_framework import serializers as drf_serializers
 from rest_framework.fields import DateTimeField
 from wagtail.images.api.fields import ImageRenditionField
-
-from muni_portal.core.serializers import (
+from muni_portal.core.wagtail_serializers import (
     RelatedPagesSerializer,
     RelatedPersonPageSerializer,
     RelatedPersonPageListSerializer,
@@ -497,3 +497,90 @@ class NoticePage(Page):
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
     ]
+
+
+class ServiceRequest(models.Model):
+    """ Service Request as defined by the Collaborator Web API template object (id=9) """
+
+    QUEUED = "queued"
+    CREATED = "created"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+
+    STATUS_CHOICES = (
+        (QUEUED, "Queued"),
+        (CREATED, "Created"),
+        (IN_PROGRESS, "In Progress"),
+        (COMPLETED, "Completed"),
+    )
+
+    COLLABORATOR_INITIAL = "initial"
+    COLLABORATOR_REGISTERED = "registered"
+    COLLABORATOR_ASSIGNED = "assigned"
+    COLLABORATOR_COMPLETED = "completed"
+    COLLABORATOR_FINALISED = "finalised"
+
+    COLLABORATOR_STATUS_CHOICES = (
+        (COLLABORATOR_INITIAL, "Initial"),
+        (COLLABORATOR_REGISTERED, "Registered"),
+        (COLLABORATOR_ASSIGNED, "Assigned"),
+        (COLLABORATOR_COMPLETED, "Completed"),
+        (COLLABORATOR_FINALISED, "Finalised"),
+    )
+
+    collaborator_object_id = models.PositiveIntegerField(
+        help_text="The Object ID for this object in the Collaborator Web API", blank=True, null=True
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    type = models.CharField(max_length=254, blank=True, null=True)
+    user_name = models.CharField(max_length=254, blank=True, null=True)
+    user_surname = models.CharField(max_length=254, blank=True, null=True)
+    user_mobile_number = models.CharField(max_length=30, blank=True, null=True)
+    user_email_address = models.EmailField(max_length=254, blank=True, null=True)
+    municipal_account_number = models.CharField(max_length=254, blank=True, null=True)
+    street_name = models.CharField(max_length=254, blank=True, null=True)
+    street_number = models.CharField(max_length=254, blank=True, null=True)
+    suburb = models.CharField(max_length=254, blank=True, null=True)
+    description = models.CharField(max_length=1024, blank=True, null=True)
+    coordinates = models.CharField(max_length=254, blank=True, null=True)
+    request_date = models.DateTimeField(default=None, blank=True, null=True)
+    on_premis_reference = models.CharField(max_length=254, blank=True, null=True)
+    collaborator_status = models.CharField(
+        max_length=254, choices=COLLABORATOR_STATUS_CHOICES, default=None, blank=True, null=True
+    )
+    status = models.CharField(max_length=254, choices=STATUS_CHOICES, default=QUEUED)
+    demarcation_code = models.CharField(max_length=254, blank=True, null=True)
+
+    def set_status(self) -> None:
+        """ Set 'status' based on 'collaborator_status' and 'on_premis_reference' values. """
+        is_initial_or_registered = (
+                self.collaborator_status == self.COLLABORATOR_INITIAL or
+                self.collaborator_status == self.COLLABORATOR_REGISTERED
+        )
+
+        is_registered_or_assigned = (
+                self.collaborator_status == self.COLLABORATOR_REGISTERED or
+                self.collaborator_status == self.COLLABORATOR_ASSIGNED
+        )
+
+        is_completed_or_finalised = (
+                self.collaborator_status == self.COLLABORATOR_COMPLETED or
+                self.collaborator_status == self.COLLABORATOR_FINALISED
+        )
+
+        if not self.collaborator_status:
+            self.status = self.QUEUED
+        elif is_initial_or_registered and not self.on_premis_reference:
+            self.status = self.CREATED
+        elif is_registered_or_assigned and self.on_premis_reference:
+            self.status = self.IN_PROGRESS
+        elif is_completed_or_finalised and self.on_premis_reference:
+            self.status = self.COMPLETED
+        else:
+            # Fail loudly so that we're certain that we've mapped all possible states correctly.
+            raise ValueError(
+                f"Not able to map collaborator status to local status. "
+                f"'Collaborator status' == '{self.collaborator_status}' and "
+                f"'On Premis Reference' == '{self.on_premis_reference}'"
+
+            )

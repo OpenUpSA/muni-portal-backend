@@ -40,9 +40,12 @@ services:
       # normally starting with $
       - CORS_ALLOWED_ORIGIN_REGEXES=^http://localhost:\d+$$,^http://127.0.0.1:\d+$$
       - DEBUG_CACHE
-      - DJANGO_Q_SYNC=True
+      - DJANGO_Q_SYNC=False
       - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY:-fake_private_key}
       - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY:-fake_public_key}
+      - COLLABORATOR_API_USERNAME=fakeuser
+      - COLLABORATOR_API_PASSWORD=fakepassword
+      - COLLABORATOR_API_BASE_URL=https://c5c14106-1f1d-4853-97dc-5621f141969e.mock.pstmn.io
 
   db:
     image: postgres:11.6
