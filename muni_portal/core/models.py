@@ -292,7 +292,7 @@ class CouncillorListPage(Page):
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
-    icon_classes = models.CharField(max_length=250)
+    icon_classes = models.CharField(max_length=250, blank=True, null=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
