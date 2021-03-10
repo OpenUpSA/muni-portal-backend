@@ -292,13 +292,16 @@ class CouncillorListPage(Page):
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+    icon_classes = models.CharField(max_length=250)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("icon_classes"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("icon_classes"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
         APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children')),
     ]
