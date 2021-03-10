@@ -205,8 +205,8 @@ class PersonPage(Page):
         APIField("profile_image"),
         APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
@@ -280,8 +280,8 @@ class CouncillorPage(PersonPage):
         APIField("political_party", serializer=PoliticalPartySerializer()),
         APIField("councillor_groups"),
         APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
@@ -302,8 +302,8 @@ class CouncillorListPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("icon_classes"),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children.live')),
     ]
 
 
@@ -325,8 +325,8 @@ class CouncillorGroupPage(Page):
         APIField("icon_classes"),
         APIField("members_label"),
         APIField("councillors", serializer=RelatedPersonPageListSerializer()),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
     @property
@@ -352,8 +352,8 @@ class AdministrationIndexPage(Page):
 
     api_fields = [
         APIField("overview"),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children.live')),
     ]
 
 
@@ -372,8 +372,8 @@ class PoliticalRepsIndexPage(Page):
 
     api_fields = [
         APIField("overview"),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedCouncillorGroupPageSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedCouncillorGroupPageSerializer(source='get_children.live')),
     ]
 
 
@@ -393,8 +393,8 @@ class ServicePointPage(Page):
         APIField("overview"),
         APIField("office_hours"),
         APIField("service_point_contacts", serializer=ServicePointContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
@@ -428,8 +428,8 @@ class ServicePage(Page):
         APIField("office_hours"),
         APIField("head_of_service", serializer=RelatedPersonPageSerializer()),
         APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
@@ -442,8 +442,8 @@ class MyMuniPage(Page):
     max_count_per_parent = 1
 
     api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
@@ -454,8 +454,8 @@ class ServicesIndexPage(Page):
     max_count_per_parent = 1
 
     api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
@@ -467,8 +467,8 @@ class HomePage(Page):
     max_count_per_parent = 1
 
     api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
@@ -478,8 +478,8 @@ class NoticeIndexPage(Page):
     ]
 
     api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedNoticePagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedNoticePagesSerializer(source='get_children.live')),
     ]
 
 
@@ -497,8 +497,8 @@ class NoticePage(Page):
         APIField("body"),
         APIField("body_html", serializer=RichTextFieldSerializer(source="body")),
         APIField("publication_date", serializer=DateTimeField(source="last_published_at")),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children')),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
 
 
