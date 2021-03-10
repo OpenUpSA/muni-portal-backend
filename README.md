@@ -107,17 +107,14 @@ Tests might fail to connect to the databse if the docker-compose `db` service wa
 Migrations in deployment
 ------------------------
 
-Migrations are not run automatically through dokku or any other build process, so if you have made changes that require
-migrations to be run, you'll have to SSH into the server where the app is deployed and run the migrations in the
-docker container
+Migrations are run automatically on deployment to dokku via the script in `app.json`.
 
-    dokku --rm run muni-portal-backend-{env} python manage.py migrate
 
 Settings
 --------
 
-Undefined settings result in exceptions at startup to let you know they are not configured properly. 
-It's this way so that the defaults don't accidentally let bad things happen like forgetting analytics or 
+Undefined settings result in exceptions at startup to let you know they are not configured properly.
+It's this way so that the defaults don't accidentally let bad things happen like forgetting analytics or
 connecting to the prod DB in development.
 
 
