@@ -22,7 +22,7 @@ class ApiWebhookTestCase(TestCase):
 
     def test_api_webhook(self):
         client = APIClient()
-        test_data = {"test": "test"}
+        test_data = {"testkey": "testvalue"}
         response = client.post(
             self.url,
             data=json.dumps(test_data),
@@ -30,6 +30,8 @@ class ApiWebhookTestCase(TestCase):
             content_type="application/json",
         )
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
+        # Ensure response content type was JSON and value was "ok"
+        self.assertEquals(response.json(), "success")
         self.assertEquals(Webhook.objects.first().data, test_data)
 
     def test_api_webhook_not_authenticated(self):
@@ -42,4 +44,5 @@ class ApiWebhookTestCase(TestCase):
             content_type="application/json",
         )
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEquals(response.json()["detail"], "Invalid token.")
         self.assertEquals(Webhook.objects.count(), 0)
