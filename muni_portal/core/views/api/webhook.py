@@ -29,4 +29,6 @@ class CollaboratorWebhookApiView(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         Webhook.objects.create(data=request.data)
-        return Response(status=status.HTTP_201_CREATED)
+        # Response body "success" because collaborator needs to check body for
+        # success status rather than http status code.
+        return Response("success", status=status.HTTP_201_CREATED)
