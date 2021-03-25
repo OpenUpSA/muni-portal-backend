@@ -412,13 +412,16 @@ class AdministrationIndexPage(Page):
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+    icon_classes = models.CharField(max_length=250, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("icon_classes"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("icon_classes"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children.live')),
     ]
@@ -432,13 +435,16 @@ class PoliticalRepsIndexPage(Page):
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+    icon_classes = models.CharField(max_length=250, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("icon_classes"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("icon_classes"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedCouncillorGroupPageSerializer(source='get_children.live')),
     ]
@@ -547,7 +553,14 @@ class NoticeIndexPage(Page):
 
     max_count_per_parent = 1
 
+    icon_classes = models.CharField(max_length=250, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("icon_classes"),
+    ]
+
     api_fields = [
+        APIField("icon_classes"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedNoticePagesSerializer(source='get_children.live')),
     ]
@@ -575,7 +588,10 @@ class NoticePage(Page):
 class ContactsPage(Page):
     subpage_types = []
 
+    icon_classes = models.CharField(max_length=250, blank=True)
+
     content_panels = Page.content_panels + [
+        FieldPanel("icon_classes"),
         InlinePanel("emergency_contacts", label="Emergency Contacts"),
         InlinePanel("provincial_government_contacts", label="Provincial Government Contacts"),
         InlinePanel("national_government_contacts", label="National Government Contacts"),
@@ -584,6 +600,7 @@ class ContactsPage(Page):
     max_count_per_parent = 1
 
     api_fields = [
+        APIField("icon_classes"),
         APIField("emergency_contacts", serializer=EmergencyContactSerializer(many=True)),
         APIField("provincial_government_contacts", serializer=ProvincialGovernmentContactSerializer(many=True)),
         APIField("national_government_contacts", serializer=NationalGovernmentContactSerializer(many=True)),
