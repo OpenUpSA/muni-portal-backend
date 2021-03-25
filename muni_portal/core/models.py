@@ -84,6 +84,58 @@ class ServicePointContact(Orderable, models.Model):
         return self.page.title + " -> " + self.contact
 
 
+class PersonContact(Orderable, models.Model):
+    page = ParentalKey(
+        "core.PersonPage", on_delete=models.CASCADE, related_name="person_contacts"
+    )
+    contact = models.ForeignKey(
+        "ContactDetail", on_delete=models.CASCADE, related_name="+"
+    )
+
+    class Meta(Orderable.Meta):
+        verbose_name = "person contact"
+        verbose_name_plural = "person contacts"
+
+    panels = [
+        SnippetChooserPanel("contact"),
+    ]
+
+    def __str__(self):
+        return self.page.title + " -> " + self.contact
+
+
+class KeyContact(Orderable, models.Model):
+    contact = models.ForeignKey(
+        "ContactDetail", on_delete=models.CASCADE, related_name="+"
+    )
+
+    panels = [
+        SnippetChooserPanel("contact"),
+    ]
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.page.title + " -> " + self.contact
+
+
+class EmergencyContact(KeyContact):
+    page = ParentalKey(
+        "core.ContactsPage", on_delete=models.CASCADE, related_name="emergency_contacts"
+    )
+
+class ProvincialGovernmentContact(KeyContact):
+    page = ParentalKey(
+        "core.ContactsPage", on_delete=models.CASCADE, related_name="provincial_government_contacts"
+    )
+
+class NationalGovernmentContact(KeyContact):
+    page = ParentalKey(
+        "core.ContactsPage", on_delete=models.CASCADE, related_name="national_government_contacts"
+    )
+
+
 class ContactDetailTypeManager(models.Manager):
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
@@ -150,6 +202,21 @@ class ServiceContactSerializer(ContactSerializer):
 class ServicePointContactSerializer(ContactSerializer):
     class Meta(ContactSerializer.Meta):
         model = ServicePointContact
+
+
+class EmergencyContactSerializer(ContactSerializer):
+    class Meta(ContactSerializer.Meta):
+        model = EmergencyContact
+
+
+class ProvincialGovernmentContactSerializer(ContactSerializer):
+    class Meta(ContactSerializer.Meta):
+        model = ProvincialGovernmentContact
+
+
+class NationalGovernmentContactSerializer(ContactSerializer):
+    class Meta(ContactSerializer.Meta):
+        model = NationalGovernmentContact
 
 
 @register_snippet
@@ -438,6 +505,7 @@ class MyMuniPage(Page):
         "core.PoliticalRepsIndexPage",
         "core.AdministrationIndexPage",
         "core.NoticeIndexPage",
+        "core.ContactsPage",
     ]
     max_count_per_parent = 1
 
@@ -477,6 +545,8 @@ class NoticeIndexPage(Page):
         "core.NoticePage",
     ]
 
+    max_count_per_parent = 1
+
     api_fields = [
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedNoticePagesSerializer(source='get_children.live')),
@@ -497,6 +567,26 @@ class NoticePage(Page):
         APIField("body"),
         APIField("body_html", serializer=RichTextFieldSerializer(source="body")),
         APIField("publication_date", serializer=DateTimeField(source="last_published_at")),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+    ]
+
+
+class ContactsPage(Page):
+    subpage_types = []
+
+    content_panels = Page.content_panels + [
+        InlinePanel("emergency_contacts", label="Emergency Contacts"),
+        InlinePanel("provincial_government_contacts", label="Provincial Government Contacts"),
+        InlinePanel("national_government_contacts", label="National Government Contacts"),
+    ]
+
+    max_count_per_parent = 1
+
+    api_fields = [
+        APIField("emergency_contacts", serializer=EmergencyContactSerializer(many=True)),
+        APIField("provincial_government_contacts", serializer=ProvincialGovernmentContactSerializer(many=True)),
+        APIField("national_government_contacts", serializer=NationalGovernmentContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
