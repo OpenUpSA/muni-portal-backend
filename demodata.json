@@ -18,15 +18,6 @@
   }
 },
 {
-  "model": "core.personcontact",
-  "pk": 1,
-  "fields": {
-    "sort_order": 0,
-    "page": 15,
-    "contact": 2
-  }
-},
-{
   "model": "core.servicepointcontact",
   "pk": 1,
   "fields": {
@@ -42,6 +33,46 @@
     "sort_order": 0,
     "page": 20,
     "contact": 4
+  }
+},
+{
+  "model": "core.emergencycontact",
+  "pk": 1,
+  "fields": {
+    "sort_order": 0,
+    "icon_classes": "fas fa-shield-alt",
+    "contact": 5,
+    "page": 24
+  }
+},
+{
+  "model": "core.emergencycontact",
+  "pk": 2,
+  "fields": {
+    "sort_order": 1,
+    "icon_classes": "fas fa-shield-alt",
+    "contact": 6,
+    "page": 24
+  }
+},
+{
+  "model": "core.provincialgovernmentcontact",
+  "pk": 1,
+  "fields": {
+    "sort_order": 0,
+    "icon_classes": "fas fa-hospital-symbol",
+    "contact": 8,
+    "page": 24
+  }
+},
+{
+  "model": "core.nationalgovernmentcontact",
+  "pk": 1,
+  "fields": {
+    "sort_order": 0,
+    "icon_classes": "fas fa-id-card",
+    "contact": 9,
+    "page": 24
   }
 },
 {
@@ -90,6 +121,54 @@
     ],
     "annotation": null,
     "purpose": "Struisbaai Library"
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 5,
+  "fields": {
+    "value": "234 567 8901",
+    "type": [
+      "phone"
+    ],
+    "annotation": "Bredasdorp station",
+    "purpose": "Local police office emergency contact"
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 6,
+  "fields": {
+    "value": "123 456 7890",
+    "type": [
+      "phone"
+    ],
+    "annotation": "Beach station",
+    "purpose": "Local police office emergency contact"
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 8,
+  "fields": {
+    "value": "456 789 0123",
+    "type": [
+      "phone"
+    ],
+    "annotation": "Something hospital",
+    "purpose": "Something hospital non-emergency"
+  }
+},
+{
+  "model": "core.contactdetail",
+  "pk": 9,
+  "fields": {
+    "value": "028 425 1165",
+    "type": [
+      "phone"
+    ],
+    "annotation": "Home Affairs small office, Bredasdorp",
+    "purpose": "Home Affairs bredasdorp"
   }
 },
 {
@@ -203,7 +282,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$150000$VsRUSXgD3VvW$HRwU6P4Yu7XNQJJ0lLss7VjfQe8BarA1O2z0XJSJhFU=",
-    "last_login": "2021-02-22T10:02:31.428Z",
+    "last_login": "2021-03-25T16:21:02.771Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
@@ -490,7 +569,7 @@
   "fields": {
     "path": "000100020002",
     "depth": 3,
-    "numchild": 3,
+    "numchild": 4,
     "title": "My Muni",
     "draft_title": "My Muni",
     "slug": "my-municipality",
@@ -523,7 +602,7 @@
   "model": "wagtailcore.page",
   "pk": 8,
   "fields": {
-    "path": "0001000200020001",
+    "path": "0001000200020002",
     "depth": 4,
     "numchild": 2,
     "title": "Administration",
@@ -558,7 +637,7 @@
   "model": "wagtailcore.page",
   "pk": 9,
   "fields": {
-    "path": "0001000200020002",
+    "path": "0001000200020003",
     "depth": 4,
     "numchild": 3,
     "title": "Political representatives",
@@ -593,7 +672,7 @@
   "model": "wagtailcore.page",
   "pk": 10,
   "fields": {
-    "path": "00010002000200010001",
+    "path": "00010002000200020001",
     "depth": 5,
     "numchild": 0,
     "title": "Fred Bloggs",
@@ -628,7 +707,7 @@
   "model": "wagtailcore.page",
   "pk": 11,
   "fields": {
-    "path": "00010002000200010002",
+    "path": "00010002000200020002",
     "depth": 5,
     "numchild": 0,
     "title": "Peter Jane",
@@ -663,7 +742,7 @@
   "model": "wagtailcore.page",
   "pk": 12,
   "fields": {
-    "path": "00010002000200020001",
+    "path": "00010002000200030001",
     "depth": 5,
     "numchild": 0,
     "title": "Mayor",
@@ -698,7 +777,7 @@
   "model": "wagtailcore.page",
   "pk": 13,
   "fields": {
-    "path": "00010002000200020002",
+    "path": "00010002000200030002",
     "depth": 5,
     "numchild": 0,
     "title": "Some committee",
@@ -733,9 +812,9 @@
   "model": "wagtailcore.page",
   "pk": 14,
   "fields": {
-    "path": "00010002000200020003",
+    "path": "00010002000200030003",
     "depth": 5,
-    "numchild": 2,
+    "numchild": 0,
     "title": "Councillors",
     "draft_title": "Councillors",
     "slug": "councillors",
@@ -759,79 +838,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2020-10-19T16:15:28.284Z",
-    "last_published_at": "2020-10-19T16:15:28.284Z",
-    "latest_revision_created_at": "2020-10-19T16:15:28.270Z",
-    "live_revision": 14
-  }
-},
-{
-  "model": "wagtailcore.page",
-  "pk": 15,
-  "fields": {
-    "path": "000100020002000200030001",
-    "depth": 6,
-    "numchild": 0,
-    "title": "Charles Jennings",
-    "draft_title": "Charles Jennings",
-    "slug": "mr-busy-guy",
-    "content_type": [
-      "core",
-      "councillorpage"
-    ],
-    "live": true,
-    "has_unpublished_changes": false,
-    "url_path": "/cape-agulhas-municipality/my-municipality/political-representatives/councillors/mr-busy-guy/",
-    "owner": [
-      "admin"
-    ],
-    "seo_title": "",
-    "show_in_menus": false,
-    "search_description": "",
-    "go_live_at": null,
-    "expire_at": null,
-    "expired": false,
-    "locked": false,
-    "locked_at": null,
-    "locked_by": null,
-    "first_published_at": "2020-10-19T16:27:39.827Z",
-    "last_published_at": "2020-10-22T15:53:45.065Z",
-    "latest_revision_created_at": "2020-10-22T15:53:45.045Z",
-    "live_revision": 26
-  }
-},
-{
-  "model": "wagtailcore.page",
-  "pk": 16,
-  "fields": {
-    "path": "000100020002000200030002",
-    "depth": 6,
-    "numchild": 0,
-    "title": "Eloise Brooks",
-    "draft_title": "Eloise Brooks",
-    "slug": "ms-also-busy",
-    "content_type": [
-      "core",
-      "councillorpage"
-    ],
-    "live": true,
-    "has_unpublished_changes": false,
-    "url_path": "/cape-agulhas-municipality/my-municipality/political-representatives/councillors/ms-also-busy/",
-    "owner": [
-      "admin"
-    ],
-    "seo_title": "",
-    "show_in_menus": false,
-    "search_description": "",
-    "go_live_at": null,
-    "expire_at": null,
-    "expired": false,
-    "locked": false,
-    "locked_at": null,
-    "locked_by": null,
-    "first_published_at": "2020-10-19T16:28:01.611Z",
-    "last_published_at": "2020-10-22T15:54:24.411Z",
-    "latest_revision_created_at": "2020-10-22T15:54:24.395Z",
-    "live_revision": 27
+    "last_published_at": "2021-03-10T09:18:37.749Z",
+    "latest_revision_created_at": "2021-03-10T09:18:37.737Z",
+    "live_revision": 39
   }
 },
 {
@@ -943,7 +952,7 @@
   "model": "wagtailcore.page",
   "pk": 21,
   "fields": {
-    "path": "0001000200020003",
+    "path": "0001000200020004",
     "depth": 4,
     "numchild": 2,
     "title": "Notices",
@@ -978,7 +987,7 @@
   "model": "wagtailcore.page",
   "pk": 22,
   "fields": {
-    "path": "00010002000200030001",
+    "path": "00010002000200040001",
     "depth": 5,
     "numchild": 0,
     "title": "Maintenance request",
@@ -1013,7 +1022,7 @@
   "model": "wagtailcore.page",
   "pk": 23,
   "fields": {
-    "path": "00010002000200030002",
+    "path": "00010002000200040002",
     "depth": 5,
     "numchild": 0,
     "title": "Changes to road names",
@@ -1042,6 +1051,41 @@
     "last_published_at": "2020-11-30T20:01:32.465Z",
     "latest_revision_created_at": "2020-11-30T20:01:32.450Z",
     "live_revision": 37
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 24,
+  "fields": {
+    "path": "0001000200020001",
+    "depth": 4,
+    "numchild": 0,
+    "title": "Contacts",
+    "draft_title": "Contacts",
+    "slug": "contacts",
+    "content_type": [
+      "core",
+      "contactspage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/cape-agulhas-municipality/my-municipality/contacts/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2021-03-25T16:26:32.192Z",
+    "last_published_at": "2021-03-26T05:58:19.305Z",
+    "latest_revision_created_at": "2021-03-26T05:58:19.269Z",
+    "live_revision": 44
   }
 },
 {
@@ -1242,132 +1286,6 @@
 },
 {
   "model": "wagtailcore.pagerevision",
-  "pk": 15,
-  "fields": {
-    "page": 15,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-19T16:27:39.814Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 15, \"path\": \"000100020002000200030001\", \"depth\": 6, \"numchild\": 0, \"title\": \"Mr busy guy\", \"draft_title\": \"Mr busy guy\", \"slug\": \"mr-busy-guy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/mr-busy-guy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"overview\": \"<p>stuff</p>\", \"person_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 15, \"contact\": 2}], \"councillor_groups\": [12, 13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 16,
-  "fields": {
-    "page": 16,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-19T16:28:01.601Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 16, \"path\": \"000100020002000200030002\", \"depth\": 6, \"numchild\": 0, \"title\": \"Ms also busy\", \"draft_title\": \"Ms also busy\", \"slug\": \"ms-also-busy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/ms-also-busy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"overview\": \"<p>more stuff</p>\", \"person_contacts\": [], \"councillor_groups\": [13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 17,
-  "fields": {
-    "page": 15,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T10:43:08.430Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 15, \"path\": \"000100020002000200030001\", \"depth\": 6, \"numchild\": 0, \"title\": \"Mr busy guy\", \"draft_title\": \"Mr busy guy\", \"slug\": \"mr-busy-guy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/mr-busy-guy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:27:39.827Z\", \"last_published_at\": \"2020-10-19T16:27:39.827Z\", \"latest_revision_created_at\": \"2020-10-19T16:27:39.814Z\", \"live_revision\": 15, \"overview\": \"<p>stuff</p>\", \"political_party\": 1, \"person_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 15, \"contact\": 2}], \"councillor_groups\": [12, 13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 18,
-  "fields": {
-    "page": 16,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T10:43:22.942Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 16, \"path\": \"000100020002000200030002\", \"depth\": 6, \"numchild\": 0, \"title\": \"Ms also busy\", \"draft_title\": \"Ms also busy\", \"slug\": \"ms-also-busy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/ms-also-busy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:28:01.611Z\", \"last_published_at\": \"2020-10-19T16:28:01.611Z\", \"latest_revision_created_at\": \"2020-10-19T16:28:01.601Z\", \"live_revision\": 16, \"overview\": \"<p>more stuff</p>\", \"political_party\": 2, \"person_contacts\": [], \"councillor_groups\": [13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 19,
-  "fields": {
-    "page": 16,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T11:45:00.846Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 16, \"path\": \"000100020002000200030002\", \"depth\": 6, \"numchild\": 0, \"title\": \"Eloise Brooks\", \"draft_title\": \"Ms also busy\", \"slug\": \"ms-also-busy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/ms-also-busy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:28:01.611Z\", \"last_published_at\": \"2020-10-22T10:43:22.954Z\", \"latest_revision_created_at\": \"2020-10-22T10:43:22.942Z\", \"live_revision\": 18, \"job_title\": \"\", \"overview\": \"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>\", \"political_party\": 2, \"person_contacts\": [], \"councillor_groups\": [13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 20,
-  "fields": {
-    "page": 16,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T11:45:33.776Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 16, \"path\": \"000100020002000200030002\", \"depth\": 6, \"numchild\": 0, \"title\": \"Eloise Brooks\", \"draft_title\": \"Eloise Brooks\", \"slug\": \"ms-also-busy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/ms-also-busy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:28:01.611Z\", \"last_published_at\": \"2020-10-22T11:45:00.862Z\", \"latest_revision_created_at\": \"2020-10-22T11:45:00.846Z\", \"live_revision\": 19, \"job_title\": \"Alderlady\", \"overview\": \"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>\", \"political_party\": 2, \"person_contacts\": [], \"councillor_groups\": [13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 21,
-  "fields": {
-    "page": 15,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T11:47:28.916Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 15, \"path\": \"000100020002000200030001\", \"depth\": 6, \"numchild\": 0, \"title\": \"Charles Jennings\", \"draft_title\": \"Mr busy guy\", \"slug\": \"mr-busy-guy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/mr-busy-guy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:27:39.827Z\", \"last_published_at\": \"2020-10-22T10:43:08.447Z\", \"latest_revision_created_at\": \"2020-10-22T10:43:08.430Z\", \"live_revision\": 17, \"job_title\": \"Executive Mayor\", \"overview\": \"<p>stuff</p>\", \"political_party\": 1, \"person_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 15, \"contact\": 2}], \"councillor_groups\": [12, 13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 22,
-  "fields": {
-    "page": 15,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T11:47:43.272Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 15, \"path\": \"000100020002000200030001\", \"depth\": 6, \"numchild\": 0, \"title\": \"Charles Jennings\", \"draft_title\": \"Charles Jennings\", \"slug\": \"mr-busy-guy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/mr-busy-guy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:27:39.827Z\", \"last_published_at\": \"2020-10-22T11:47:28.933Z\", \"latest_revision_created_at\": \"2020-10-22T11:47:28.916Z\", \"live_revision\": 21, \"job_title\": \"Executive Mayor\", \"overview\": \"<p>stuff</p>\", \"political_party\": 2, \"person_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 15, \"contact\": 2}], \"councillor_groups\": [12, 13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 23,
-  "fields": {
-    "page": 16,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T11:47:56.889Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 16, \"path\": \"000100020002000200030002\", \"depth\": 6, \"numchild\": 0, \"title\": \"Eloise Brooks\", \"draft_title\": \"Eloise Brooks\", \"slug\": \"ms-also-busy\", \"content_type\": 47, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/political-representatives/councillors/ms-also-busy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:28:01.611Z\", \"last_published_at\": \"2020-10-22T11:45:33.791Z\", \"latest_revision_created_at\": \"2020-10-22T11:45:33.776Z\", \"live_revision\": 20, \"job_title\": \"Alderlady\", \"overview\": \"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>\", \"political_party\": 1, \"person_contacts\": [], \"councillor_groups\": [13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
   "pk": 24,
   "fields": {
     "page": 7,
@@ -1377,34 +1295,6 @@
       "admin"
     ],
     "content_json": "{\"pk\": 7, \"path\": \"000100020002\", \"depth\": 3, \"numchild\": 2, \"title\": \"My Muni\", \"draft_title\": \"My Muni\", \"slug\": \"my-municipality\", \"content_type\": 42, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-muni/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:11:43.257Z\", \"last_published_at\": \"2020-10-19T16:11:43.257Z\", \"latest_revision_created_at\": \"2020-10-19T16:11:43.246Z\", \"live_revision\": 6}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 26,
-  "fields": {
-    "page": 15,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T15:53:45.045Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 15, \"path\": \"000100020002000200030001\", \"depth\": 6, \"numchild\": 0, \"title\": \"Charles Jennings\", \"draft_title\": \"Charles Jennings\", \"slug\": \"mr-busy-guy\", \"content_type\": 20, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/political-representatives/councillors/mr-busy-guy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:27:39.827Z\", \"last_published_at\": \"2020-10-22T11:47:43.287Z\", \"latest_revision_created_at\": \"2020-10-22T11:47:43.272Z\", \"live_revision\": 22, \"job_title\": \"Executive Mayor\", \"overview\": \"<p>stuff</p>\", \"profile_image\": 4, \"political_party\": 2, \"person_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"page\": 15, \"contact\": 2}], \"councillor_groups\": [12, 13]}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 27,
-  "fields": {
-    "page": 16,
-    "submitted_for_moderation": false,
-    "created_at": "2020-10-22T15:54:24.395Z",
-    "user": [
-      "admin"
-    ],
-    "content_json": "{\"pk\": 16, \"path\": \"000100020002000200030002\", \"depth\": 6, \"numchild\": 0, \"title\": \"Eloise Brooks\", \"draft_title\": \"Eloise Brooks\", \"slug\": \"ms-also-busy\", \"content_type\": 20, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/political-representatives/councillors/ms-also-busy/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:28:01.611Z\", \"last_published_at\": \"2020-10-22T11:47:56.906Z\", \"latest_revision_created_at\": \"2020-10-22T11:47:56.889Z\", \"live_revision\": 23, \"job_title\": \"Alderlady\", \"overview\": \"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>\", \"profile_image\": 5, \"political_party\": 1, \"person_contacts\": [], \"councillor_groups\": [13]}",
     "approved_go_live_at": null
   }
 },
@@ -1549,6 +1439,104 @@
   }
 },
 {
+  "model": "wagtailcore.pagerevision",
+  "pk": 38,
+  "fields": {
+    "page": 14,
+    "submitted_for_moderation": false,
+    "created_at": "2021-03-10T09:14:04.783Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 14, \"path\": \"00010002000200020003\", \"depth\": 5, \"numchild\": 2, \"title\": \"Councillors\", \"draft_title\": \"Councillors\", \"slug\": \"councillors\", \"content_type\": 14, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/political-representatives/councillors/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:15:28.284Z\", \"last_published_at\": \"2020-10-19T16:15:28.284Z\", \"latest_revision_created_at\": \"2020-10-19T16:15:28.270Z\", \"live_revision\": 14, \"overview\": \"<p>Guess who the councillors are...</p>\", \"icon_classes\": \"fas fa-users\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 39,
+  "fields": {
+    "page": 14,
+    "submitted_for_moderation": false,
+    "created_at": "2021-03-10T09:18:37.737Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 14, \"path\": \"00010002000200020003\", \"depth\": 5, \"numchild\": 2, \"title\": \"Councillors\", \"draft_title\": \"Councillors\", \"slug\": \"councillors\", \"content_type\": 14, \"live\": true, \"has_unpublished_changes\": true, \"url_path\": \"/cape-agulhas-municipality/my-municipality/political-representatives/councillors/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2020-10-19T16:15:28.284Z\", \"last_published_at\": \"2020-10-19T16:15:28.284Z\", \"latest_revision_created_at\": \"2021-03-10T09:14:04.783Z\", \"live_revision\": 14, \"overview\": \"<p>Guess who the councillors are...</p>\", \"icon_classes\": \"fas fa-users\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 40,
+  "fields": {
+    "page": 24,
+    "submitted_for_moderation": false,
+    "created_at": "2021-03-25T16:26:32.179Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 24, \"path\": \"0001000200020004\", \"depth\": 4, \"numchild\": 0, \"title\": \"Contacts\", \"draft_title\": \"Contacts\", \"slug\": \"contacts\", \"content_type\": 66, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/contacts/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"emergency_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"contact\": 5, \"page\": 24}, {\"pk\": 2, \"sort_order\": 1, \"contact\": 6, \"page\": 24}], \"provincial_government_contacts\": [], \"national_government_contacts\": []}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 41,
+  "fields": {
+    "page": 24,
+    "submitted_for_moderation": false,
+    "created_at": "2021-03-25T16:39:38.473Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 24, \"path\": \"0001000200020001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Contacts\", \"draft_title\": \"Contacts\", \"slug\": \"contacts\", \"content_type\": 66, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/contacts/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2021-03-25T16:26:32.192Z\", \"last_published_at\": \"2021-03-25T16:26:32.192Z\", \"latest_revision_created_at\": \"2021-03-25T16:26:32.179Z\", \"live_revision\": 40, \"emergency_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"contact\": 5, \"page\": 24}, {\"pk\": 2, \"sort_order\": 1, \"contact\": 6, \"page\": 24}, {\"pk\": null, \"sort_order\": 2, \"contact\": 7, \"page\": 24}], \"provincial_government_contacts\": [{\"pk\": null, \"sort_order\": 0, \"contact\": 8, \"page\": 24}], \"national_government_contacts\": [{\"pk\": null, \"sort_order\": 0, \"contact\": 9, \"page\": 24}]}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 42,
+  "fields": {
+    "page": 24,
+    "submitted_for_moderation": false,
+    "created_at": "2021-03-25T16:39:41.665Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 24, \"path\": \"0001000200020001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Contacts\", \"draft_title\": \"Contacts\", \"slug\": \"contacts\", \"content_type\": 66, \"live\": true, \"has_unpublished_changes\": true, \"url_path\": \"/cape-agulhas-municipality/my-municipality/contacts/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2021-03-25T16:26:32.192Z\", \"last_published_at\": \"2021-03-25T16:26:32.192Z\", \"latest_revision_created_at\": \"2021-03-25T16:39:38.473Z\", \"live_revision\": 40, \"emergency_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"contact\": 5, \"page\": null}, {\"pk\": 2, \"sort_order\": 1, \"contact\": 6, \"page\": null}, {\"pk\": null, \"sort_order\": 2, \"contact\": 7, \"page\": 24}], \"provincial_government_contacts\": [{\"pk\": null, \"sort_order\": 0, \"contact\": 8, \"page\": 24}], \"national_government_contacts\": [{\"pk\": null, \"sort_order\": 0, \"contact\": 9, \"page\": 24}]}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 43,
+  "fields": {
+    "page": 24,
+    "submitted_for_moderation": false,
+    "created_at": "2021-03-25T18:04:42.166Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 24, \"path\": \"0001000200020001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Contacts\", \"draft_title\": \"Contacts\", \"slug\": \"contacts\", \"content_type\": 66, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/contacts/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2021-03-25T16:26:32.192Z\", \"last_published_at\": \"2021-03-25T16:39:41.691Z\", \"latest_revision_created_at\": \"2021-03-25T16:39:41.665Z\", \"live_revision\": 42, \"icon_classes\": \"fas fa-phone\", \"emergency_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"contact\": 5, \"page\": 24}, {\"pk\": 2, \"sort_order\": 1, \"contact\": 6, \"page\": 24}, {\"pk\": 3, \"sort_order\": 2, \"contact\": 7, \"page\": 24}], \"provincial_government_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"contact\": 8, \"page\": 24}], \"national_government_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"contact\": 9, \"page\": 24}]}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 44,
+  "fields": {
+    "page": 24,
+    "submitted_for_moderation": false,
+    "created_at": "2021-03-26T05:58:19.269Z",
+    "user": [
+      "admin"
+    ],
+    "content_json": "{\"pk\": 24, \"path\": \"0001000200020001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Contacts\", \"draft_title\": \"Contacts\", \"slug\": \"contacts\", \"content_type\": 66, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/cape-agulhas-municipality/my-municipality/contacts/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"locked_at\": null, \"locked_by\": null, \"first_published_at\": \"2021-03-25T16:26:32.192Z\", \"last_published_at\": \"2021-03-25T18:04:42.184Z\", \"latest_revision_created_at\": \"2021-03-25T18:04:42.166Z\", \"live_revision\": 43, \"icon_classes\": \"fas fa-phone\", \"emergency_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"icon_classes\": \"fas fa-shield-alt\", \"contact\": 5, \"page\": 24}, {\"pk\": 2, \"sort_order\": 1, \"icon_classes\": \"fas fa-shield-alt\", \"contact\": 6, \"page\": 24}, {\"pk\": 3, \"sort_order\": 2, \"icon_classes\": \"fas fa-hospital-symbol\", \"contact\": 7, \"page\": 24}], \"provincial_government_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"icon_classes\": \"fas fa-hospital-symbol\", \"contact\": 8, \"page\": 24}], \"national_government_contacts\": [{\"pk\": 1, \"sort_order\": 0, \"icon_classes\": \"fas fa-id-card\", \"contact\": 9, \"page\": 24}]}",
+    "approved_go_live_at": null
+  }
+},
+{
   "model": "wagtailcore.collection",
   "pk": 1,
   "fields": {
@@ -1624,7 +1612,7 @@
     "suburb": "Daar",
     "description": "This one has the date 2020-02-01 sent from the app",
     "coordinates": "12.3, 45.6",
-    "request_date": "2020-02-01",
+    "request_date": "2020-02-01T00:00:00Z",
     "on_premis_reference": "373761",
     "collaborator_status": "assigned",
     "status": "in_progress",
@@ -1650,7 +1638,7 @@
     "suburb": "Daar",
     "description": "This one has the date 2020-02-04 sent from the app",
     "coordinates": "12.3, 45.6",
-    "request_date": "2020-02-04",
+    "request_date": "2020-02-04T00:00:00Z",
     "on_premis_reference": "373762",
     "collaborator_status": "assigned",
     "status": "in_progress",
@@ -1676,11 +1664,18 @@
     "suburb": "Daar",
     "description": "Iets is fout",
     "coordinates": null,
-    "request_date": "2020-01-01",
+    "request_date": "2020-01-01T00:00:00Z",
     "on_premis_reference": "373834",
     "collaborator_status": "registered",
     "status": "in_progress",
     "demarcation_code": "WC033"
+  }
+},
+{
+  "model": "core.contactspage",
+  "pk": 24,
+  "fields": {
+    "icon_classes": "fas fa-phone"
   }
 },
 {
@@ -1700,7 +1695,9 @@
 {
   "model": "core.noticeindexpage",
   "pk": 21,
-  "fields": {}
+  "fields": {
+    "icon_classes": ""
+  }
 },
 {
   "model": "core.homepage",
@@ -1767,14 +1764,16 @@
   "model": "core.politicalrepsindexpage",
   "pk": 9,
   "fields": {
-    "overview": "<p>These are political reps</p>"
+    "overview": "<p>These are political reps</p>",
+    "icon_classes": ""
   }
 },
 {
   "model": "core.administrationindexpage",
   "pk": 8,
   "fields": {
-    "overview": "<p>This is the amdinistration.</p>"
+    "overview": "<p>This is the amdinistration.</p>",
+    "icon_classes": ""
   }
 },
 {
@@ -1809,28 +1808,8 @@
   "model": "core.councillorlistpage",
   "pk": 14,
   "fields": {
-    "overview": "<p>Guess who the councillors are...</p>"
-  }
-},
-{
-  "model": "core.councillorpage",
-  "pk": 15,
-  "fields": {
-    "political_party": 2,
-    "councillor_groups": [
-      12,
-      13
-    ]
-  }
-},
-{
-  "model": "core.councillorpage",
-  "pk": 16,
-  "fields": {
-    "political_party": 1,
-    "councillor_groups": [
-      13
-    ]
+    "overview": "<p>Guess who the councillors are...</p>",
+    "icon_classes": "fas fa-users"
   }
 },
 {
@@ -1849,24 +1828,6 @@
     "job_title": "",
     "overview": "<p>Peteris also nice</p>",
     "profile_image": null
-  }
-},
-{
-  "model": "core.personpage",
-  "pk": 15,
-  "fields": {
-    "job_title": "Executive Mayor",
-    "overview": "<p>stuff</p>",
-    "profile_image": 4
-  }
-},
-{
-  "model": "core.personpage",
-  "pk": 16,
-  "fields": {
-    "job_title": "Alderlady",
-    "overview": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>",
-    "profile_image": 5
   }
 }
 ]

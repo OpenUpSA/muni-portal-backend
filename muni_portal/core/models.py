@@ -84,6 +84,40 @@ class ServicePointContact(Orderable, models.Model):
         return self.page.title + " -> " + self.contact
 
 
+class KeyContact(Orderable, models.Model):
+    icon_classes = models.CharField(max_length=100, blank=True)
+    contact = models.ForeignKey(
+        "ContactDetail", on_delete=models.CASCADE, related_name="+"
+    )
+
+    panels = [
+        FieldPanel("icon_classes"),
+        SnippetChooserPanel("contact"),
+    ]
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.page.title + " -> " + self.contact
+
+
+class EmergencyContact(KeyContact):
+    page = ParentalKey(
+        "core.ContactsPage", on_delete=models.CASCADE, related_name="emergency_contacts"
+    )
+
+class ProvincialGovernmentContact(KeyContact):
+    page = ParentalKey(
+        "core.ContactsPage", on_delete=models.CASCADE, related_name="provincial_government_contacts"
+    )
+
+class NationalGovernmentContact(KeyContact):
+    page = ParentalKey(
+        "core.ContactsPage", on_delete=models.CASCADE, related_name="national_government_contacts"
+    )
+
+
 class ContactDetailTypeManager(models.Manager):
     def get_by_natural_key(self, slug):
         return self.get(slug=slug)
@@ -119,14 +153,6 @@ class ContactSerializer(drf_serializers.Serializer):
     type = SerializerMethodNestedSerializer(ContactDetailTypeSerializer)
     annotation = drf_serializers.SerializerMethodField()
 
-    class Meta:
-        fields = [
-            "value",
-            "type",
-            "annotation",
-        ]
-        depth = 1
-
     def get_value(self, obj):
         return obj.contact.value
 
@@ -137,19 +163,11 @@ class ContactSerializer(drf_serializers.Serializer):
         return obj.contact.annotation
 
 
-class PersonContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = PersonContact
+class KeyContactSerializer(ContactSerializer):
+    icon_classes = drf_serializers.SerializerMethodField()
 
-
-class ServiceContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = ServiceContact
-
-
-class ServicePointContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = ServicePointContact
+    def get_icon_classes(self, obj):
+        return obj.icon_classes
 
 
 @register_snippet
@@ -204,7 +222,7 @@ class PersonPage(Page):
         APIField("overview"),
         APIField("profile_image"),
         APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
-        APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
+        APIField("person_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -279,7 +297,7 @@ class CouncillorPage(PersonPage):
         APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
         APIField("political_party", serializer=PoliticalPartySerializer()),
         APIField("councillor_groups"),
-        APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
+        APIField("person_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -345,13 +363,16 @@ class AdministrationIndexPage(Page):
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+    icon_classes = models.CharField(max_length=250, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("icon_classes"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("icon_classes"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children.live')),
     ]
@@ -365,13 +386,16 @@ class PoliticalRepsIndexPage(Page):
     max_count_per_parent = 1
 
     overview = RichTextField(features=NON_LINK_FEATURES)
+    icon_classes = models.CharField(max_length=250, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
+        FieldPanel("icon_classes"),
     ]
 
     api_fields = [
         APIField("overview"),
+        APIField("icon_classes"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedCouncillorGroupPageSerializer(source='get_children.live')),
     ]
@@ -392,7 +416,7 @@ class ServicePointPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("office_hours"),
-        APIField("service_point_contacts", serializer=ServicePointContactSerializer(many=True)),
+        APIField("service_point_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -427,7 +451,7 @@ class ServicePage(Page):
         APIField("overview"),
         APIField("office_hours"),
         APIField("head_of_service", serializer=RelatedPersonPageSerializer()),
-        APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
+        APIField("service_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -438,6 +462,7 @@ class MyMuniPage(Page):
         "core.PoliticalRepsIndexPage",
         "core.AdministrationIndexPage",
         "core.NoticeIndexPage",
+        "core.ContactsPage",
     ]
     max_count_per_parent = 1
 
@@ -477,7 +502,16 @@ class NoticeIndexPage(Page):
         "core.NoticePage",
     ]
 
+    max_count_per_parent = 1
+
+    icon_classes = models.CharField(max_length=250, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("icon_classes"),
+    ]
+
     api_fields = [
+        APIField("icon_classes"),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedNoticePagesSerializer(source='get_children.live')),
     ]
@@ -497,6 +531,30 @@ class NoticePage(Page):
         APIField("body"),
         APIField("body_html", serializer=RichTextFieldSerializer(source="body")),
         APIField("publication_date", serializer=DateTimeField(source="last_published_at")),
+        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
+        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+    ]
+
+
+class ContactsPage(Page):
+    subpage_types = []
+
+    icon_classes = models.CharField(max_length=250, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("icon_classes"),
+        InlinePanel("emergency_contacts", label="Emergency Contacts"),
+        InlinePanel("provincial_government_contacts", label="Provincial Government Contacts"),
+        InlinePanel("national_government_contacts", label="National Government Contacts"),
+    ]
+
+    max_count_per_parent = 1
+
+    api_fields = [
+        APIField("icon_classes"),
+        APIField("emergency_contacts", serializer=KeyContactSerializer(many=True)),
+        APIField("provincial_government_contacts", serializer=KeyContactSerializer(many=True)),
+        APIField("national_government_contacts", serializer=KeyContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
