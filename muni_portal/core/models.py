@@ -84,26 +84,6 @@ class ServicePointContact(Orderable, models.Model):
         return self.page.title + " -> " + self.contact
 
 
-class PersonContact(Orderable, models.Model):
-    page = ParentalKey(
-        "core.PersonPage", on_delete=models.CASCADE, related_name="person_contacts"
-    )
-    contact = models.ForeignKey(
-        "ContactDetail", on_delete=models.CASCADE, related_name="+"
-    )
-
-    class Meta(Orderable.Meta):
-        verbose_name = "person contact"
-        verbose_name_plural = "person contacts"
-
-    panels = [
-        SnippetChooserPanel("contact"),
-    ]
-
-    def __str__(self):
-        return self.page.title + " -> " + self.contact
-
-
 class KeyContact(Orderable, models.Model):
     icon_classes = models.CharField(max_length=100, blank=True)
     contact = models.ForeignKey(
