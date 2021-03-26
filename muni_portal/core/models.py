@@ -105,11 +105,13 @@ class PersonContact(Orderable, models.Model):
 
 
 class KeyContact(Orderable, models.Model):
+    icon_classes = models.CharField(max_length=100, blank=True)
     contact = models.ForeignKey(
         "ContactDetail", on_delete=models.CASCADE, related_name="+"
     )
 
     panels = [
+        FieldPanel("icon_classes"),
         SnippetChooserPanel("contact"),
     ]
 
@@ -171,14 +173,6 @@ class ContactSerializer(drf_serializers.Serializer):
     type = SerializerMethodNestedSerializer(ContactDetailTypeSerializer)
     annotation = drf_serializers.SerializerMethodField()
 
-    class Meta:
-        fields = [
-            "value",
-            "type",
-            "annotation",
-        ]
-        depth = 1
-
     def get_value(self, obj):
         return obj.contact.value
 
@@ -189,34 +183,11 @@ class ContactSerializer(drf_serializers.Serializer):
         return obj.contact.annotation
 
 
-class PersonContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = PersonContact
+class KeyContactSerializer(ContactSerializer):
+    icon_classes = drf_serializers.SerializerMethodField()
 
-
-class ServiceContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = ServiceContact
-
-
-class ServicePointContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = ServicePointContact
-
-
-class EmergencyContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = EmergencyContact
-
-
-class ProvincialGovernmentContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = ProvincialGovernmentContact
-
-
-class NationalGovernmentContactSerializer(ContactSerializer):
-    class Meta(ContactSerializer.Meta):
-        model = NationalGovernmentContact
+    def get_icon_classes(self, obj):
+        return obj.icon_classes
 
 
 @register_snippet
@@ -271,7 +242,7 @@ class PersonPage(Page):
         APIField("overview"),
         APIField("profile_image"),
         APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
-        APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
+        APIField("person_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -346,7 +317,7 @@ class CouncillorPage(PersonPage):
         APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
         APIField("political_party", serializer=PoliticalPartySerializer()),
         APIField("councillor_groups"),
-        APIField("person_contacts", serializer=PersonContactSerializer(many=True)),
+        APIField("person_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -465,7 +436,7 @@ class ServicePointPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("office_hours"),
-        APIField("service_point_contacts", serializer=ServicePointContactSerializer(many=True)),
+        APIField("service_point_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -500,7 +471,7 @@ class ServicePage(Page):
         APIField("overview"),
         APIField("office_hours"),
         APIField("head_of_service", serializer=RelatedPersonPageSerializer()),
-        APIField("service_contacts", serializer=ServiceContactSerializer(many=True)),
+        APIField("service_contacts", serializer=ContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
@@ -601,9 +572,9 @@ class ContactsPage(Page):
 
     api_fields = [
         APIField("icon_classes"),
-        APIField("emergency_contacts", serializer=EmergencyContactSerializer(many=True)),
-        APIField("provincial_government_contacts", serializer=ProvincialGovernmentContactSerializer(many=True)),
-        APIField("national_government_contacts", serializer=NationalGovernmentContactSerializer(many=True)),
+        APIField("emergency_contacts", serializer=KeyContactSerializer(many=True)),
+        APIField("provincial_government_contacts", serializer=KeyContactSerializer(many=True)),
+        APIField("national_government_contacts", serializer=KeyContactSerializer(many=True)),
         APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
         APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
     ]
