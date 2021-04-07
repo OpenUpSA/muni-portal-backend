@@ -640,5 +640,4 @@ class ServiceRequest(models.Model):
                 f"Not able to map collaborator status to local status. "
                 f"'Collaborator status' == '{self.collaborator_status}' and "
                 f"'On Premis Reference' == '{self.on_premis_reference}'"
-
             )
