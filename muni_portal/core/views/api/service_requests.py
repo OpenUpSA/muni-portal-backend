@@ -132,7 +132,10 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         ]
 
         service_request = ServiceRequest.objects.create(
-            user=request.user
+            user=request.user,
+            type=request_type,
+            request_date=request_date_iso,
+            status=ServiceRequest.CREATED,
         )
 
         async_task(create_service_request, service_request.id, form_fields, hook=handle_service_request_create)
