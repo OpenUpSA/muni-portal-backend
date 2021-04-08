@@ -41,6 +41,10 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
         object_id = local_object.collaborator_object_id
         serializer = ServiceRequestSerializer(local_object)
 
+        if not object_id:
+            # Object does not exist in collaborator yet, so return local object without updating from collaborator
+            return Response(serializer.data)
+
         client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
         client.authenticate()
         remote_object = client.get_task(object_id)
@@ -141,6 +145,16 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             user=request.user,
             type=request_type,
             request_date=request_date,
+            user_name=user_name,
+            user_surname=user_surname,
+            user_mobile_number=user_mobile_number,
+            user_email_address=user_email_address,
+            street_name=street_name,
+            street_number=street_number,
+            suburb=suburb,
+            description=description,
+            coordinates=coordinates,
+            demarcation_code=demarcation_code
         )
 
         async_task(create_service_request, service_request.id, form_fields, hook=handle_service_request_create)
