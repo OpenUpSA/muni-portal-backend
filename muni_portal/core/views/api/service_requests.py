@@ -87,15 +87,13 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
                 settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD
             )
             client.authenticate()
-        else:
-            return Response([])
 
-        for service_request in local_objects_with_ids:
-            local_object = self.get_object(service_request.pk, request.user)
-            serializer = ServiceRequestSerializer(local_object)
-            remote_object = client.get_task(local_object.collaborator_object_id)
-            serializer.update(local_object, remote_object)
-            response_list.append(serializer.data)
+            for service_request in local_objects_with_ids:
+                local_object = self.get_object(service_request.pk, request.user)
+                serializer = ServiceRequestSerializer(local_object)
+                remote_object = client.get_task(local_object.collaborator_object_id)
+                serializer.update(local_object, remote_object)
+                response_list.append(serializer.data)
 
         for local_object in local_objects_without_ids:
             serializer = ServiceRequestSerializer(local_object)
