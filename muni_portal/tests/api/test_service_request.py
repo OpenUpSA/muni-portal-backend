@@ -291,6 +291,17 @@ class ApiServiceRequestTestCase(APITestCase):
         self.assertEquals(get_detail_response.data['suburb'], suburb)
         self.assertEquals(get_detail_response.data['description'], description)
 
+        get_list_response = self.client.get(reverse("service-request-list-create"))
+        self.assertEquals(get_list_response.status_code, status.HTTP_200_OK)
+        self.assertEquals(get_list_response.data[0]['type'], service_type)
+        self.assertEquals(get_list_response.data[0]['user_name'], user_name)
+        self.assertEquals(get_list_response.data[0]['user_surname'], user_surname)
+        self.assertEquals(get_list_response.data[0]['user_mobile_number'], user_mobile_number)
+        self.assertEquals(get_list_response.data[0]['street_name'], street_name)
+        self.assertEquals(get_list_response.data[0]['street_number'], street_number)
+        self.assertEquals(get_list_response.data[0]['suburb'], suburb)
+        self.assertEquals(get_list_response.data[0]['description'], description)
+
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
     @mock.patch.object(Session, 'post')
     def test_post_create_validation(self, mock_session_post, mock_post):
