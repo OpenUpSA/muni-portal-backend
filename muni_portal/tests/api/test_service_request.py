@@ -248,9 +248,7 @@ class ApiServiceRequestTestCase(APITestCase):
         response = self.client.post(reverse("service-request-list-create"), data=data)
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
 
-    @mock.patch("muni_portal.collaborator_api.client.requests.post")
-    def test_post_create_local_object(self, mock_post):
-        mock_post.return_value = self.get_mock_auth_response()
+    def test_post_create_local_object(self):
         self.authenticate()
 
         service_type = "test-type"
@@ -272,6 +270,9 @@ class ApiServiceRequestTestCase(APITestCase):
             "suburb": suburb,
             "description": description
         }
+
+        ServiceRequest.objects.all().delete()
+
         create_response = self.client.post(reverse("service-request-list-create"), data=data)
         self.assertEquals(create_response.status_code, status.HTTP_201_CREATED)
 
@@ -289,7 +290,6 @@ class ApiServiceRequestTestCase(APITestCase):
         self.assertEquals(get_detail_response.data['street_number'], street_number)
         self.assertEquals(get_detail_response.data['suburb'], suburb)
         self.assertEquals(get_detail_response.data['description'], description)
-
 
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
     @mock.patch.object(Session, 'post')
