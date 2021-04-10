@@ -125,6 +125,15 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         request_date_iso = request_date.isoformat()
         demarcation_code = "WC033"
 
+        serializer = ServiceRequestSerializer(
+            data={'user': request.user.pk,
+            'type': request_type, 'user_name': user_name, 'user_surname': user_surname, 'user_mobile_number': user_mobile_number,
+                'user_email_address': user_email_address, 'street_name': street_name, 'street_number': street_number, 'suburb': suburb,
+                'description': description, 'coordinates': coordinates, 'request_date': request_date, 'demarcartion_code': demarcation_code
+            }
+        )
+        serializer.is_valid(raise_exception=True)
+
         # Translate POST parameters received into Collaborator Web API form fields
         form_fields: List[FormField] = [
             {"FieldID": "F1", "FieldValue": request_type},
