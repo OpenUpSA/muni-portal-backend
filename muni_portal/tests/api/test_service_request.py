@@ -276,3 +276,22 @@ class ApiServiceRequestTestCase(APITestCase):
 
         self.assertEquals(type(response.data['user_email_address'][0]), ErrorDetail)
         self.assertEquals(response.data['user_email_address'][0], "Enter a valid email address.")
+
+    @mock.patch("muni_portal.collaborator_api.client.requests.post")
+    @mock.patch.object(Session, 'post')
+    def test_post_create_missing_fields(self, mock_session_post, mock_post):
+        mock_post.return_value = self.get_mock_auth_response()
+        mock_session_post.return_value = self.get_mock_detail_response()
+        self.authenticate()
+
+        response = self.client.post(reverse("service-request-list-create"))
+        self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.assertEquals(response.data['type'], 'This field is required.')
+        self.assertEquals(response.data['user_name'], 'This field is required.')
+        self.assertEquals(response.data['user_surname'], 'This field is required.')
+        self.assertEquals(response.data['user_mobile_number'], 'This field is required.')
+        self.assertEquals(response.data['street_name'], 'This field is required.')
+        self.assertEquals(response.data['street_number'], 'This field is required.')
+        self.assertEquals(response.data['suburb'], 'This field is required.')
+        self.assertEquals(response.data['description'], 'This field is required.')
