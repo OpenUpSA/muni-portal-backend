@@ -199,7 +199,14 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
 
 
 class ServiceRequestImageListCreateView(views.APIView):
-    permission_classes = []  # TODO: do not deploy this
+    """
+    This API View supports listing the images for a service request and creating images for an existing service
+    request.
+
+    It does not support creating images with a new service request, instead that is handled on the
+    Service Request create view.
+    """
+    permission_classes = []  # TODO: do not deploy without IsAuthenticated perm
     parser_classes = MultiPartParser
 
     @staticmethod
@@ -221,7 +228,7 @@ class ServiceRequestImageListCreateView(views.APIView):
         return Response(image_urls)
 
     def post(self, request: Request, service_request_pk: int) -> Response:
-        """ Create an image attachment for a specific Service Request object """
+        """ Create an image attachment for an existing Service Request object """
         service_request = self.get_service_request(service_request_pk, request.user)
         if type(service_request) == Response:
             return service_request
