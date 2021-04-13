@@ -645,3 +645,10 @@ class ServiceRequest(models.Model):
                 f"'On Premis Reference' == '{self.on_premis_reference}'"
 
             )
+
+
+class ServiceRequestImage(models.Model):
+    """ Image attachment for a Service Request object """
+    service_request = models.ForeignKey(to=ServiceRequest, on_delete=models.CASCADE, related_name='images')
+    date_created = models.DateTimeField(auto_now_add=True)
+    file = models.ImageField()
