@@ -43,7 +43,6 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "muni_portal.core.apps.CoreConfig",
-    "muni_portal.notifications.apps.NotificationsConfig",
     "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -152,7 +151,6 @@ STATICFILES_FINDERS = [
 ]
 STATICFILES_DIRS = [
     str(PROJ_DIR.path("static")),
-    str(ROOT_DIR.path("assets/bundles")),
 ]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 

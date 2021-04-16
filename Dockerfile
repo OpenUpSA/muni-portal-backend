@@ -4,7 +4,6 @@ ENV POETRY_VIRTUALENVS_CREATE false
 ENV PIP_NO_CACHE_DIR off
 ENV PIP_DISABLE_PIP_VERSION_CHECK on
 ENV PYTHONUNBUFFERED 1
-ENV NODE_ENV production
 
 RUN set -ex; \
   apt-get update; \
@@ -38,10 +37,6 @@ RUN set -ex; \
 USER django
 
 WORKDIR /app
-
-RUN set -ex; \
-  yarn; \
-  yarn build
 
 EXPOSE 5000
 CMD /app/bin/start.sh

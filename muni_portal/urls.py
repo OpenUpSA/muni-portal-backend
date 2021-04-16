@@ -9,14 +9,11 @@ from wagtail.documents import urls as wagtaildocs_urls
 
 from muni_portal.core.api import api_router
 from muni_portal.core.views import (
-    IndexView,
     CollaboratorWebhookApiView,
 )
 from muni_portal.core.views.api.service_requests import ServiceRequestDetailView, ServiceRequestListCreateView
 
 urlpatterns = [
-    path("", IndexView.as_view(), name="index"),
-    path("notifications", include("muni_portal.notifications.urls")),
     path("admin/", admin.site.urls),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
