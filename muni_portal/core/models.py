@@ -19,6 +19,7 @@ from muni_portal.core.wagtail_serializers import (
     SerializerMethodNestedSerializer,
     RelatedCouncillorGroupPageSerializer, RichTextFieldSerializer, RelatedNoticePagesSerializer
 )
+import uuid
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
 NON_EMBEDS_FEATURES = NON_LINK_FEATURES + ["link"]
@@ -647,8 +648,16 @@ class ServiceRequest(models.Model):
             )
 
 
+def service_request_photo_file_path(instance, filename):
+    extension = filename.split(".")[-1]
+    return (
+        f"service-requests/{instance.service_request.id}/images/{uuid.uuid4()}.{extension}/"
+    )
+
+
 class ServiceRequestImage(models.Model):
     """ Image attachment for a Service Request object """
     service_request = models.ForeignKey(to=ServiceRequest, on_delete=models.CASCADE, related_name='images')
     date_created = models.DateTimeField(auto_now_add=True)
-    file = models.ImageField()
+    file = models.ImageField(upload_to=service_request_photo_file_path)
+    exists_on_collaborator = models.BooleanField(default=False)
