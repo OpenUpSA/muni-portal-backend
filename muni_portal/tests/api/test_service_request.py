@@ -161,7 +161,7 @@ class ApiServiceRequestTestCase(APITestCase):
             "request_date": "2020-02-01T00:00:00Z",
             "on_premis_reference": "373761",
             "collaborator_status": "assigned",
-            "status": "in_progress",
+            "status": "assigned",
             "demarcation_code": "WC033",
             "user": 4
         }
@@ -202,7 +202,7 @@ class ApiServiceRequestTestCase(APITestCase):
             "request_date": "2020-02-01T00:00:00Z",
             "on_premis_reference": "373761",
             "collaborator_status": "assigned",
-            "status": "in_progress",
+            "status": "assigned",
             "demarcation_code": "WC033",
             "user": 4
         }, {
@@ -222,7 +222,7 @@ class ApiServiceRequestTestCase(APITestCase):
             "request_date": "2020-02-01T00:00:00Z",
             "on_premis_reference": "373761",
             "collaborator_status": "assigned",
-            "status": "in_progress",
+            "status": "assigned",
             "demarcation_code": "WC033",
             "user": 4
         })

@@ -43,9 +43,9 @@ services:
       - DJANGO_Q_SYNC=False
       - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY:-fake_private_key}
       - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY:-fake_public_key}
-      - COLLABORATOR_API_USERNAME=fakeuser
-      - COLLABORATOR_API_PASSWORD=fakepassword
-      - COLLABORATOR_API_BASE_URL=https://c5c14106-1f1d-4853-97dc-5621f141969e.mock.pstmn.io
+      - COLLABORATOR_API_USERNAME=${COLLABORATOR_API_USERNAME:-fakeuser}
+      - COLLABORATOR_API_PASSWORD=${COLLABORATOR_API_PASSWORD:-fakepassword}
+      - COLLABORATOR_API_BASE_URL=${COLLABORATOR_API_BASE_URL:-https://c5c14106-1f1d-4853-97dc-5621f141969e.mock.pstmn.io}
 
   db:
     image: postgres:11.6

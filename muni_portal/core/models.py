@@ -565,13 +565,13 @@ class ServiceRequest(models.Model):
 
     QUEUED = "queued"
     CREATED = "created"
-    IN_PROGRESS = "in_progress"
+    ASSIGNED = "assigned"
     COMPLETED = "completed"
 
     STATUS_CHOICES = (
         (QUEUED, "Queued"),
         (CREATED, "Created"),
-        (IN_PROGRESS, "In Progress"),
+        (ASSIGNED, "Assigned"),
         (COMPLETED, "Completed"),
     )
 
@@ -619,10 +619,7 @@ class ServiceRequest(models.Model):
                 self.collaborator_status == self.COLLABORATOR_REGISTERED
         )
 
-        is_registered_or_assigned = (
-                self.collaborator_status == self.COLLABORATOR_REGISTERED or
-                self.collaborator_status == self.COLLABORATOR_ASSIGNED
-        )
+        is_assigned = self.collaborator_status == self.COLLABORATOR_ASSIGNED
 
         is_completed_or_finalised = (
                 self.collaborator_status == self.COLLABORATOR_COMPLETED or
@@ -631,10 +628,10 @@ class ServiceRequest(models.Model):
 
         if not self.collaborator_status:
             self.status = self.QUEUED
-        elif is_initial_or_registered and not self.on_premis_reference:
+        elif is_initial_or_registered:
             self.status = self.CREATED
-        elif is_registered_or_assigned and self.on_premis_reference:
-            self.status = self.IN_PROGRESS
+        elif is_assigned and self.on_premis_reference:
+            self.status = self.ASSIGNED
         elif is_completed_or_finalised and self.on_premis_reference:
             self.status = self.COMPLETED
         else:
@@ -643,5 +640,4 @@ class ServiceRequest(models.Model):
                 f"Not able to map collaborator status to local status. "
                 f"'Collaborator status' == '{self.collaborator_status}' and "
                 f"'On Premis Reference' == '{self.on_premis_reference}'"
-
             )
