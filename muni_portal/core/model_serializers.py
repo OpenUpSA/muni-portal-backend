@@ -1,5 +1,5 @@
 from datetime import datetime
-from muni_portal.core.models import ServiceRequest
+from muni_portal.core.models import ServiceRequest, ServiceRequestImage
 from rest_framework import serializers
 from muni_portal.collaborator_api.types import ServiceRequestObject
 
@@ -39,3 +39,9 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class ServiceRequestImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceRequestImage
+        fields = ('file',)
