@@ -17,7 +17,6 @@ from django_q.tasks import async_task
 
 
 class ServiceRequestAPIView(views.APIView):
-
     @staticmethod
     def get_object(pk: int, user: User) -> ServiceRequest:
         try:
@@ -45,7 +44,9 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
             # Object does not exist in collaborator yet, so return local object without updating from collaborator
             return Response(serializer.data)
 
-        client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
+        client = Client(
+            settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD
+        )
         client.authenticate()
         remote_object = client.get_task(object_id)
         serializer.update(local_object, remote_object)
@@ -53,13 +54,18 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
 
 
 class ServiceRequestListCreateView(ServiceRequestAPIView):
-
     permission_classes = [IsAuthenticated]
 
     CREATE_REQUIRED_FIELDS = (
-            "type", "user_name", "user_surname", "user_mobile_number",
-            "street_name", "street_number", "suburb", "description"
-        )
+        "type",
+        "user_name",
+        "user_surname",
+        "user_mobile_number",
+        "street_name",
+        "street_number",
+        "suburb",
+        "description",
+    )
 
     def get(self, request) -> Response:
         """
@@ -69,11 +75,17 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         of each object from Collaborator Web API and returning it as a list.
         """
         response_list = []
-        local_objects_with_ids = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=False)
-        local_objects_without_ids = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=True)
+        local_objects_with_ids = ServiceRequest.objects.filter(
+            user=request.user, collaborator_object_id__isnull=False
+        )
+        local_objects_without_ids = ServiceRequest.objects.filter(
+            user=request.user, collaborator_object_id__isnull=True
+        )
 
         if local_objects_with_ids:
-            client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
+            client = Client(
+                settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD
+            )
             client.authenticate()
 
             for service_request in local_objects_with_ids:
@@ -123,6 +135,25 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         request_date_iso = request_date.isoformat()
         demarcation_code = "WC033"
 
+        serializer = ServiceRequestSerializer(
+            data={
+                "user": request.user.pk,
+                "type": request_type,
+                "user_name": user_name,
+                "user_surname": user_surname,
+                "user_mobile_number": user_mobile_number,
+                "user_email_address": user_email_address,
+                "street_name": street_name,
+                "street_number": street_number,
+                "suburb": suburb,
+                "description": description,
+                "coordinates": coordinates,
+                "request_date": request_date,
+                "demarcartion_code": demarcation_code,
+            }
+        )
+        serializer.is_valid(raise_exception=True)
+
         # Translate POST parameters received into Collaborator Web API form fields
         form_fields: List[FormField] = [
             {"FieldID": "F1", "FieldValue": request_type},
@@ -136,7 +167,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F10", "FieldValue": description},
             {"FieldID": "F11", "FieldValue": coordinates},
             {"FieldID": "F12", "FieldValue": request_date_iso},
-            {"FieldID": "F20", "FieldValue": demarcation_code}
+            {"FieldID": "F20", "FieldValue": demarcation_code},
         ]
 
         service_request = ServiceRequest.objects.create(
@@ -152,9 +183,14 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             suburb=suburb,
             description=description,
             coordinates=coordinates,
-            demarcation_code=demarcation_code
+            demarcation_code=demarcation_code,
         )
 
-        async_task(create_service_request, service_request.id, form_fields, hook=handle_service_request_create)
+        async_task(
+            create_service_request,
+            service_request.id,
+            form_fields,
+            hook=handle_service_request_create,
+        )
 
         return Response(status=201)
