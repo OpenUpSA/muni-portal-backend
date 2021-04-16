@@ -109,3 +109,22 @@ class Client:
 
         obj = obj_list[0][0]
         return obj
+
+    def create_attachment(self, obj_id: int, attachment: bytes) -> None:
+        """ Create an attachment for an existing Service Request """
+        self.__assert_auth__()
+        
+        url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/file/post"
+
+        # TODO: may need to do this instead: https://docs.python-requests.org/en/latest/user/advanced/#advanced
+        files = {
+            "Obj_ID": obj_id,
+            "Attachment": attachment
+        }
+
+        response = self.session.post(url, headers=self.request_headers, files=files)
+        response.raise_for_status()
+
+        print(response.json())
+
+        return response.json()
