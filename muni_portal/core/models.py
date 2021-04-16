@@ -19,6 +19,8 @@ from muni_portal.core.wagtail_serializers import (
     SerializerMethodNestedSerializer,
     RelatedCouncillorGroupPageSerializer, RichTextFieldSerializer, RelatedNoticePagesSerializer
 )
+from django.shortcuts import redirect
+from django.utils.html import format_html
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
 NON_EMBEDS_FEATURES = NON_LINK_FEATURES + ["link"]
@@ -463,6 +465,7 @@ class MyMuniPage(Page):
         "core.AdministrationIndexPage",
         "core.NoticeIndexPage",
         "core.ContactsPage",
+        "core.RedirectorPage",
     ]
     max_count_per_parent = 1
 
@@ -641,3 +644,40 @@ class ServiceRequest(models.Model):
                 f"'Collaborator status' == '{self.collaborator_status}' and "
                 f"'On Premis Reference' == '{self.on_premis_reference}'"
             )
+
+
+class RedirectorPage(Page):
+    """
+    https://www.yellowduck.be/posts/creating-redirector-page-wagtail/
+    """
+    icon_classes = models.CharField(max_length=100, blank=True)
+    redirect_to = models.CharField(
+        max_length=500,
+        help_text='The URL to redirect to',
+        blank=False,
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("icon_classes"),
+        FieldPanel('redirect_to', classname="full"),
+    ]
+
+    api_fields = [
+        APIField("icon_classes"),
+        APIField("redirect_to"),
+    ]
+
+    def get_admin_display_title(self):
+        return format_html(f"{self.draft_title}<br/>{self.redirect_to}")
+
+    class Meta:
+        verbose_name = 'Redirector'
+
+    def get_url(self, request=None, current_site=None):
+        return self.redirect_to
+
+    def get_full_url(self, request=None, current_site=None):
+        return self.redirect_to
+
+    def serve(self, request):
+        return redirect(self.redirect_to)
