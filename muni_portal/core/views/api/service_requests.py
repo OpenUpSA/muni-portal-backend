@@ -41,6 +41,10 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
         object_id = local_object.collaborator_object_id
         serializer = ServiceRequestSerializer(local_object)
 
+        if not object_id:
+            # Object does not exist in collaborator yet, so return local object without updating from collaborator
+            return Response(serializer.data)
+
         client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
         client.authenticate()
         remote_object = client.get_task(object_id)
@@ -65,19 +69,22 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         of each object from Collaborator Web API and returning it as a list.
         """
         response_list = []
-        local_objects = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=False)
+        local_objects_with_ids = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=False)
+        local_objects_without_ids = ServiceRequest.objects.filter(user=request.user, collaborator_object_id__isnull=True)
 
-        if local_objects:
+        if local_objects_with_ids:
             client = Client(settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD)
             client.authenticate()
-        else:
-            return Response([])
 
-        for service_request in local_objects:
-            local_object = self.get_object(service_request.pk, request.user)
+            for service_request in local_objects_with_ids:
+                local_object = self.get_object(service_request.pk, request.user)
+                serializer = ServiceRequestSerializer(local_object)
+                remote_object = client.get_task(local_object.collaborator_object_id)
+                serializer.update(local_object, remote_object)
+                response_list.append(serializer.data)
+
+        for local_object in local_objects_without_ids:
             serializer = ServiceRequestSerializer(local_object)
-            remote_object = client.get_task(local_object.collaborator_object_id)
-            serializer.update(local_object, remote_object)
             response_list.append(serializer.data)
 
         return Response(response_list)
@@ -112,7 +119,8 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         description = request.data.get("description")
         coordinates = request.data.get("coordinates")
 
-        request_date_iso = timezone.now().isoformat()
+        request_date = timezone.now()
+        request_date_iso = request_date.isoformat()
         demarcation_code = "WC033"
 
         # Translate POST parameters received into Collaborator Web API form fields
@@ -132,7 +140,19 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         ]
 
         service_request = ServiceRequest.objects.create(
-            user=request.user
+            user=request.user,
+            type=request_type,
+            request_date=request_date,
+            user_name=user_name,
+            user_surname=user_surname,
+            user_mobile_number=user_mobile_number,
+            user_email_address=user_email_address,
+            street_name=street_name,
+            street_number=street_number,
+            suburb=suburb,
+            description=description,
+            coordinates=coordinates,
+            demarcation_code=demarcation_code
         )
 
         async_task(create_service_request, service_request.id, form_fields, hook=handle_service_request_create)
