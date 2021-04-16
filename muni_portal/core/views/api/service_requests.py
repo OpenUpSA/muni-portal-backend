@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.utils import timezone
-from rest_framework.parsers import MultiPartParser
+from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -10,10 +11,10 @@ from typing import List, Union
 
 from muni_portal.collaborator_api.client import Client
 from muni_portal.collaborator_api.types import FormField
-from muni_portal.core.django_q_tasks import create_service_request
-from muni_portal.core.django_q_hooks import handle_service_request_create
+from muni_portal.core.django_q_tasks import create_service_request, create_attachment
+from muni_portal.core.django_q_hooks import handle_service_request_create, handle_service_request_image_create
 from muni_portal.core.models import ServiceRequest, ServiceRequestImage
-from muni_portal.core.model_serializers import ServiceRequestSerializer
+from muni_portal.core.model_serializers import ServiceRequestSerializer, ServiceRequestImageSerializer
 from django.conf import settings
 from django_q.tasks import async_task
 
@@ -206,8 +207,8 @@ class ServiceRequestImageListCreateView(views.APIView):
     It does not support creating images with a new service request, instead that is handled on the
     Service Request create view.
     """
-    permission_classes = []  # TODO: do not deploy without IsAuthenticated perm
-    parser_classes = MultiPartParser
+    permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
 
     @staticmethod
     def get_service_request(service_request_pk: int, user: User) -> Union[ServiceRequest, Response]:
@@ -233,12 +234,21 @@ class ServiceRequestImageListCreateView(views.APIView):
         if type(service_request) == Response:
             return service_request
 
-        # TODO: do we modify name here?
-
-        for image in request.data.keys():
-            ServiceRequestImage.objects.create(
+        serializer = ServiceRequestImageSerializer(data=request.data)
+        if serializer.is_valid():
+            image = serializer.save(
                 service_request=service_request,
-                file=image
+                file=request.data.get('image')
             )
 
-        # TODO: schedule django q task for each image to create on collaborator
+            # If the service request object doesn't have an ID yet it'll execute the async task after it has received
+            # an ID in django_q_hooks.py
+            if service_request.collaborator_object_id:
+                async_task(
+                    create_attachment,
+                    image.id,
+                    hook=handle_service_request_image_create
+                )
+            return Response(status=201)
+        else:
+            return Response(serializer.errors, status=400)
