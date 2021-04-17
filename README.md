@@ -68,9 +68,14 @@ the above again:
     docker-compose down --volumes
 
 
-To run Django Q tasks in development, you should run
+To run Django Q tasks in development, you can either run 
 
     docker-compose run --rm  web python manage.py qcluster
+
+with `DJANGO_Q_SYNC=False` in your .env file
+
+Or you can set `DJANGO_Q_SYNC=True` to run the tasks synchronously in the same process as your Django server without 
+need to start a `cluster` process.
 
 
 ### Maintaining the demo data fixture
