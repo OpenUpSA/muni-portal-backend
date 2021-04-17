@@ -12,7 +12,8 @@ from muni_portal.core.views import (
     IndexView,
     CollaboratorWebhookApiView,
 )
-from muni_portal.core.views.api.service_requests import ServiceRequestDetailView, ServiceRequestListCreateView
+from muni_portal.core.views.api.service_requests import ServiceRequestDetailView, ServiceRequestListCreateView, \
+    ServiceRequestImageListCreateView
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
@@ -35,6 +36,11 @@ urlpatterns = [
         "api/service-requests/",
         ServiceRequestListCreateView.as_view(),
         name="service-request-list-create",
+    ),
+    path(
+        "api/service-requests/<int:service_request_pk>/images/",
+        ServiceRequestImageListCreateView.as_view(),
+        name="service-request-image-list-create",
     ),
 
     path("api/accounts/", include("rest_registration.api.urls")),
