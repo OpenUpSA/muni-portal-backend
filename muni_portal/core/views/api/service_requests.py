@@ -229,7 +229,6 @@ class ServiceRequestImageListCreateView(views.APIView):
 
     def post(self, request: Request, service_request_pk: int) -> Response:
         """ Create an image attachment for an existing Service Request object """
-        print(request.data)
         service_request = self.get_service_request(service_request_pk, User.objects.first())  # TODO: set to request
         if type(service_request) == Response:
             return service_request

@@ -68,6 +68,11 @@ the above again:
     docker-compose down --volumes
 
 
+To run Django Q tasks in development, you should run
+
+    docker-compose run --rm  web python manage.py qcluster
+
+
 ### Maintaining the demo data fixture
 
 The demo data fixture was produced using the command
