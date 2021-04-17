@@ -32,5 +32,5 @@ def create_attachment(service_request_image_id: int) -> (Response, int):
     if service_request_image.exists_on_collaborator:
         raise AssertionError("Service Request Image already exists on Collaborator")
 
-    response = client.create_task(service_request_image.service_request.id, service_request_image.file)
+    response = client.create_attachment(service_request_image.service_request.id, service_request_image.file)
     return response, service_request_image_id
