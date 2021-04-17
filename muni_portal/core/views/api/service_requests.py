@@ -207,7 +207,7 @@ class ServiceRequestImageListCreateView(views.APIView):
     It does not support creating images with a new service request, instead that is handled on the
     Service Request create view.
     """
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
 
     @staticmethod
@@ -219,18 +219,18 @@ class ServiceRequestImageListCreateView(views.APIView):
 
     def get(self, request: Request, service_request_pk: int) -> Response:
         """ Return a list of images for a specific Service Request object """
-        service_request = self.get_service_request(service_request_pk, request.user)
+        service_request = self.get_service_request(service_request_pk, User.objects.first())  # TODO: set to request
         if type(service_request) == Response:
             return service_request
 
-        images = service_request.images.all()
-        image_urls = [image.url() for image in images]
+        images = ServiceRequestImageSerializer(service_request.images.all(), many=True)
 
-        return Response(image_urls)
+        return Response(images.data)
 
     def post(self, request: Request, service_request_pk: int) -> Response:
         """ Create an image attachment for an existing Service Request object """
-        service_request = self.get_service_request(service_request_pk, request.user)
+        print(request.data)
+        service_request = self.get_service_request(service_request_pk, User.objects.first())  # TODO: set to request
         if type(service_request) == Response:
             return service_request
 
@@ -238,7 +238,7 @@ class ServiceRequestImageListCreateView(views.APIView):
         if serializer.is_valid():
             image = serializer.save(
                 service_request=service_request,
-                file=request.data.get('image')
+                file=request.data.get('file')
             )
 
             # If the service request object doesn't have an ID yet it'll execute the async task after it has received

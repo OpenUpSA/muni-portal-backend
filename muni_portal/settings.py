@@ -237,6 +237,7 @@ COLLABORATOR_API_BASE_URL = env.str("COLLABORATOR_API_BASE_URL", "https://consum
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        'rest_framework.authentication.SessionAuthentication',  # TODO: remove before merge
     )
 }
 
