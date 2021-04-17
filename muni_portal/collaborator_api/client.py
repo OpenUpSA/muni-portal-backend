@@ -124,8 +124,10 @@ class Client:
         # TODO: may need to do this instead: https://docs.python-requests.org/en/latest/user/advanced/#advanced
         files = {
             "Obj_ID": obj_id,
-            "Attachment": attachment.open(mode='rb')
+            "Attachment": attachment.open(mode='rb').read()
         }
+
+        attachment.close()
 
         response = self.session.post(url, headers=self.request_headers, files=files)
         response.raise_for_status()
