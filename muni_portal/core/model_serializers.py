@@ -44,4 +44,4 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
 class ServiceRequestImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceRequestImage
-        fields = ('file', 'date_created', 'exists_on_collaborator')
+        fields = ('id', 'file', 'date_created', 'exists_on_collaborator')

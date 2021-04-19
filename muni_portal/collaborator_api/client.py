@@ -115,13 +115,14 @@ class Client:
     def create_attachment(self, obj_id: int, attachment: FieldFile) -> None:
         """ Create an attachment for an existing Service Request """
         self.__assert_auth__()
+
+        # TODO: remove debug
         print('received attachment')
         print(type(attachment))
         print(attachment)
 
         url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/file/post"
 
-        # TODO: may need to do this instead: https://docs.python-requests.org/en/latest/user/advanced/#advanced
         files = {
             "Obj_ID": obj_id,
             "Attachment": attachment.open(mode='rb').read()
@@ -132,6 +133,7 @@ class Client:
         response = self.session.post(url, headers=self.request_headers, files=files)
         response.raise_for_status()
 
+        # TODO: remove debug
         print('received response')
         print(response)
         print(response.text)

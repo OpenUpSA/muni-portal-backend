@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -12,9 +12,15 @@ from typing import List, Union
 from muni_portal.collaborator_api.client import Client
 from muni_portal.collaborator_api.types import FormField
 from muni_portal.core.django_q_tasks import create_service_request, create_attachment
-from muni_portal.core.django_q_hooks import handle_service_request_create, handle_service_request_image_create
+from muni_portal.core.django_q_hooks import (
+    handle_service_request_create,
+    handle_service_request_image_create,
+)
 from muni_portal.core.models import ServiceRequest, ServiceRequestImage
-from muni_portal.core.model_serializers import ServiceRequestSerializer, ServiceRequestImageSerializer
+from muni_portal.core.model_serializers import (
+    ServiceRequestSerializer,
+    ServiceRequestImageSerializer,
+)
 from django.conf import settings
 from django_q.tasks import async_task
 
@@ -207,11 +213,14 @@ class ServiceRequestImageListCreateView(views.APIView):
     It does not support creating images with a new service request, instead that is handled on the
     Service Request create view.
     """
+
     # permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
 
     @staticmethod
-    def get_service_request(service_request_pk: int, user: User) -> Union[ServiceRequest, Response]:
+    def get_service_request(
+        service_request_pk: int, user: User
+    ) -> Union[ServiceRequest, Response]:
         try:
             return ServiceRequest.objects.get(pk=service_request_pk, user=user)
         except ServiceRequest.DoesNotExist:
@@ -219,7 +228,9 @@ class ServiceRequestImageListCreateView(views.APIView):
 
     def get(self, request: Request, service_request_pk: int) -> Response:
         """ Return a list of images for a specific Service Request object """
-        service_request = self.get_service_request(service_request_pk, User.objects.first())  # TODO: set to request
+        service_request = self.get_service_request(
+            service_request_pk, User.objects.first()
+        )  # TODO: set to request
         if type(service_request) == Response:
             return service_request
 
@@ -229,15 +240,16 @@ class ServiceRequestImageListCreateView(views.APIView):
 
     def post(self, request: Request, service_request_pk: int) -> Response:
         """ Create an image attachment for an existing Service Request object """
-        service_request = self.get_service_request(service_request_pk, User.objects.first())  # TODO: set to request
+        service_request = self.get_service_request(
+            service_request_pk, User.objects.first()
+        )  # TODO: set to request
         if type(service_request) == Response:
             return service_request
 
         serializer = ServiceRequestImageSerializer(data=request.data)
         if serializer.is_valid():
             image = serializer.save(
-                service_request=service_request,
-                file=request.data.get('file')
+                service_request=service_request, file=request.data.get("file")
             )
 
             # If the service request object doesn't have an ID yet it'll execute the async task after it has received
@@ -246,8 +258,30 @@ class ServiceRequestImageListCreateView(views.APIView):
                 async_task(
                     create_attachment,
                     image.id,
-                    hook=handle_service_request_image_create
+                    hook=handle_service_request_image_create,
                 )
             return Response(status=201)
         else:
             return Response(serializer.errors, status=400)
+
+
+class ServiceRequestImageDetailView(views.APIView):
+    """
+    This view returns an image in bytes.
+
+    Note that this view returns Django's HttpResponse class and not DRF's Response class to avoid DRF's renderer.
+    """
+
+    # permission_classes = [IsAuthenticated]
+
+    def get(
+        self, request: Request, service_request_pk: int, service_request_image_pk: int
+    ) -> HttpResponse:
+        service_request_image = ServiceRequestImage.objects.get(
+            service_request__pk=service_request_pk, pk=service_request_image_pk
+        )
+
+        image_bytes = service_request_image.file.open("rb").read()
+        service_request_image.file.close()
+
+        return HttpResponse(image_bytes, content_type="image/jpeg")
