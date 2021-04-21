@@ -17,7 +17,9 @@ from muni_portal.core.wagtail_serializers import (
     RelatedPersonPageSerializer,
     RelatedPersonPageListSerializer,
     SerializerMethodNestedSerializer,
-    RelatedCouncillorGroupPageSerializer, RichTextFieldSerializer, RelatedNoticePagesSerializer
+    RelatedCouncillorGroupPageSerializer,
+    RichTextFieldSerializer,
+    RelatedNoticePagesSerializer,
 )
 import uuid
 
@@ -67,7 +69,9 @@ class PersonContact(Orderable, models.Model):
 
 class ServicePointContact(Orderable, models.Model):
     page = ParentalKey(
-        "core.ServicePointPage", on_delete=models.CASCADE, related_name="service_point_contacts"
+        "core.ServicePointPage",
+        on_delete=models.CASCADE,
+        related_name="service_point_contacts",
     )
     contact = models.ForeignKey(
         "ContactDetail", on_delete=models.CASCADE, related_name="+"
@@ -108,14 +112,20 @@ class EmergencyContact(KeyContact):
         "core.ContactsPage", on_delete=models.CASCADE, related_name="emergency_contacts"
     )
 
+
 class ProvincialGovernmentContact(KeyContact):
     page = ParentalKey(
-        "core.ContactsPage", on_delete=models.CASCADE, related_name="provincial_government_contacts"
+        "core.ContactsPage",
+        on_delete=models.CASCADE,
+        related_name="provincial_government_contacts",
     )
+
 
 class NationalGovernmentContact(KeyContact):
     page = ParentalKey(
-        "core.ContactsPage", on_delete=models.CASCADE, related_name="national_government_contacts"
+        "core.ContactsPage",
+        on_delete=models.CASCADE,
+        related_name="national_government_contacts",
     )
 
 
@@ -179,14 +189,18 @@ class ContactDetail(models.Model):
         max_length=250,
         blank=True,
         null=True,
-        help_text=('Optional public note of what this contact is for, e.g. '
-                   '"Senior Library Assistant Ms A Jones" or "John Smith'
-                   'Cell phone number"'),
+        help_text=(
+            "Optional public note of what this contact is for, e.g. "
+            '"Senior Library Assistant Ms A Jones" or "John Smith'
+            'Cell phone number"'
+        ),
     )
     purpose = models.CharField(
         max_length=250,
-        help_text=('Internal reminder of what this represents - e.g. "Office '
-                   'number for Joanne Smith"'),
+        help_text=(
+            'Internal reminder of what this represents - e.g. "Office '
+            'number for Joanne Smith"'
+        ),
     )
 
     panels = [
@@ -204,17 +218,17 @@ class PersonPage(Page):
     job_title = models.CharField(max_length=200, blank=True)
     overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
     profile_image = models.ForeignKey(
-        'wagtailimages.Image',
+        "wagtailimages.Image",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+",
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("job_title"),
         FieldPanel("overview"),
-        ImageChooserPanel('profile_image'),
+        ImageChooserPanel("profile_image"),
         InlinePanel("person_contacts", label="Contacts"),
     ]
 
@@ -222,10 +236,18 @@ class PersonPage(Page):
         APIField("job_title"),
         APIField("overview"),
         APIField("profile_image"),
-        APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
+        APIField(
+            "profile_image_thumbnail",
+            ImageRenditionField("max-100x100", source="profile_image"),
+        ),
         APIField("person_contacts", serializer=ContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -237,17 +259,17 @@ class PoliticalParty(models.Model):
     name = models.CharField(max_length=1000)
     abbreviation = models.CharField(max_length=20)
     logo_image = models.ForeignKey(
-        'wagtailimages.Image',
+        "wagtailimages.Image",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+",
     )
 
     panels = [
-        FieldPanel('name'),
-        FieldPanel('abbreviation'),
-        ImageChooserPanel('logo_image'),
+        FieldPanel("name"),
+        FieldPanel("abbreviation"),
+        ImageChooserPanel("logo_image"),
     ]
 
     class Meta:
@@ -258,7 +280,7 @@ class PoliticalParty(models.Model):
 
 
 class PoliticalPartySerializer(drf_serializers.ModelSerializer):
-    logo_image_tumbnail = ImageRenditionField("max-100x100", source='logo_image')
+    logo_image_tumbnail = ImageRenditionField("max-100x100", source="logo_image")
 
     class Meta:
         model = PoliticalParty
@@ -270,23 +292,21 @@ class CouncillorPage(PersonPage):
     subpage_types = []
 
     political_party = models.ForeignKey(
-        'core.PoliticalParty',
+        "core.PoliticalParty",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+",
     )
     councillor_groups = ParentalManyToManyField(
-        'core.CouncillorGroupPage',
-        blank=True,
-        related_name="councillors"
+        "core.CouncillorGroupPage", blank=True, related_name="councillors"
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("job_title"),
         FieldPanel("overview"),
-        ImageChooserPanel('profile_image'),
-        SnippetChooserPanel('political_party'),
+        ImageChooserPanel("profile_image"),
+        SnippetChooserPanel("political_party"),
         FieldPanel("councillor_groups"),
         InlinePanel("person_contacts", label="Contacts"),
     ]
@@ -295,12 +315,20 @@ class CouncillorPage(PersonPage):
         APIField("job_title"),
         APIField("overview"),
         APIField("profile_image"),
-        APIField("profile_image_thumbnail", ImageRenditionField("max-100x100", source='profile_image')),
+        APIField(
+            "profile_image_thumbnail",
+            ImageRenditionField("max-100x100", source="profile_image"),
+        ),
         APIField("political_party", serializer=PoliticalPartySerializer()),
         APIField("councillor_groups"),
         APIField("person_contacts", serializer=ContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -321,8 +349,14 @@ class CouncillorListPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("icon_classes"),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages",
+            serializer=RelatedPersonPageListSerializer(source="get_children.live"),
+        ),
     ]
 
 
@@ -331,7 +365,9 @@ class CouncillorGroupPage(Page):
 
     overview = RichTextField(features=NON_LINK_FEATURES)
     icon_classes = models.CharField(max_length=250)
-    members_label = models.CharField(max_length=100, default="Members of this group are")
+    members_label = models.CharField(
+        max_length=100, default="Members of this group are"
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("overview"),
@@ -344,8 +380,13 @@ class CouncillorGroupPage(Page):
         APIField("icon_classes"),
         APIField("members_label"),
         APIField("councillors", serializer=RelatedPersonPageListSerializer()),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
     @property
@@ -374,8 +415,14 @@ class AdministrationIndexPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("icon_classes"),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPersonPageListSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages",
+            serializer=RelatedPersonPageListSerializer(source="get_children.live"),
+        ),
     ]
 
 
@@ -397,8 +444,14 @@ class PoliticalRepsIndexPage(Page):
     api_fields = [
         APIField("overview"),
         APIField("icon_classes"),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedCouncillorGroupPageSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages",
+            serializer=RelatedCouncillorGroupPageSerializer(source="get_children.live"),
+        ),
     ]
 
 
@@ -418,32 +471,35 @@ class ServicePointPage(Page):
         APIField("overview"),
         APIField("office_hours"),
         APIField("service_point_contacts", serializer=ContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
 class ServicePage(Page):
-    subpage_types = [
-        "core.ServicePointPage"
-    ]
+    subpage_types = ["core.ServicePointPage"]
 
     icon_classes = models.CharField(max_length=250)
     overview = RichTextField(features=NON_LINK_FEATURES, blank=True)
     office_hours = RichTextField(features=NON_LINK_FEATURES, blank=True)
     head_of_service = models.ForeignKey(
-        'wagtailcore.Page',
+        "wagtailcore.Page",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+',
+        related_name="+",
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("icon_classes"),
         FieldPanel("overview"),
         FieldPanel("office_hours"),
-        PageChooserPanel('head_of_service', 'core.AdministratorPage'),
+        PageChooserPanel("head_of_service", "core.AdministratorPage"),
         InlinePanel("service_contacts", label="Contacts"),
     ]
 
@@ -453,8 +509,13 @@ class ServicePage(Page):
         APIField("office_hours"),
         APIField("head_of_service", serializer=RelatedPersonPageSerializer()),
         APIField("service_contacts", serializer=ContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -468,8 +529,13 @@ class MyMuniPage(Page):
     max_count_per_parent = 1
 
     api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -480,8 +546,13 @@ class ServicesIndexPage(Page):
     max_count_per_parent = 1
 
     api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -493,8 +564,13 @@ class HomePage(Page):
     max_count_per_parent = 1
 
     api_fields = [
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -513,8 +589,14 @@ class NoticeIndexPage(Page):
 
     api_fields = [
         APIField("icon_classes"),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedNoticePagesSerializer(source='get_children.live')),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages",
+            serializer=RelatedNoticePagesSerializer(source="get_children.live"),
+        ),
     ]
 
 
@@ -531,9 +613,16 @@ class NoticePage(Page):
         APIField("title"),
         APIField("body"),
         APIField("body_html", serializer=RichTextFieldSerializer(source="body")),
-        APIField("publication_date", serializer=DateTimeField(source="last_published_at")),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "publication_date", serializer=DateTimeField(source="last_published_at")
+        ),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -545,8 +634,12 @@ class ContactsPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("icon_classes"),
         InlinePanel("emergency_contacts", label="Emergency Contacts"),
-        InlinePanel("provincial_government_contacts", label="Provincial Government Contacts"),
-        InlinePanel("national_government_contacts", label="National Government Contacts"),
+        InlinePanel(
+            "provincial_government_contacts", label="Provincial Government Contacts"
+        ),
+        InlinePanel(
+            "national_government_contacts", label="National Government Contacts"
+        ),
     ]
 
     max_count_per_parent = 1
@@ -554,10 +647,19 @@ class ContactsPage(Page):
     api_fields = [
         APIField("icon_classes"),
         APIField("emergency_contacts", serializer=KeyContactSerializer(many=True)),
-        APIField("provincial_government_contacts", serializer=KeyContactSerializer(many=True)),
-        APIField("national_government_contacts", serializer=KeyContactSerializer(many=True)),
-        APIField("ancestor_pages", serializer=RelatedPagesSerializer(source='get_ancestors.live')),
-        APIField("child_pages", serializer=RelatedPagesSerializer(source='get_children.live')),
+        APIField(
+            "provincial_government_contacts", serializer=KeyContactSerializer(many=True)
+        ),
+        APIField(
+            "national_government_contacts", serializer=KeyContactSerializer(many=True)
+        ),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
     ]
 
 
@@ -591,7 +693,9 @@ class ServiceRequest(models.Model):
     )
 
     collaborator_object_id = models.PositiveIntegerField(
-        help_text="The Object ID for this object in the Collaborator Web API", blank=True, null=True
+        help_text="The Object ID for this object in the Collaborator Web API",
+        blank=True,
+        null=True,
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=254, blank=True, null=True)
@@ -608,7 +712,11 @@ class ServiceRequest(models.Model):
     request_date = models.DateTimeField(default=None, blank=True, null=True)
     on_premis_reference = models.CharField(max_length=254, blank=True, null=True)
     collaborator_status = models.CharField(
-        max_length=254, choices=COLLABORATOR_STATUS_CHOICES, default=None, blank=True, null=True
+        max_length=254,
+        choices=COLLABORATOR_STATUS_CHOICES,
+        default=None,
+        blank=True,
+        null=True,
     )
     status = models.CharField(max_length=254, choices=STATUS_CHOICES, default=QUEUED)
     demarcation_code = models.CharField(max_length=254, blank=True, null=True)
@@ -616,15 +724,15 @@ class ServiceRequest(models.Model):
     def set_status(self) -> None:
         """ Set 'status' based on 'collaborator_status' and 'on_premis_reference' values. """
         is_initial_or_registered = (
-                self.collaborator_status == self.COLLABORATOR_INITIAL or
-                self.collaborator_status == self.COLLABORATOR_REGISTERED
+            self.collaborator_status == self.COLLABORATOR_INITIAL
+            or self.collaborator_status == self.COLLABORATOR_REGISTERED
         )
 
         is_assigned = self.collaborator_status == self.COLLABORATOR_ASSIGNED
 
         is_completed_or_finalised = (
-                self.collaborator_status == self.COLLABORATOR_COMPLETED or
-                self.collaborator_status == self.COLLABORATOR_FINALISED
+            self.collaborator_status == self.COLLABORATOR_COMPLETED
+            or self.collaborator_status == self.COLLABORATOR_FINALISED
         )
 
         if not self.collaborator_status:
@@ -644,16 +752,17 @@ class ServiceRequest(models.Model):
             )
 
 
-def service_request_photo_file_path(instance, filename):
+def service_request_attachment_file_path(instance, filename):
     extension = filename.split(".")[-1]
-    return (
-        f"service-requests/{instance.service_request.id}/images/{uuid.uuid4()}.{extension}/"
+    return f"service-requests/{instance.service_request.id}/attachments/{uuid.uuid4()}.{extension}/"
+
+
+class ServiceRequestAttachment(models.Model):
+    """ Attachment for a Service Request object """
+
+    service_request = models.ForeignKey(
+        to=ServiceRequest, on_delete=models.CASCADE, related_name="images"
     )
-
-
-class ServiceRequestImage(models.Model):
-    """ Image attachment for a Service Request object """
-    service_request = models.ForeignKey(to=ServiceRequest, on_delete=models.CASCADE, related_name='images')
     date_created = models.DateTimeField(auto_now_add=True)
-    file = models.ImageField(upload_to=service_request_photo_file_path)
+    file = models.FileField(upload_to=service_request_attachment_file_path)
     exists_on_collaborator = models.BooleanField(default=False)

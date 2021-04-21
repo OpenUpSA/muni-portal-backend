@@ -16,10 +16,10 @@ from muni_portal.core.django_q_hooks import (
     handle_service_request_create,
     handle_service_request_image_create,
 )
-from muni_portal.core.models import ServiceRequest, ServiceRequestImage
+from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
 from muni_portal.core.model_serializers import (
     ServiceRequestSerializer,
-    ServiceRequestImageSerializer,
+    ServiceRequestAttachmentSerializer,
 )
 from django.conf import settings
 from django_q.tasks import async_task
@@ -205,7 +205,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         return Response(status=201)
 
 
-class ServiceRequestImageListCreateView(views.APIView):
+class ServiceRequestAttachmentListCreateView(views.APIView):
     """
     This API View supports listing the images for a service request and creating images for an existing service
     request.
@@ -234,7 +234,9 @@ class ServiceRequestImageListCreateView(views.APIView):
         if type(service_request) == Response:
             return service_request
 
-        images = ServiceRequestImageSerializer(service_request.images.all(), many=True)
+        images = ServiceRequestAttachmentSerializer(
+            service_request.images.all(), many=True
+        )
 
         return Response(images.data)
 
@@ -246,7 +248,7 @@ class ServiceRequestImageListCreateView(views.APIView):
         if type(service_request) == Response:
             return service_request
 
-        serializer = ServiceRequestImageSerializer(data=request.data)
+        serializer = ServiceRequestAttachmentSerializer(data=request.data)
         if serializer.is_valid():
             image = serializer.save(
                 service_request=service_request, file=request.data.get("file")
@@ -265,23 +267,25 @@ class ServiceRequestImageListCreateView(views.APIView):
             return Response(serializer.errors, status=400)
 
 
-class ServiceRequestImageDetailView(views.APIView):
+class ServiceRequestAttachmentDetailView(views.APIView):
     """
     This view returns an image in bytes.
 
     Note that this view returns Django's HttpResponse class and not DRF's Response class to avoid DRF's renderer.
     """
 
+    # TODO: remove before merge
     # permission_classes = [IsAuthenticated]
 
     def get(
         self, request: Request, service_request_pk: int, service_request_image_pk: int
     ) -> HttpResponse:
-        service_request_image = ServiceRequestImage.objects.get(
+        service_request_image = ServiceRequestAttachment.objects.get(
             service_request__pk=service_request_pk, pk=service_request_image_pk
         )
 
         image_bytes = service_request_image.file.open("rb").read()
         service_request_image.file.close()
 
-        return HttpResponse(image_bytes, content_type="image/jpeg")
+        # TODO: what about other file types like pngs? same applies in create_attachment POST request
+        return HttpResponse(image_bytes, content_type="image/jpg")

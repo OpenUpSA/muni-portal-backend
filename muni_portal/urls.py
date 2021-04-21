@@ -15,8 +15,8 @@ from muni_portal.core.views import (
 from muni_portal.core.views.api.service_requests import (
     ServiceRequestDetailView,
     ServiceRequestListCreateView,
-    ServiceRequestImageListCreateView,
-    ServiceRequestImageDetailView,
+    ServiceRequestAttachmentListCreateView,
+    ServiceRequestAttachmentDetailView,
 )
 
 urlpatterns = [
@@ -42,12 +42,12 @@ urlpatterns = [
     ),
     path(
         "api/service-requests/<int:service_request_pk>/images/",
-        ServiceRequestImageListCreateView.as_view(),
+        ServiceRequestAttachmentListCreateView.as_view(),
         name="service-request-image-list-create",
     ),
     path(
         "api/service-requests/<int:service_request_pk>/images/<int:service_request_image_pk>/",
-        ServiceRequestImageDetailView.as_view(),
+        ServiceRequestAttachmentDetailView.as_view(),
         name="service-request-image-detail",
     ),
     path("api/accounts/", include("rest_registration.api.urls")),

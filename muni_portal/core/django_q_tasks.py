@@ -4,7 +4,7 @@ from django.conf import settings
 from muni_portal.collaborator_api.types import FormField
 from requests import Response
 
-from muni_portal.core.models import ServiceRequestImage
+from muni_portal.core.models import ServiceRequestAttachment
 
 
 def create_service_request(
@@ -23,18 +23,20 @@ def create_service_request(
 
 def create_attachment(service_request_image_id: int) -> (Response, int):
     """
-    Create an Attachment from an existing ServiceRequestImage object with the Collaborator Web API endpoint.
+    Create an Attachment from an existing ServiceRequestAttachment object with the Collaborator Web API endpoint.
     """
     client = Client(
         settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD
     )
     client.authenticate()
 
-    service_request_image = ServiceRequestImage.objects.get(id=service_request_image_id)
+    service_request_image = ServiceRequestAttachment.objects.get(
+        id=service_request_image_id
+    )
 
     if not service_request_image.service_request.collaborator_object_id:
         raise AssertionError(
-            "Service Request must have an object_id before a ServiceRequestImage can be created for it"
+            "Service Request must have an object_id before a ServiceRequestAttachment can be created for it"
         )
 
     if service_request_image.exists_on_collaborator:
