@@ -48,15 +48,23 @@ class Client:
         response.raise_for_status()
 
         # Response text has quotes inside the string..
-        if str(response.text).lower() == "\"auth failed\"":
-            raise Exception("Authentication failed with the provided username and password.")
+        if str(response.text).lower() == '"auth failed"':
+            raise Exception(
+                "Authentication failed with the provided username and password."
+            )
 
         self.token = response.json()
         self.request_headers.update({"authorization": f"Bearer {self.token}"})
         return response
 
-    def create_task(self, form_fields: List[types.FormField], template_id: int = 9, bp_id: int = 3,
-                    percent_complete: int = 10, comments: str = "") -> requests.Response:
+    def create_task(
+        self,
+        form_fields: List[types.FormField],
+        template_id: int = 9,
+        bp_id: int = 3,
+        percent_complete: int = 10,
+        comments: str = "",
+    ) -> requests.Response:
         """
         Create a task object
 
@@ -70,9 +78,13 @@ class Client:
             form_fields = []
 
         if settings.ENVIRONMENT != "production":
-            comments += f"  (Created by Cape Agulhas App {settings.ENVIRONMENT} environment)"
+            comments += (
+                f"  (Created by Cape Agulhas App {settings.ENVIRONMENT} environment)"
+            )
 
-        url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/Task/SaveNewTaskFeedback"
+        url = (
+            f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/Task/SaveNewTaskFeedback"
+        )
         request_data = {
             "TemplateId": template_id,
             "BPID": bp_id,
@@ -81,12 +93,15 @@ class Client:
             "FormFields": form_fields,
         }
 
-        response = self.session.post(url, headers=self.request_headers, json=request_data)
+        response = self.session.post(
+            url, headers=self.request_headers, json=request_data
+        )
         response.raise_for_status()
         return response
 
-    def get_task(self, obj_id: int, template_id: int = 9,
-                 fields: List[types.FormField] = None) -> types.ServiceRequestObject:
+    def get_task(
+        self, obj_id: int, template_id: int = 9, fields: List[types.FormField] = None
+    ) -> types.ServiceRequestObject:
         """ Retrieve detail about a task object. """
         self.__assert_auth__()
 
@@ -100,7 +115,9 @@ class Client:
             "Fields": fields,
         }
 
-        response = self.session.post(url, headers=self.request_headers, json=request_data)
+        response = self.session.post(
+            url, headers=self.request_headers, json=request_data
+        )
         response.raise_for_status()
 
         obj_list = response.json().get("Data").get("ObjectList")
@@ -117,24 +134,29 @@ class Client:
         self.__assert_auth__()
 
         # TODO: remove debug
-        print('received attachment')
+        print("received attachment")
         print(type(attachment))
         print(attachment)
 
         url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/file/post"
+        # url = "https://httpbin.org/post"
 
-        files = {
-            "Obj_ID": obj_id,
-            "Attachment": attachment.open(mode='rb').read()
-        }
+        files = [
+            ("Obj_ID", (f"Obj_ID", str(obj_id), "text/plain")),
+            (
+                "Attachment",
+                (attachment.name, attachment.open(mode="rb").read(), "image/jpg"),
+            ),
+        ]
 
         attachment.close()
 
         response = self.session.post(url, headers=self.request_headers, files=files)
+        # response = self.session.post(url, files=files,)
         response.raise_for_status()
 
         # TODO: remove debug
-        print('received response')
+        print("received response")
         print(response)
         print(response.text)
         print(response.json())
