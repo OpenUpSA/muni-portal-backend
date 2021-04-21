@@ -2,6 +2,7 @@ import requests
 from typing import List
 from django.conf import settings
 from django.db.models.fields.files import FieldFile
+from rest_framework.response import Response
 
 from . import types
 
@@ -129,20 +130,13 @@ class Client:
         obj = obj_list[0][0]
         return obj
 
-    def create_attachment(self, obj_id: int, attachment: FieldFile) -> None:
+    def create_attachment(self, obj_id: int, attachment: FieldFile) -> Response:
         """ Create an attachment for an existing Service Request """
         self.__assert_auth__()
 
-        # TODO: remove debug
-        print("received attachment")
-        print(type(attachment))
-        print(attachment)
-
-        url = f"{settings.COLLABORATOR_API_BASE_URL}/webAPI/api/file/post"
-        # url = "https://httpbin.org/post"
+        url = f"{settings.COLLABORATOR_API_BASE_URL}/webapi/api/File/Post"
 
         files = [
-            ("Obj_ID", (f"Obj_ID", str(obj_id), "text/plain")),
             (
                 "Attachment",
                 (attachment.name, attachment.open(mode="rb").read(), "image/jpg"),
@@ -151,14 +145,9 @@ class Client:
 
         attachment.close()
 
-        response = self.session.post(url, headers=self.request_headers, files=files)
-        # response = self.session.post(url, files=files,)
+        response = self.session.post(
+            url, headers=self.request_headers, files=files, data={"Obj_Id": f"{obj_id}"}
+        )
         response.raise_for_status()
 
-        # TODO: remove debug
-        print("received response")
-        print(response)
-        print(response.text)
-        print(response.json())
-
-        return response.json()
+        return response
