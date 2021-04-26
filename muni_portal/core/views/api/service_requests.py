@@ -76,6 +76,8 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         "description",
     )
 
+    parser_classes = FormParser, MultiPartParser
+
     def get(self, request: Request) -> Response:
         """
         Return list of ServiceRequest objects.
@@ -195,6 +197,8 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             demarcation_code=demarcation_code,
         )
 
+        serializer = ServiceRequestSerializer(service_request, many=False)
+
         async_task(
             create_service_request,
             service_request.id,
@@ -202,7 +206,14 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             hook=handle_service_request_create,
         )
 
-        return Response(status=201)
+        # Check and validate attachments
+        # for file in request.data.FILES:
+        #     if serializer.is_valid():
+        #         serializer.save(
+        #             service_request=service_request, file=request.data.get("file")
+        #         )
+
+        return Response(status=201, data=serializer.data)
 
 
 class ServiceRequestAttachmentListCreateView(views.APIView):
@@ -214,7 +225,7 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
     Service Request create view.
     """
 
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
 
     @staticmethod
@@ -228,9 +239,7 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
 
     def get(self, request: Request, service_request_pk: int) -> Response:
         """ Return a list of images for a specific Service Request object """
-        service_request = self.get_service_request(
-            service_request_pk, User.objects.first()
-        )  # TODO: set to request
+        service_request = self.get_service_request(service_request_pk, request.user)
         if type(service_request) == Response:
             return service_request
 
@@ -242,29 +251,23 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
 
     def post(self, request: Request, service_request_pk: int) -> Response:
         """ Create an image attachment for an existing Service Request object """
-        service_request = self.get_service_request(
-            service_request_pk, User.objects.first()
-        )  # TODO: set to request
+        service_request = self.get_service_request(service_request_pk, request.user)
         if type(service_request) == Response:
             return service_request
 
-        serializer = ServiceRequestAttachmentSerializer(data=request.data)
-        if serializer.is_valid():
-            image = serializer.save(
-                service_request=service_request, file=request.data.get("file")
+        for file in request.FILES.getlist("files"):
+            image = ServiceRequestAttachment.objects.create(
+                service_request=service_request, file=file
             )
-
-            # If the service request object doesn't have an ID yet it'll execute the async task after it has received
-            # an ID in django_q_hooks.py
+            # If the service request object doesn't have an ID yet it'll execute
+            # the async task after it has received an ID in django_q_hooks.py
             if service_request.collaborator_object_id:
                 async_task(
                     create_attachment,
                     image.id,
                     hook=handle_service_request_image_create,
                 )
-            return Response(status=201)
-        else:
-            return Response(serializer.errors, status=400)
+        return Response(status=201)
 
 
 class ServiceRequestAttachmentDetailView(views.APIView):
@@ -274,8 +277,7 @@ class ServiceRequestAttachmentDetailView(views.APIView):
     Note that this view returns Django's HttpResponse class and not DRF's Response class to avoid DRF's renderer.
     """
 
-    # TODO: remove before merge
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(
         self, request: Request, service_request_pk: int, service_request_image_pk: int

@@ -41,14 +41,14 @@ urlpatterns = [
         name="service-request-list-create",
     ),
     path(
-        "api/service-requests/<int:service_request_pk>/images/",
+        "api/service-requests/<int:service_request_pk>/attachments/",
         ServiceRequestAttachmentListCreateView.as_view(),
-        name="service-request-image-list-create",
+        name="service-request-attachment-list-create",
     ),
     path(
-        "api/service-requests/<int:service_request_pk>/images/<int:service_request_image_pk>/",
+        "api/service-requests/<int:service_request_pk>/attachments/<int:service_request_image_pk>/",
         ServiceRequestAttachmentDetailView.as_view(),
-        name="service-request-image-detail",
+        name="service-request-attachment-detail",
     ),
     path("api/accounts/", include("rest_registration.api.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
