@@ -283,7 +283,9 @@ class ServiceRequestAttachmentDetailView(views.APIView):
         self, request: Request, service_request_pk: int, service_request_image_pk: int
     ) -> HttpResponse:
         service_request_image = ServiceRequestAttachment.objects.get(
-            service_request__pk=service_request_pk, pk=service_request_image_pk
+            service_request__pk=service_request_pk,
+            pk=service_request_image_pk,
+            service_request__user=request.user,
         )
 
         image_bytes = service_request_image.file.open("rb").read()
