@@ -206,13 +206,6 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             hook=handle_service_request_create,
         )
 
-        # Check and validate attachments
-        # for file in request.data.FILES:
-        #     if serializer.is_valid():
-        #         serializer.save(
-        #             service_request=service_request, file=request.data.get("file")
-        #         )
-
         return Response(status=201, data=serializer.data)
 
 
