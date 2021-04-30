@@ -213,9 +213,6 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
     """
     This API View supports listing the images for a service request and creating images for an existing service
     request.
-
-    It does not support creating images with a new service request, instead that is handled on the
-    Service Request create view.
     """
 
     permission_classes = [IsAuthenticated]
@@ -250,7 +247,9 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
 
         for file in request.FILES.getlist("files"):
             image = ServiceRequestAttachment.objects.create(
-                service_request=service_request, file=file
+                service_request=service_request,
+                file=file,
+                content_type=file.content_type,
             )
             # If the service request object doesn't have an ID yet it'll execute
             # the async task after it has received an ID in django_q_hooks.py
@@ -284,5 +283,6 @@ class ServiceRequestAttachmentDetailView(views.APIView):
         image_bytes = service_request_image.file.open("rb").read()
         service_request_image.file.close()
 
-        # TODO: what about other file types like pngs? same applies in create_attachment POST request
-        return HttpResponse(image_bytes, content_type="image/jpg")
+        return HttpResponse(
+            image_bytes, content_type=service_request_image.content_type
+        )

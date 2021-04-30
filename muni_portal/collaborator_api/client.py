@@ -130,7 +130,9 @@ class Client:
         obj = obj_list[0][0]
         return obj
 
-    def create_attachment(self, obj_id: int, attachment: FieldFile) -> Response:
+    def create_attachment(
+        self, obj_id: int, attachment: FieldFile, content_type: str
+    ) -> Response:
         """ Create an attachment for an existing Service Request """
         self.__assert_auth__()
 
@@ -139,7 +141,7 @@ class Client:
         files = [
             (
                 "Attachment",
-                (attachment.name, attachment.open(mode="rb").read(), "image/jpg"),
+                (attachment.name, attachment.open(mode="rb").read(), content_type),
             ),
         ]
 

@@ -765,4 +765,5 @@ class ServiceRequestAttachment(models.Model):
     )
     date_created = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to=service_request_attachment_file_path)
+    content_type = models.CharField(max_length=255)
     exists_on_collaborator = models.BooleanField(default=False)

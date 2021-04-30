@@ -29,6 +29,7 @@ class ServiceRequestAttachmentAdmin(admin.ModelAdmin):
         "id",
         "service_request",
         "file",
+        "content_type",
         "date_created",
         "exists_on_collaborator",
     )

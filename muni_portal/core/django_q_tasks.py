@@ -45,5 +45,6 @@ def create_attachment(service_request_image_id: int) -> (Response, int):
     response = client.create_attachment(
         service_request_image.service_request.collaborator_object_id,
         service_request_image.file,
+        service_request_image.content_type,
     )
     return response, service_request_image_id
