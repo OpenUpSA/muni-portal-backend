@@ -292,6 +292,7 @@ class ApiServiceRequestTestCase(APITestCase):
         response = self.client.post(reverse("service-request-list-create"), data=data)
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
 
+    @override_settings(DJANGO_Q_SYNC=False)
     def test_post_create_local_object(self):
         """ Test POST create, remove object ID and ensure API returns the same object fully populated without
         contacting collaborator """
