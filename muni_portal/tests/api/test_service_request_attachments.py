@@ -25,6 +25,11 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         cls.service_request_one = ServiceRequest.objects.create(
             collaborator_object_id=1, user=cls.user
         )
+        cls.attachment_one = ServiceRequestAttachment.objects.create(
+            service_request=cls.service_request_one,
+            file=cls.generate_fake_img(),
+            content_type="image/png",
+        )
 
     def authenticate(self) -> None:
         data = {"username": self.user.username, "password": self.password}
@@ -50,15 +55,9 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
 
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
     def test_get_list(self, mock_post):
-        """ Test GET detail view returns correct schema and values """
+        """ Test GET list view returns correct schema and values """
         mock_post.return_value = self.get_mock_auth_response()
         self.authenticate()
-
-        attachment = ServiceRequestAttachment.objects.create(
-            service_request=self.service_request_one,
-            file=self.generate_fake_img(),
-            content_type="image/png",
-        )
 
         response = self.client.get(
             reverse(
@@ -69,12 +68,29 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
         expected_response_data = {
-            "id": attachment.id,
-            "file": settings.MEDIA_URL + attachment.file.name,
-            "date_created": attachment.date_created.isoformat()[:-6] + "Z",
+            "id": self.attachment_one.id,
+            "file": settings.MEDIA_URL + self.attachment_one.file.name,
+            "date_created": self.attachment_one.date_created.isoformat()[:-6] + "Z",
             "exists_on_collaborator": False,
         }
 
         self.assertDictEqual(dict(response.data[0]), expected_response_data)
 
-    # def test_get_detail(self, mock)
+    @mock.patch("muni_portal.collaborator_api.client.requests.post")
+    def test_get_detail(self, mock_post):
+        """ Test GET detail view returns bytes with correct content type """
+        mock_post.return_value = self.get_mock_auth_response()
+        self.authenticate()
+
+        response = self.client.get(
+            reverse(
+                "service-request-attachment-detail",
+                kwargs={
+                    "service_request_pk": self.service_request_one.pk,
+                    "service_request_image_pk": self.attachment_one.pk,
+                },
+            )
+        )
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(response['Content-Type'], self.attachment_one.content_type)
+        self.assertEquals(type(response.content), bytes)
