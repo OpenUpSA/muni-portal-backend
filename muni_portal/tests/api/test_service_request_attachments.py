@@ -1,22 +1,20 @@
 from io import BytesIO
-
-from django.conf import settings
-from django.core.files.base import ContentFile
-from rest_framework.test import APITestCase
-
 from unittest import mock
 
-from django.contrib.auth.models import User
-from requests import Session
-from rest_framework.exceptions import ErrorDetail
 from PIL import Image
-from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
+from django.test import override_settings
 from django.urls import reverse
 from faker import Faker
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
 
+
+@override_settings(DJANGO_Q_SYNC=True)
 class ApiServiceRequestAttachmentsTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls) -> None:
@@ -44,11 +42,11 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
     @staticmethod
     def generate_fake_img() -> ContentFile:
         file = BytesIO()
-        image = Image.new('RGBA', size=(50, 50), color=(155, 0, 0))
-        image.save(file, 'png')
-        file.name = 'test.png'
+        image = Image.new("RGBA", size=(50, 50), color=(155, 0, 0))
+        image.save(file, "png")
+        file.name = "test.png"
         file.seek(0)
-        return ContentFile(file.read(), 'test.png')
+        return ContentFile(file.read(), "test.png")
 
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
     def test_get_list(self, mock_post):
@@ -59,7 +57,7 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         attachment = ServiceRequestAttachment.objects.create(
             service_request=self.service_request_one,
             file=self.generate_fake_img(),
-            content_type='image/png'
+            content_type="image/png",
         )
 
         response = self.client.get(
@@ -73,8 +71,10 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         expected_response_data = {
             "id": attachment.id,
             "file": settings.MEDIA_URL + attachment.file.name,
-            "date_created": attachment.date_created.isoformat()[:-6] + 'Z',
+            "date_created": attachment.date_created.isoformat()[:-6] + "Z",
             "exists_on_collaborator": False,
         }
 
         self.assertDictEqual(dict(response.data[0]), expected_response_data)
+
+    # def test_get_detail(self, mock)
