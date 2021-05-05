@@ -245,7 +245,11 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
         if type(service_request) == Response:
             return service_request
 
-        for file in request.FILES.getlist("files"):
+        files = request.FILES.getlist("files")
+        if len(files) == 0:
+            raise ValidationError("Request must contain at least one file in 'files'")
+
+        for file in files:
             image = ServiceRequestAttachment.objects.create(
                 service_request=service_request,
                 file=file,
