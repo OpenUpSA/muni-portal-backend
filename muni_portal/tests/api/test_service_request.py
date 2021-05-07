@@ -1,4 +1,5 @@
 from unittest import mock
+from unittest.mock import Mock
 
 from django.contrib.auth.models import User
 from django.test import override_settings
@@ -9,6 +10,7 @@ from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APITestCase
 
+from muni_portal.core.django_q_hooks import handle_service_request_create
 from muni_portal.core.models import ServiceRequest
 
 MOCK_GET_TASK_DETAIL_RESPONSE_JSON = {
@@ -279,6 +281,9 @@ class ApiServiceRequestTestCase(APITestCase):
         mock_session_post.return_value = self.get_mock_detail_response()
         self.authenticate()
 
+        ServiceRequest.objects.all().delete()
+        self.assertEqual(ServiceRequest.objects.all().count(), 0)
+
         data = {
             "type": "test-type",
             "user_name": "test name",
@@ -291,6 +296,19 @@ class ApiServiceRequestTestCase(APITestCase):
         }
         response = self.client.post(reverse("service-request-list-create"), data=data)
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ServiceRequest.objects.all().count(), 1)
+
+        service_request = ServiceRequest.objects.first()
+
+        mock_async_task = Mock()
+        mock_response = Mock()
+        mock_response.json.return_value = {"Data": {"ObjID": 123}}
+        mock_async_task.result = (mock_response, service_request.id)
+        handle_service_request_create(mock_async_task)
+
+        service_request.refresh_from_db()
+
+        self.assertEqual(service_request.collaborator_object_id, 123)
 
     @override_settings(DJANGO_Q_SYNC=False)
     def test_post_create_local_object(self):

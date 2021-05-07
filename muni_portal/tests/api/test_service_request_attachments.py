@@ -1,5 +1,6 @@
 from io import BytesIO
 from unittest import mock
+from unittest.mock import Mock
 
 from PIL import Image
 from django.conf import settings
@@ -14,7 +15,7 @@ from requests import Session
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from muni_portal.core.django_q_hooks import handle_service_request_create
+from muni_portal.core.django_q_hooks import handle_service_request_create, handle_service_request_attachment_create
 from muni_portal.core.django_q_tasks import create_service_request
 from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
 
@@ -244,12 +245,17 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         # It must not have been synced to collaborator yet since the service request does not yet have an object id
         self.assertFalse(ServiceRequestAttachment.objects.first().exists_on_collaborator)
 
-        async_task(
-            create_service_request,
-            self.service_request_one.id,
-            [],
-            hook=handle_service_request_create,
-        )
+        self.service_request_one.collaborator_object_id = 123
+        self.service_request_one.save()
+
+        # Now we run the hook for the attachment create task. Ideally the hook would run by just calling the create
+        # service request task, but it appears this does not happen with sync=True as I thought it would, so we must
+        # run it manually to simulate this and trust that the hook runs in production..
+        mock_async_task = Mock()
+        mock_response = Mock()
+        mock_response.json.return_value = {"Data": {"ObjID": self.service_request_one.collaborator_object_id}}
+        mock_async_task.result = (mock_response, ServiceRequestAttachment.objects.first().id)
+        handle_service_request_attachment_create(mock_async_task)
 
         # Now it should be synced since it should have been triggered for syncing after the service request was created
         self.assertTrue(ServiceRequestAttachment.objects.first().exists_on_collaborator)

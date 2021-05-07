@@ -20,11 +20,11 @@ def handle_service_request_create(task: AsyncTask) -> None:
     # There may be images waiting to be created
     for image in service_request.images.filter(exists_on_collaborator=False):
         async_task(
-            create_attachment, image.id, hook=handle_service_request_image_create
+            create_attachment, image.id, hook=handle_service_request_attachment_create
         )
 
 
-def handle_service_request_image_create(task: AsyncTask) -> None:
+def handle_service_request_attachment_create(task: AsyncTask) -> None:
     """
     Handle the response received after a Service Request Image object is synced to
     Collaborator Web API

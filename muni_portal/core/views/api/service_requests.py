@@ -14,7 +14,7 @@ from muni_portal.collaborator_api.types import FormField
 from muni_portal.core.django_q_tasks import create_service_request, create_attachment
 from muni_portal.core.django_q_hooks import (
     handle_service_request_create,
-    handle_service_request_image_create,
+    handle_service_request_attachment_create,
 )
 from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
 from muni_portal.core.model_serializers import (
@@ -261,7 +261,7 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
                 async_task(
                     create_attachment,
                     image.id,
-                    hook=handle_service_request_image_create,
+                    hook=handle_service_request_attachment_create,
                 )
         return Response(status=201)
 
