@@ -158,8 +158,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 WHITENOISE_AUTOREFRESH = env.bool("DJANGO_WHITENOISE_AUTOREFRESH", False)
 
-MEDIA_ROOT = str(ROOT_DIR.path('development_media'))
-MEDIA_URL = env.str("MEDIA_URL", '/media/')
+MEDIA_ROOT = str(ROOT_DIR.path("development_media"))
+MEDIA_URL = env.str("MEDIA_URL", "/media/")
 
 import logging.config
 import boto3
@@ -200,10 +200,14 @@ WAGTAILAPI_BASE_URL = env.str("WAGTAILAPI_BASE_URL", None)
 FRONTEND_BASE_URL = env.str("FRONTEND_BASE_URL", None)
 
 CORS_URLS_REGEX = r"^/api/.*$"
-CORS_ALLOWED_ORIGIN_REGEXES = [re.compile(x) for x in env.list("CORS_ALLOWED_ORIGIN_REGEXES", [])]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    re.compile(x) for x in env.list("CORS_ALLOWED_ORIGIN_REGEXES", [])
+]
 CORS_ALLOW_HEADERS = default_headers + ("HTTP_AUTHORIZATION", "SENTRY-TRACE")
 
-DEFAULT_FILE_STORAGE = env.str("DEFAULT_FILE_STORAGE", 'django.core.files.storage.FileSystemStorage')
+DEFAULT_FILE_STORAGE = env.str(
+    "DEFAULT_FILE_STORAGE", "django.core.files.storage.FileSystemStorage"
+)
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", None)
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", None)
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", None)
@@ -231,7 +235,9 @@ WAGTAILAPI_LIMIT_MAX = 500
 # https://openup.gitbook.io/cape-agulhas-app/collaborator-integration
 COLLABORATOR_API_USERNAME = env.str("COLLABORATOR_API_USERNAME")
 COLLABORATOR_API_PASSWORD = env.str("COLLABORATOR_API_PASSWORD")
-COLLABORATOR_API_BASE_URL = env.str("COLLABORATOR_API_BASE_URL", "https://consumercollab.collaboratoronline.com")
+COLLABORATOR_API_BASE_URL = env.str(
+    "COLLABORATOR_API_BASE_URL", "https://consumercollab.collaboratoronline.com"
+)
 
 # https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
@@ -331,8 +337,7 @@ if SENTRY_DSN:
         integrations=[DjangoIntegration()],
         traces_sample_rate=SENTRY_PERF_SAMPLE_RATE,
         environment=ENVIRONMENT,
-
         # If you wish to associate users to errors (assuming you are using
         # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True
+        send_default_pii=True,
     )

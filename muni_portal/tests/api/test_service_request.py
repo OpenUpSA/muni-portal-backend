@@ -1,14 +1,17 @@
 from unittest import mock
+from unittest.mock import Mock
 
 from django.contrib.auth.models import User
-from requests import Session
-from rest_framework.exceptions import ErrorDetail
-
-from muni_portal.core.models import ServiceRequest
+from django.test import override_settings
 from django.urls import reverse
 from faker import Faker
+from requests import Session
 from rest_framework import status
+from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APITestCase
+
+from muni_portal.core.django_q_hooks import handle_service_request_create
+from muni_portal.core.models import ServiceRequest
 
 MOCK_GET_TASK_DETAIL_RESPONSE_JSON = {
     "Code": 0,
@@ -101,7 +104,36 @@ MOCK_GET_TASK_LIST_RESPONSE_JSON = {
     },
 }
 
+MOCK_CREATE_TASK_RESPONSE_JSON = {
+    "Code": 0,
+    "Message": "Success",
+    "DetailedMessages": None,
+    "CollaboratorUri": "https://consumercollab.collaboratoronline.com/collab/",
+    "Data": {
+        "obj_id": 1,
+        "template_id": 9,
+        "F0": "",
+        "F1": "Sewerage",
+        "F2": "Mr JD",
+        "F3": "Bothma",
+        "F4": "0792816737",
+        "F5": "jd@openup.org.za",
+        "F7": "Geen Straat",
+        "F8": "123",
+        "F9": "Daar",
+        "F10": "This one has the date 2020-02-01 sent from the app",
+        "F11": "12.3, 45.6",
+        "F12": "2020-02-01",
+        "F14": "373761",
+        "F15": "Assigned",
+        "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
+        "F19": "556704",
+        "F20": "WC033",
+    },
+}
 
+
+@override_settings(DJANGO_Q_SYNC=True)
 class ApiServiceRequestTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls) -> None:
@@ -134,6 +166,13 @@ class ApiServiceRequestTestCase(APITestCase):
         mock_detail_response = mock.Mock()
         mock_detail_response.status_code = 200
         mock_detail_response.json.return_value = MOCK_GET_TASK_DETAIL_RESPONSE_JSON
+        return mock_detail_response
+
+    @staticmethod
+    def get_mock_create_response() -> mock.Mock:
+        mock_detail_response = mock.Mock()
+        mock_detail_response.status_code = 200
+        mock_detail_response.json.return_value = MOCK_CREATE_TASK_RESPONSE_JSON
         return mock_detail_response
 
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
@@ -235,10 +274,15 @@ class ApiServiceRequestTestCase(APITestCase):
         self.assertDictEqual(sorted_response[1], expected_response_data[1])
 
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
-    def test_post_create(self, mock_post):
+    @mock.patch.object(Session, "post")
+    def test_post_create(self, mock_post, mock_session_post):
         """ Test POST create returns 201 with correct schema and values """
         mock_post.return_value = self.get_mock_auth_response()
+        mock_session_post.return_value = self.get_mock_detail_response()
         self.authenticate()
+
+        ServiceRequest.objects.all().delete()
+        self.assertEqual(ServiceRequest.objects.all().count(), 0)
 
         data = {
             "type": "test-type",
@@ -252,7 +296,23 @@ class ApiServiceRequestTestCase(APITestCase):
         }
         response = self.client.post(reverse("service-request-list-create"), data=data)
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ServiceRequest.objects.all().count(), 1)
 
+        service_request = ServiceRequest.objects.first()
+
+        # Here we simulate the hook being run after the task is run, because django_q doesn't run the hook in the same
+        # process even with sync=True, so the hook doesn't run in a test
+        mock_async_task = Mock()
+        mock_response = Mock()
+        mock_response.json.return_value = {"Data": {"ObjID": 123}}
+        mock_async_task.result = (mock_response, service_request.id)
+        handle_service_request_create(mock_async_task)
+
+        service_request.refresh_from_db()
+
+        self.assertEqual(service_request.collaborator_object_id, 123)
+
+    @override_settings(DJANGO_Q_SYNC=False)
     def test_post_create_local_object(self):
         """ Test POST create, remove object ID and ensure API returns the same object fully populated without
         contacting collaborator """
