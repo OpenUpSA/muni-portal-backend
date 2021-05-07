@@ -300,6 +300,8 @@ class ApiServiceRequestTestCase(APITestCase):
 
         service_request = ServiceRequest.objects.first()
 
+        # Here we simulate the hook being run after the task is run, because django_q doesn't run the hook in the same
+        # process even with sync=True, so the hook doesn't run in a test
         mock_async_task = Mock()
         mock_response = Mock()
         mock_response.json.return_value = {"Data": {"ObjID": 123}}
