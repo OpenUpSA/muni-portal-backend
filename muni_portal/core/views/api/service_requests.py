@@ -119,7 +119,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         received_fields = request.data.keys()
         missing_fields = []
         for field in self.CREATE_REQUIRED_FIELDS:
-            if field not in received_fields:
+            if field not in received_fields or not request.data.get(field):
                 missing_fields.append(field)
         if missing_fields:
             error_response_dict = {}
