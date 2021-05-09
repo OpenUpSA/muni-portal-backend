@@ -1,5 +1,4 @@
 from unittest import mock
-from unittest.mock import Mock
 
 from django.contrib.auth.models import User
 from django.test import override_settings
@@ -10,127 +9,11 @@ from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APITestCase
 
-from muni_portal.core.django_q_hooks import handle_service_request_create
 from muni_portal.core.models import ServiceRequest
-
-MOCK_GET_TASK_DETAIL_RESPONSE_JSON = {
-    "Code": 0,
-    "Message": "Success",
-    "DetailedMessages": None,
-    "CollaboratorUri": "https://consumercollab.collaboratoronline.com/collab/",
-    "Data": {
-        "tmpCollabObject": {"obj_id": 1, "template_id": 9, "Fields": []},
-        "ObjectList": [
-            [
-                {
-                    "obj_id": 1,
-                    "template_id": 9,
-                    "F0": "",
-                    "F1": "Sewerage",
-                    "F2": "Mr JD",
-                    "F3": "Bothma",
-                    "F4": "0792816737",
-                    "F5": "jd@openup.org.za",
-                    "F7": "Geen Straat",
-                    "F8": "123",
-                    "F9": "Daar",
-                    "F10": "This one has the date 2020-02-01 sent from the app",
-                    "F11": "12.3, 45.6",
-                    "F12": "2020-02-01",
-                    "F14": "373761",
-                    "F15": "Assigned",
-                    "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
-                    "F19": "556704",
-                    "F20": "WC033",
-                }
-            ]
-        ],
-    },
-}
-
-MOCK_GET_TASK_LIST_RESPONSE_JSON = {
-    "Code": 0,
-    "Message": "Success",
-    "DetailedMessages": None,
-    "CollaboratorUri": "https://consumercollab.collaboratoronline.com/collab/",
-    "Data": {
-        "tmpCollabObject": {"obj_id": 1, "template_id": 9, "Fields": []},
-        "ObjectList": [
-            [
-                {
-                    "obj_id": 1,
-                    "template_id": 9,
-                    "F0": "",
-                    "F1": "Sewerage",
-                    "F2": "Mr JD",
-                    "F3": "Bothma",
-                    "F4": "0792816737",
-                    "F5": "jd@openup.org.za",
-                    "F7": "Geen Straat",
-                    "F8": "123",
-                    "F9": "Daar",
-                    "F10": "This one has the date 2020-02-01 sent from the app",
-                    "F11": "12.3, 45.6",
-                    "F12": "2020-02-01",
-                    "F14": "373761",
-                    "F15": "Assigned",
-                    "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
-                    "F19": "556704",
-                    "F20": "WC033",
-                },
-                {
-                    "obj_id": 2,
-                    "template_id": 9,
-                    "F0": "",
-                    "F1": "Sewerage",
-                    "F2": "Mr JD",
-                    "F3": "Bothma",
-                    "F4": "0792816737",
-                    "F5": "jd@openup.org.za",
-                    "F7": "Geen Straat",
-                    "F8": "123",
-                    "F9": "Daar",
-                    "F10": "This one has the date 2020-02-01 sent from the app",
-                    "F11": "12.3, 45.6",
-                    "F12": "2020-02-01",
-                    "F14": "373761",
-                    "F15": "Assigned",
-                    "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
-                    "F19": "556704",
-                    "F20": "WC033",
-                },
-            ]
-        ],
-    },
-}
-
-MOCK_CREATE_TASK_RESPONSE_JSON = {
-    "Code": 0,
-    "Message": "Success",
-    "DetailedMessages": None,
-    "CollaboratorUri": "https://consumercollab.collaboratoronline.com/collab/",
-    "Data": {
-        "obj_id": 1,
-        "template_id": 9,
-        "F0": "",
-        "F1": "Sewerage",
-        "F2": "Mr JD",
-        "F3": "Bothma",
-        "F4": "0792816737",
-        "F5": "jd@openup.org.za",
-        "F7": "Geen Straat",
-        "F8": "123",
-        "F9": "Daar",
-        "F10": "This one has the date 2020-02-01 sent from the app",
-        "F11": "12.3, 45.6",
-        "F12": "2020-02-01",
-        "F14": "373761",
-        "F15": "Assigned",
-        "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
-        "F19": "556704",
-        "F20": "WC033",
-    },
-}
+from muni_portal.tests.api.common_mock_values import (
+    MOCK_GET_TASK_DETAIL_RESPONSE_JSON,
+    MOCK_CREATE_TASK_RESPONSE_JSON,
+)
 
 
 @override_settings(DJANGO_Q_SYNC=True)
@@ -273,12 +156,12 @@ class ApiServiceRequestTestCase(APITestCase):
         self.assertDictEqual(sorted_response[0], expected_response_data[0])
         self.assertDictEqual(sorted_response[1], expected_response_data[1])
 
-    @mock.patch("muni_portal.collaborator_api.client.requests.post")
     @mock.patch.object(Session, "post")
+    @mock.patch("muni_portal.collaborator_api.client.requests.post")
     def test_post_create(self, mock_post, mock_session_post):
-        """ Test POST create returns 201 with correct schema and values """
+        """ Test POST create syncs with collaborator and saves collaborator object id """
         mock_post.return_value = self.get_mock_auth_response()
-        mock_session_post.return_value = self.get_mock_detail_response()
+        mock_session_post.return_value = self.get_mock_create_response()
         self.authenticate()
 
         ServiceRequest.objects.all().delete()
@@ -300,22 +183,13 @@ class ApiServiceRequestTestCase(APITestCase):
 
         service_request = ServiceRequest.objects.first()
 
-        # Here we simulate the hook being run after the task is run, because django_q doesn't run the hook in the same
-        # process even with sync=True, so the hook doesn't run in a test
-        mock_async_task = Mock()
-        mock_response = Mock()
-        mock_response.json.return_value = {"Data": {"ObjID": 123}}
-        mock_async_task.result = (mock_response, service_request.id)
-        handle_service_request_create(mock_async_task)
-
-        service_request.refresh_from_db()
-
-        self.assertEqual(service_request.collaborator_object_id, 123)
+        self.assertEqual(service_request.collaborator_object_id, 1)
 
     @override_settings(DJANGO_Q_SYNC=False)
-    def test_post_create_local_object(self):
+    def test_post_create_local_object_no_collaborator_sync(self):
         """ Test POST create, remove object ID and ensure API returns the same object fully populated without
-        contacting collaborator """
+        contacting collaborator. This test ensures the local object is returned populated prior to syncing with
+         Collaborator. """
         self.authenticate()
 
         service_type = "test-type"

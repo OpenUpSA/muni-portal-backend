@@ -1,0 +1,120 @@
+MOCK_AUTH_RESPONSE = "fakeTestToken"
+
+MOCK_GET_TASK_DETAIL_RESPONSE_JSON = {
+    "Code": 0,
+    "Message": "Success",
+    "DetailedMessages": None,
+    "CollaboratorUri": "https://consumercollab.collaboratoronline.com/collab/",
+    "Data": {
+        "tmpCollabObject": {"obj_id": 1, "template_id": 9, "Fields": []},
+        "ObjectList": [
+            [
+                {
+                    "obj_id": 1,
+                    "template_id": 9,
+                    "F0": "",
+                    "F1": "Sewerage",
+                    "F2": "Mr JD",
+                    "F3": "Bothma",
+                    "F4": "0792816737",
+                    "F5": "jd@openup.org.za",
+                    "F7": "Geen Straat",
+                    "F8": "123",
+                    "F9": "Daar",
+                    "F10": "This one has the date 2020-02-01 sent from the app",
+                    "F11": "12.3, 45.6",
+                    "F12": "2020-02-01",
+                    "F14": "373761",
+                    "F15": "Assigned",
+                    "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
+                    "F19": "556704",
+                    "F20": "WC033",
+                }
+            ]
+        ],
+    },
+}
+
+MOCK_GET_TASK_LIST_RESPONSE_JSON = {
+    "Code": 0,
+    "Message": "Success",
+    "DetailedMessages": None,
+    "CollaboratorUri": "https://consumercollab.collaboratoronline.com/collab/",
+    "Data": {
+        "tmpCollabObject": {"obj_id": 1, "template_id": 9, "Fields": []},
+        "ObjectList": [
+            [
+                {
+                    "obj_id": 1,
+                    "template_id": 9,
+                    "F0": "",
+                    "F1": "Sewerage",
+                    "F2": "Mr JD",
+                    "F3": "Bothma",
+                    "F4": "0792816737",
+                    "F5": "jd@openup.org.za",
+                    "F7": "Geen Straat",
+                    "F8": "123",
+                    "F9": "Daar",
+                    "F10": "This one has the date 2020-02-01 sent from the app",
+                    "F11": "12.3, 45.6",
+                    "F12": "2020-02-01",
+                    "F14": "373761",
+                    "F15": "Assigned",
+                    "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
+                    "F19": "556704",
+                    "F20": "WC033",
+                },
+                {
+                    "obj_id": 2,
+                    "template_id": 9,
+                    "F0": "",
+                    "F1": "Sewerage",
+                    "F2": "Mr JD",
+                    "F3": "Bothma",
+                    "F4": "0792816737",
+                    "F5": "jd@openup.org.za",
+                    "F7": "Geen Straat",
+                    "F8": "123",
+                    "F9": "Daar",
+                    "F10": "This one has the date 2020-02-01 sent from the app",
+                    "F11": "12.3, 45.6",
+                    "F12": "2020-02-01",
+                    "F14": "373761",
+                    "F15": "Assigned",
+                    "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
+                    "F19": "556704",
+                    "F20": "WC033",
+                },
+            ]
+        ],
+    },
+}
+
+MOCK_CREATE_TASK_RESPONSE_JSON = {
+    "Code": 0,
+    "Message": "Success",
+    "DetailedMessages": None,
+    "CollaboratorUri": "https://consumercollab.collaboratoronline.com/collab/",
+    "Data": {
+        "ObjID": 1,
+        "template_id": 9,
+        "F0": "",
+        "F1": "Sewerage",
+        "F2": "Mr JD",
+        "F3": "Bothma",
+        "F4": "0792816737",
+        "F5": "jd@openup.org.za",
+        "F7": "Geen Straat",
+        "F8": "123",
+        "F9": "Daar",
+        "F10": "This one has the date 2020-02-01 sent from the app",
+        "F11": "12.3, 45.6",
+        "F12": "2020-02-01",
+        "F14": "373761",
+        "F15": "Assigned",
+        "F18": "Mr Bothma. Cape Agulhas Municipality confirms receipt of your request. Ref No 373761",
+        "F19": "556704",
+        "F20": "WC033",
+    },
+}

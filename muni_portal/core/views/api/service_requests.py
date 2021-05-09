@@ -12,10 +12,6 @@ from typing import List, Union
 from muni_portal.collaborator_api.client import Client
 from muni_portal.collaborator_api.types import FormField
 from muni_portal.core.django_q_tasks import create_service_request, create_attachment
-from muni_portal.core.django_q_hooks import (
-    handle_service_request_create,
-    handle_service_request_attachment_create,
-)
 from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
 from muni_portal.core.model_serializers import (
     ServiceRequestSerializer,
@@ -203,7 +199,6 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             create_service_request,
             service_request.id,
             form_fields,
-            hook=handle_service_request_create,
         )
 
         return Response(status=201, data=serializer.data)
@@ -261,7 +256,6 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
                 async_task(
                     create_attachment,
                     image.id,
-                    hook=handle_service_request_attachment_create,
                 )
         return Response(status=201)
 
