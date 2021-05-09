@@ -66,9 +66,6 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         "user_name",
         "user_surname",
         "user_mobile_number",
-        "street_name",
-        "street_number",
-        "suburb",
         "description",
     )
 
