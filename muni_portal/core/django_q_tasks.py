@@ -5,7 +5,6 @@ from django_q.tasks import async_task
 from muni_portal.collaborator_api.client import Client
 from django.conf import settings
 from muni_portal.collaborator_api.types import FormField
-from requests import Response
 
 from muni_portal.core.models import ServiceRequestAttachment, ServiceRequest
 
