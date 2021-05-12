@@ -138,10 +138,12 @@ class Client:
 
         url = f"{settings.COLLABORATOR_API_BASE_URL}/webapi/api/File/Post"
 
+        name = attachment.name.split("/")[-1]
+
         files = [
             (
                 "Attachment",
-                (attachment.name, attachment.open(mode="rb").read(), content_type),
+                (name, attachment.open(mode="rb").read(), content_type),
             ),
         ]
 
