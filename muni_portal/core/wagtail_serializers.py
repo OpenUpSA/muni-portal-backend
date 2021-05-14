@@ -6,6 +6,7 @@ from wagtail.images.api.fields import ImageRenditionField
 
 
 class APIRichTextSerializer(fields.CharField):
+    """ https://github.com/wagtail/wagtail/issues/2695#issuecomment-373002412 """
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         return expand_db_html(representation)
