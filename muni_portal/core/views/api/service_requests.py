@@ -11,14 +11,14 @@ from typing import List, Union
 
 from muni_portal.collaborator_api.client import Client
 from muni_portal.collaborator_api.types import FormField
-from muni_portal.core.django_q_tasks import create_service_request, create_attachment
+from muni_portal.core.django_q_tasks import create_service_request, create_attachment, update_service_request_record
 from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
 from muni_portal.core.model_serializers import (
     ServiceRequestSerializer,
     ServiceRequestAttachmentSerializer,
 )
 from django.conf import settings
-from django_q.tasks import async_task
+from django_q.tasks import async_task, Chain
 
 
 class ServiceRequestAPIView(views.APIView):
@@ -241,6 +241,7 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
         if len(files) == 0:
             raise ValidationError("Request must contain at least one file in 'files'")
 
+        chain = Chain()
         for file in files:
             image = ServiceRequestAttachment.objects.create(
                 service_request=service_request,
@@ -250,10 +251,14 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
             # If the service request object doesn't have an ID yet it'll execute
             # the async task after it has received an ID in django_q_hooks.py
             if service_request.collaborator_object_id:
-                async_task(
-                    create_attachment,
-                    image.id,
-                )
+                chain.append(create_attachment, image.id)
+
+        # Since we are adding more attachments to an existing object which may already be uploaded to On Prem,
+        # we have to first change the status back to initial and then back to registered again to trigger the upload
+        chain.append(update_service_request_record, service_request.id, ServiceRequest.COLLABORATOR_INITIAL)
+        chain.append(update_service_request_record, service_request.id, ServiceRequest.COLLABORATOR_REGISTERED)
+        chain.run()
+
         return Response(status=201)
 
 
