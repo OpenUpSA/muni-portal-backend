@@ -141,10 +141,7 @@ class Client:
         name = attachment.name.split("/")[-1]
 
         files = [
-            (
-                "Attachment",
-                (name, attachment.open(mode="rb").read(), content_type),
-            ),
+            ("Attachment", (name, attachment.open(mode="rb").read(), content_type),),
         ]
 
         attachment.close()
@@ -152,6 +149,38 @@ class Client:
         response = self.session.post(
             url, headers=self.request_headers, files=files, data={"Obj_Id": f"{obj_id}"}
         )
+        response.raise_for_status()
+
+        return response
+
+    def create_update_record(
+        self, obj_id: int, status: str, status_tag="F15"
+    ) -> Response:
+        """
+        Create an 'update record' which effectively updates a Service Request object in this app's context
+
+        We use this endpoint to change the status of a Service Request which in turn triggers the upload process
+        from Collaborator to On Prem. We need to trigger this process after creating attachments for a Service Request
+        so that the attachments are included in the upload process.
+        """
+
+        self.__assert_auth__()
+
+        url = f"{settings.COLLABORATOR_API_BASE_URL}/webapi/Api/Records/CreateUpdateRecord"
+
+        headers = self.request_headers
+        headers["Content-Type"] = "application/xml"
+
+        data = f"""
+            <Objects>
+                <ServiceRequest>
+                    <ObjectId>{obj_id}</ObjectId>
+                    <{status_tag}>{status}</{status_tag}>
+                </ServiceRequest>
+            </Objects>
+        """
+
+        response = self.session.post(url, headers=headers, data=data)
         response.raise_for_status()
 
         return response
