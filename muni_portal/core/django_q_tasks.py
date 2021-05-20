@@ -64,3 +64,49 @@ def create_attachment(service_request_image_id: int) -> None:
     )
     service_request_image.exists_on_collaborator = True
     service_request_image.save()
+
+
+def trigger_initial_service_request_upload(service_request_id: int) -> None:
+    """
+    Trigger an upload workflow from Collaborator to On Prem for the first time after a Service Request object
+    is created.
+
+    This is done by updating the status for a Service Request object on Collaborator to 'Registered'.
+    """
+
+    client = Client(
+        settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD
+    )
+    client.authenticate()
+
+    service_request = ServiceRequest.objects.get(id=service_request_id)
+    collaborator_object_id = service_request.collaborator_object_id
+
+    if not collaborator_object_id:
+        raise AssertionError("Can't update a Service Request that does not have a collaborator_object_id")
+
+    client.create_update_record(collaborator_object_id, ServiceRequest.COLLABORATOR_REGISTERED)
+
+
+def trigger_repeated_service_request_upload(service_request_id: int) -> None:
+    """
+    Trigger an upload workflow from Collaborator to On Prem for an existing Service Request object after the user
+    adds more photos at a later stage.
+
+    This is done by updating the status for a Service Request object on Collaborator first to 'Initial' then
+    to 'Registered'.
+    """
+
+    client = Client(
+        settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD
+    )
+    client.authenticate()
+
+    service_request = ServiceRequest.objects.get(id=service_request_id)
+    collaborator_object_id = service_request.collaborator_object_id
+
+    if not collaborator_object_id:
+        raise AssertionError("Can't update a Service Request that does not have a collaborator_object_id")
+
+    client.create_update_record(collaborator_object_id, ServiceRequest.COLLABORATOR_INITIAL)
+    client.create_update_record(collaborator_object_id, ServiceRequest.COLLABORATOR_REGISTERED)
