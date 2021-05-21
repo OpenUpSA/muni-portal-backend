@@ -182,5 +182,7 @@ class Client:
 
         response = self.session.post(url, headers=headers, data=data)
         response.raise_for_status()
+        if not response.json() == str(obj_id):
+            raise AssertionError(f"Create Update Record API call failed for Object ID {obj_id}")
 
         return response
