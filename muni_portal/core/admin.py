@@ -19,6 +19,7 @@ class ServiceRequestAdmin(admin.ModelAdmin):
         "description",
         "request_date",
         "status",
+        "collaborator_status",
     )
     list_filter = ("request_date", "type", "status")
 
