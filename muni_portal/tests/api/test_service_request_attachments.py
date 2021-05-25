@@ -119,6 +119,9 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         """
         Test creating a single attachment in one request for an existing service request object
         """
+        self.service_request_one.collaborator_object_id = 123
+        self.service_request_one.save()
+
         mock_post.return_value = self.get_mock_auth_response()
         mock_session_post.return_value = self.get_mock_create_update_record_response(
             self.service_request_one.collaborator_object_id
@@ -152,6 +155,10 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         """
         Test creating multiple attachments in one request for an existing service request object
         """
+
+        self.service_request_one.collaborator_object_id = 123
+        self.service_request_one.save()
+
         mock_post.return_value = self.get_mock_auth_response()
         mock_session_post.return_value = self.get_mock_create_update_record_response(
             self.service_request_one.collaborator_object_id
