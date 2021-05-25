@@ -16,6 +16,9 @@ jobs:
       - name: Configure variables to run container under host user ID
         run: export USER_ID=$(id -u) && export GROUP_ID=$(id -g)
 
+      - name: Configure Django Q to run synchronously
+        run: export DJANGO_Q_SYNC=True
+
       # Rebuild static files because we mount to /app overriding those in the image
       - run: docker-compose run --rm web yarn
       - run: docker-compose run --rm web yarn build
