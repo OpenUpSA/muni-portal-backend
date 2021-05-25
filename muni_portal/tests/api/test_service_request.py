@@ -301,7 +301,4 @@ class ApiServiceRequestTestCase(APITestCase):
         self.assertEquals(
             response.data["user_mobile_number"], "This field is required."
         )
-        self.assertEquals(response.data["street_name"], "This field is required.")
-        self.assertEquals(response.data["street_number"], "This field is required.")
-        self.assertEquals(response.data["suburb"], "This field is required.")
         self.assertEquals(response.data["description"], "This field is required.")
