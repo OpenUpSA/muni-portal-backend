@@ -16,9 +16,6 @@ jobs:
       - name: Configure variables to run container under host user ID
         run: export USER_ID=$(id -u) && export GROUP_ID=$(id -g)
 
-      - name: Configure Django Q to run synchronously
-        run: export DJANGO_Q_SYNC=True
-
       # Rebuild static files because we mount to /app overriding those in the image
       - run: docker-compose run --rm web yarn
       - run: docker-compose run --rm web yarn build
@@ -27,7 +24,7 @@ jobs:
 
 
       - name: Run tests
-        run: docker-compose run --rm web bin/wait-for-postgres.sh coverage run --source=muni_portal manage.py test
+        run: DJANGO_Q_SYNC=True docker-compose run --rm web bin/wait-for-postgres.sh coverage run --source=muni_portal manage.py test
 
       # Ensure that the demodata fixture can be loaded and the data is available in the API
       # - smoke test
