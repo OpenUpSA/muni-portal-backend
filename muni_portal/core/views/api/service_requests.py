@@ -241,6 +241,8 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
         if len(files) == 0:
             raise ValidationError("Request must contain at least one file in 'files'")
 
+        attachments_can_be_created = service_request.collaborator_object_id is not None
+
         chain = Chain()
         for file in files:
             image = ServiceRequestAttachment.objects.create(
@@ -250,14 +252,15 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
             )
             # If the service request object doesn't have an ID yet it'll execute
             # the async task after it has received an ID in django_q_hooks.py
-            if service_request.collaborator_object_id:
+            if attachments_can_be_created:
                 chain.append(create_attachment, image.id)
 
         # Since we are adding more attachments to an existing object which may already be uploaded to On Prem,
         # we have to first change the status back to initial and then back to registered again to trigger the upload
-        chain.append(update_service_request_record, service_request.id, "Initial")
-        chain.append(update_service_request_record, service_request.id, "Registered")
-        chain.run()
+        if attachments_can_be_created:
+            chain.append(update_service_request_record, service_request.id, "Initial")
+            chain.append(update_service_request_record, service_request.id, "Registered")
+            chain.run()
 
         return Response(status=201)
 
