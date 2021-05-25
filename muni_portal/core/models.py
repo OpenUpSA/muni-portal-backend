@@ -10,6 +10,7 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
+from rest_framework import serializers as drf_serializers
 
 from muni_portal.core.wagtail_serializers import (
     RelatedPagesSerializer,
