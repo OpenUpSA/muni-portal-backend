@@ -1,5 +1,6 @@
 from unittest import mock
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import override_settings
 from django.urls import reverse
@@ -16,7 +17,6 @@ from muni_portal.tests.api.common_mock_values import (
 )
 
 
-@override_settings(DJANGO_Q_SYNC=True)
 class ApiServiceRequestTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls) -> None:
@@ -185,11 +185,11 @@ class ApiServiceRequestTestCase(APITestCase):
 
         self.assertEqual(service_request.collaborator_object_id, 1)
 
-    @override_settings(DJANGO_Q_SYNC=False)
     def test_post_create_local_object_no_collaborator_sync(self):
         """ Test POST create, remove object ID and ensure API returns the same object fully populated without
         contacting collaborator. This test ensures the local object is returned populated prior to syncing with
          Collaborator. """
+        settings.Q_CLUSTER['sync'] = False
         self.authenticate()
 
         service_type = "test-type"

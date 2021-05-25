@@ -19,7 +19,6 @@ from muni_portal.tests.api.common_mock_values import (
 )
 
 
-@override_settings(DJANGO_Q_SYNC=True)
 class ApiServiceRequestAttachmentsTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls) -> None:
