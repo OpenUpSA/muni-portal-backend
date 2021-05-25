@@ -57,6 +57,13 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         return mock_detail_response
 
     @staticmethod
+    def get_mock_create_update_record_response(object_id: int) -> mock.Mock:
+        mock_response = mock.Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = f"{object_id}"
+        return mock_response
+
+    @staticmethod
     def generate_fake_file() -> SimpleUploadedFile:
         return SimpleUploadedFile(
             "test.jpg", b"fake bytes file content", content_type="image/jpg"
@@ -104,12 +111,18 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         self.assertEquals(response["Content-Type"], self.attachment_one.content_type)
         self.assertEquals(type(response.content), bytes)
 
+    @mock.patch.object(Session, "post")
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
-    def test_create_one_attachment_for_existing_service_request(self, mock_post):
+    def test_create_one_attachment_for_existing_service_request(
+        self, mock_post, mock_session_post
+    ):
         """
         Test creating a single attachment in one request for an existing service request object
         """
         mock_post.return_value = self.get_mock_auth_response()
+        mock_session_post.return_value = self.get_mock_create_update_record_response(
+            self.service_request_one.collaborator_object_id
+        )
         self.authenticate()
 
         ServiceRequestAttachment.objects.all().delete()
@@ -131,12 +144,18 @@ class ApiServiceRequestAttachmentsTestCase(APITestCase):
         # It should have been synced to collaborator since the object already exists
         self.assertTrue(ServiceRequestAttachment.objects.first().exists_on_collaborator)
 
+    @mock.patch.object(Session, "post")
     @mock.patch("muni_portal.collaborator_api.client.requests.post")
-    def test_create_multiple_attachments_for_existing_service_request(self, mock_post):
+    def test_create_multiple_attachments_for_existing_service_request(
+        self, mock_post, mock_session_post
+    ):
         """
         Test creating multiple attachments in one request for an existing service request object
         """
         mock_post.return_value = self.get_mock_auth_response()
+        mock_session_post.return_value = self.get_mock_create_update_record_response(
+            self.service_request_one.collaborator_object_id
+        )
         self.authenticate()
 
         ServiceRequestAttachment.objects.all().delete()
