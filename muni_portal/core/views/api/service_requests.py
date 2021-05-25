@@ -255,8 +255,8 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
 
         # Since we are adding more attachments to an existing object which may already be uploaded to On Prem,
         # we have to first change the status back to initial and then back to registered again to trigger the upload
-        chain.append(update_service_request_record, service_request.id, ServiceRequest.COLLABORATOR_INITIAL)
-        chain.append(update_service_request_record, service_request.id, ServiceRequest.COLLABORATOR_REGISTERED)
+        chain.append(update_service_request_record, service_request.id, "Initial")
+        chain.append(update_service_request_record, service_request.id, "Registered")
         chain.run()
 
         return Response(status=201)
