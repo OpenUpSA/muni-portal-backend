@@ -1,22 +1,22 @@
-from django.db import models
-from django.contrib.postgres.fields import JSONField
 from django.conf import settings
-from wagtail.core.fields import RichTextField
-from wagtail.images.edit_handlers import ImageChooserPanel
+from django.contrib.postgres.fields import JSONField
+from django.db import models
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
 from wagtail.api import APIField
-from wagtail.snippets.models import register_snippet
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page, Orderable
-from rest_framework import serializers as drf_serializers
-from rest_framework.fields import DateTimeField
 from wagtail.images.api.fields import ImageRenditionField
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.snippets.models import register_snippet
+
 from muni_portal.core.wagtail_serializers import (
     RelatedPagesSerializer,
     RelatedPersonPageSerializer,
     RelatedPersonPageListSerializer,
     SerializerMethodNestedSerializer,
+    APIRichTextSerializer,
     RelatedCouncillorGroupPageSerializer,
     RichTextFieldSerializer,
     RelatedNoticePagesSerializer,
@@ -26,7 +26,14 @@ from django.utils.html import format_html
 import uuid
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
-NON_EMBEDS_FEATURES = NON_LINK_FEATURES + ["link"]
+NON_IMAGE_FEATURES = NON_LINK_FEATURES + ["link"]
+NON_EMBEDS_FEATURES = NON_IMAGE_FEATURES + ["image"]
+
+
+class APIRichTextField(APIField):
+    def __init__(self, name):
+        serializer = APIRichTextSerializer()
+        super().__init__(name=name, serializer=serializer)
 
 
 class ServiceContact(Orderable, models.Model):
@@ -526,6 +533,7 @@ class MyMuniPage(Page):
         "core.PoliticalRepsIndexPage",
         "core.AdministrationIndexPage",
         "core.NoticeIndexPage",
+        "core.NewsIndexPage",
         "core.ContactsPage",
         "core.RedirectorPage",
     ]
@@ -606,7 +614,7 @@ class NoticeIndexPage(Page):
 class NoticePage(Page):
     subpage_types = []
 
-    body = RichTextField(features=NON_EMBEDS_FEATURES)
+    body = RichTextField(features=NON_IMAGE_FEATURES)
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
@@ -616,6 +624,58 @@ class NoticePage(Page):
         APIField("title"),
         APIField("body"),
         APIField("body_html", serializer=RichTextFieldSerializer(source="body")),
+        APIField(
+            "publication_date", serializer=DateTimeField(source="last_published_at")
+        ),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
+    ]
+
+
+class NewsIndexPage(Page):
+    subpage_types = [
+        "core.NewsPage",
+    ]
+
+    max_count_per_parent = 1
+
+    icon_classes = models.CharField(max_length=250, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("icon_classes"),
+    ]
+
+    api_fields = [
+        APIField("icon_classes"),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages",
+            serializer=RelatedNoticePagesSerializer(source="get_children.live"),
+        ),
+    ]
+
+
+class NewsPage(Page):
+    subpage_types = []
+
+    body = RichTextField(features=NON_EMBEDS_FEATURES)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
+
+    api_fields = [
+        APIField("title"),
+        APIField("body"),
+        APIField("body_html", serializer=APIRichTextSerializer(source="body")),
         APIField(
             "publication_date", serializer=DateTimeField(source="last_published_at")
         ),
@@ -759,16 +819,15 @@ class RedirectorPage(Page):
     """
     https://www.yellowduck.be/posts/creating-redirector-page-wagtail/
     """
+
     icon_classes = models.CharField(max_length=100, blank=True)
     redirect_to = models.CharField(
-        max_length=500,
-        help_text='The URL to redirect to',
-        blank=False,
+        max_length=500, help_text="The URL to redirect to", blank=False,
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("icon_classes"),
-        FieldPanel('redirect_to', classname="full"),
+        FieldPanel("redirect_to", classname="full"),
     ]
 
     api_fields = [
@@ -780,7 +839,7 @@ class RedirectorPage(Page):
         return format_html(f"{self.draft_title}<br/>{self.redirect_to}")
 
     class Meta:
-        verbose_name = 'Redirector'
+        verbose_name = "Redirector"
 
     def get_url(self, request=None, current_site=None):
         return self.redirect_to
