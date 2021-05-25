@@ -1,11 +1,7 @@
 from django.conf import settings
 from django.contrib.postgres.fields import JSONField
 from django.db import models
-from django.shortcuts import redirect
-from django.utils.html import format_html
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from rest_framework import serializers as drf_serializers
-from rest_framework.fields import DateTimeField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, PageChooserPanel
 from wagtail.api import APIField
 from wagtail.core.fields import RichTextField
@@ -14,17 +10,22 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
+from rest_framework import serializers as drf_serializers
+from rest_framework.fields import DateTimeField
 
 from muni_portal.core.wagtail_serializers import (
     RelatedPagesSerializer,
     RelatedPersonPageSerializer,
     RelatedPersonPageListSerializer,
     SerializerMethodNestedSerializer,
+    APIRichTextSerializer,
     RelatedCouncillorGroupPageSerializer,
     RichTextFieldSerializer,
     RelatedNoticePagesSerializer,
-    APIRichTextSerializer,
 )
+from django.shortcuts import redirect
+from django.utils.html import format_html
+import uuid
 
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
 NON_IMAGE_FEATURES = NON_LINK_FEATURES + ["link"]
@@ -850,3 +851,20 @@ class RedirectorPage(Page):
 
     def serve(self, request):
         return redirect(self.redirect_to)
+
+
+def service_request_attachment_file_path(instance, filename):
+    extension = filename.split(".")[-1]
+    return f"service-requests/{instance.service_request.id}/attachments/{uuid.uuid4()}.{extension}/"
+
+
+class ServiceRequestAttachment(models.Model):
+    """ Attachment for a Service Request object """
+
+    service_request = models.ForeignKey(
+        to=ServiceRequest, on_delete=models.CASCADE, related_name="images"
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(upload_to=service_request_attachment_file_path)
+    content_type = models.CharField(max_length=255)
+    exists_on_collaborator = models.BooleanField(default=False)

@@ -12,7 +12,12 @@ from muni_portal.core.views import (
     IndexView,
     CollaboratorWebhookApiView,
 )
-from muni_portal.core.views.api.service_requests import ServiceRequestDetailView, ServiceRequestListCreateView
+from muni_portal.core.views.api.service_requests import (
+    ServiceRequestDetailView,
+    ServiceRequestListCreateView,
+    ServiceRequestAttachmentListCreateView,
+    ServiceRequestAttachmentDetailView,
+)
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
@@ -25,7 +30,6 @@ urlpatterns = [
         CollaboratorWebhookApiView.as_view(),
         name="webhooks",
     ),
-
     path(
         "api/service-requests/<int:pk>/",
         ServiceRequestDetailView.as_view(),
@@ -36,7 +40,16 @@ urlpatterns = [
         ServiceRequestListCreateView.as_view(),
         name="service-request-list-create",
     ),
-
+    path(
+        "api/service-requests/<int:service_request_pk>/attachments/",
+        ServiceRequestAttachmentListCreateView.as_view(),
+        name="service-request-attachment-list-create",
+    ),
+    path(
+        "api/service-requests/<int:service_request_pk>/attachments/<int:service_request_image_pk>/",
+        ServiceRequestAttachmentDetailView.as_view(),
+        name="service-request-attachment-detail",
+    ),
     path("api/accounts/", include("rest_registration.api.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

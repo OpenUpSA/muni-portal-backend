@@ -24,7 +24,7 @@ jobs:
 
 
       - name: Run tests
-        run: docker-compose run --rm web bin/wait-for-postgres.sh coverage run --source=muni_portal manage.py test
+        run: DJANGO_Q_SYNC=True docker-compose run --rm web bin/wait-for-postgres.sh coverage run --source=muni_portal manage.py test
 
       # Ensure that the demodata fixture can be loaded and the data is available in the API
       # - smoke test

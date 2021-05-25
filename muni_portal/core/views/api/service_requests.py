@@ -1,19 +1,24 @@
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.utils import timezone
+from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import views
-from typing import List
+from typing import List, Union
 
 from muni_portal.collaborator_api.client import Client
 from muni_portal.collaborator_api.types import FormField
-from muni_portal.core.django_q_tasks import create_service_request
-from muni_portal.core.django_q_hooks import handle_service_request_create
-from muni_portal.core.models import ServiceRequest
-from muni_portal.core.model_serializers import ServiceRequestSerializer
+from muni_portal.core.django_q_tasks import create_service_request, create_attachment, update_service_request_record
+from muni_portal.core.models import ServiceRequest, ServiceRequestAttachment
+from muni_portal.core.model_serializers import (
+    ServiceRequestSerializer,
+    ServiceRequestAttachmentSerializer,
+)
 from django.conf import settings
-from django_q.tasks import async_task
+from django_q.tasks import async_task, Chain
 
 
 class ServiceRequestAPIView(views.APIView):
@@ -35,7 +40,7 @@ class ServiceRequestDetailView(ServiceRequestAPIView):
 
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, pk: int) -> Response:
+    def get(self, request: Request, pk: int) -> Response:
         local_object = self.get_object(pk, request.user)
         object_id = local_object.collaborator_object_id
         serializer = ServiceRequestSerializer(local_object)
@@ -61,13 +66,12 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         "user_name",
         "user_surname",
         "user_mobile_number",
-        "street_name",
-        "street_number",
-        "suburb",
         "description",
     )
 
-    def get(self, request) -> Response:
+    parser_classes = FormParser, MultiPartParser
+
+    def get(self, request: Request) -> Response:
         """
         Return list of ServiceRequest objects.
 
@@ -101,7 +105,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
 
         return Response(response_list)
 
-    def post(self, request) -> Response:
+    def post(self, request: Request) -> Response:
         """
         Create a new Service Request object.
 
@@ -112,7 +116,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
         received_fields = request.data.keys()
         missing_fields = []
         for field in self.CREATE_REQUIRED_FIELDS:
-            if field not in received_fields:
+            if field not in received_fields or not request.data.get(field):
                 missing_fields.append(field)
         if missing_fields:
             error_response_dict = {}
@@ -186,11 +190,102 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             demarcation_code=demarcation_code,
         )
 
+        serializer = ServiceRequestSerializer(service_request, many=False)
+
         async_task(
             create_service_request,
             service_request.id,
             form_fields,
-            hook=handle_service_request_create,
         )
 
+        return Response(status=201, data=serializer.data)
+
+
+class ServiceRequestAttachmentListCreateView(views.APIView):
+    """
+    This API View supports listing the images for a service request and creating images for an existing service
+    request.
+    """
+
+    permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
+
+    @staticmethod
+    def get_service_request(
+        service_request_pk: int, user: User
+    ) -> Union[ServiceRequest, Response]:
+        try:
+            return ServiceRequest.objects.get(pk=service_request_pk, user=user)
+        except ServiceRequest.DoesNotExist:
+            return Response(status=404)
+
+    def get(self, request: Request, service_request_pk: int) -> Response:
+        """ Return a list of images for a specific Service Request object """
+        service_request = self.get_service_request(service_request_pk, request.user)
+        if type(service_request) == Response:
+            return service_request
+
+        images = ServiceRequestAttachmentSerializer(
+            service_request.images.all(), many=True
+        )
+
+        return Response(images.data)
+
+    def post(self, request: Request, service_request_pk: int) -> Response:
+        """ Create an image attachment for an existing Service Request object """
+        service_request = self.get_service_request(service_request_pk, request.user)
+        if type(service_request) == Response:
+            return service_request
+
+        files = request.FILES.getlist("files")
+        if len(files) == 0:
+            raise ValidationError("Request must contain at least one file in 'files'")
+
+        attachments_can_be_created = service_request.collaborator_object_id is not None
+
+        chain = Chain()
+        for file in files:
+            image = ServiceRequestAttachment.objects.create(
+                service_request=service_request,
+                file=file,
+                content_type=file.content_type,
+            )
+            # If the service request object doesn't have an ID yet it'll execute
+            # the async task after it has received an ID in django_q_hooks.py
+            if attachments_can_be_created:
+                chain.append(create_attachment, image.id)
+
+        # Since we are adding more attachments to an existing object which may already be uploaded to On Prem,
+        # we have to first change the status back to initial and then back to registered again to trigger the upload
+        if attachments_can_be_created:
+            chain.append(update_service_request_record, service_request.id, "Initial")
+            chain.append(update_service_request_record, service_request.id, "Registered")
+            chain.run()
+
         return Response(status=201)
+
+
+class ServiceRequestAttachmentDetailView(views.APIView):
+    """
+    This view returns an image in bytes.
+
+    Note that this view returns Django's HttpResponse class and not DRF's Response class to avoid DRF's renderer.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(
+        self, request: Request, service_request_pk: int, service_request_image_pk: int
+    ) -> HttpResponse:
+        service_request_image = ServiceRequestAttachment.objects.get(
+            service_request__pk=service_request_pk,
+            pk=service_request_image_pk,
+            service_request__user=request.user,
+        )
+
+        image_bytes = service_request_image.file.open("rb").read()
+        service_request_image.file.close()
+
+        return HttpResponse(
+            image_bytes, content_type=service_request_image.content_type
+        )

@@ -40,7 +40,7 @@ services:
       # normally starting with $
       - CORS_ALLOWED_ORIGIN_REGEXES=^http://localhost:\d+$$,^http://127.0.0.1:\d+$$
       - DEBUG_CACHE
-      - DJANGO_Q_SYNC=False
+      - DJANGO_Q_SYNC=${DJANGO_Q_SYNC:-False}
       - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY:-fake_private_key}
       - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY:-fake_public_key}
       - COLLABORATOR_API_USERNAME=${COLLABORATOR_API_USERNAME:-fakeuser}

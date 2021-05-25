@@ -68,6 +68,16 @@ the above again:
     docker-compose down --volumes
 
 
+To run Django Q tasks in development, you can either run 
+
+    docker-compose run --rm  web python manage.py qcluster
+
+with `DJANGO_Q_SYNC=False` in your .env file
+
+Or you can set `DJANGO_Q_SYNC=True` to run the tasks synchronously in the same process as your Django server without 
+need to start a `cluster` process.
+
+
 ### Maintaining the demo data fixture
 
 The demo data fixture was produced using the command
@@ -97,11 +107,12 @@ If you haven't yet, you'll first need to run `collectstatic` before running test
 
     docker-compose run --rm web python manage.py collectstatic --no-input
 
-Then run the test suite
+Then run the test suite. Make sure to set DJANGO_Q_SYNC to True so that the Django Q tasks run asynchronously. 
 
+    export DJANGO_Q_SYNC=True
     docker-compose run --rm web python manage.py test
 
-Tests might fail to connect to the databse if the docker-compose `db` service wasn't running and configured yet. Just check the logs for the `db` service and run the tests again.
+Tests might fail to connect to the database if the docker-compose `db` service wasn't running and configured yet. Just check the logs for the `db` service and run the tests again.
 
 
 Migrations in deployment
