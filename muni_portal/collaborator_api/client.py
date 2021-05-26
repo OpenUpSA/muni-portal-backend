@@ -63,7 +63,6 @@ class Client:
         form_fields: List[types.FormField],
         template_id: int = 9,
         bp_id: int = 3,
-        percent_complete: int = 10,
         comments: str = "",
     ) -> requests.Response:
         """
@@ -89,7 +88,7 @@ class Client:
         request_data = {
             "TemplateId": template_id,
             "BPID": bp_id,
-            "PercentComplete": percent_complete,
+            "PercentComplete": 100,
             "Comments": comments,
             "FormFields": form_fields,
         }
