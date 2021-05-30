@@ -17,6 +17,7 @@ class NoticeIndexPageApiTestCase(TestCase):
     def test_service_page_image(self):
         notice_page_01 = NoticePage(
             title="Test NoticePage 01",
+            subtitle="Test NoticePage 01",
             slug="test-notice-page-01",
             body="<p>body</p>",
             path="00011111",
@@ -24,6 +25,7 @@ class NoticeIndexPageApiTestCase(TestCase):
         )
         notice_page_02 = NoticePage(
             title="Test NoticePage 02",
+            subtitle="Test NoticePage 02",
             slug="test-notice-page-02",
             body="<p>body</p>",
             path="00011111",
