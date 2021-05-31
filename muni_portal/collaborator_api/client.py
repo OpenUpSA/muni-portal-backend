@@ -45,7 +45,7 @@ class Client:
             "username": self.username,
             "password": self.password,
         }
-        response = requests.post(url, headers=self.request_headers, json=request_data)
+        response = requests.post(url, headers=self.request_headers, json=request_data, timeout=10)
         response.raise_for_status()
 
         # Response text has quotes inside the string..
