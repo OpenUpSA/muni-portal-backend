@@ -617,13 +617,18 @@ class NoticePage(Page):
     subpage_types = []
 
     body = RichTextField(features=NON_IMAGE_FEATURES)
+    featured = models.BooleanField(default=False)
+    subtitle = models.CharField(max_length=512, default="")
 
     content_panels = Page.content_panels + [
+        FieldPanel("subtitle"),
+        FieldPanel("featured"),
         FieldPanel("body"),
     ]
 
     api_fields = [
         APIField("title"),
+        APIField("featured"),
         APIField("body"),
         APIField("body_html", serializer=RichTextFieldSerializer(source="body")),
         APIField(
@@ -669,13 +674,18 @@ class NewsPage(Page):
     subpage_types = []
 
     body = RichTextField(features=NON_EMBEDS_FEATURES)
+    featured = models.BooleanField(default=False)
+    subtitle = models.CharField(max_length=512, default="")
 
     content_panels = Page.content_panels + [
+        FieldPanel("subtitle"),
+        FieldPanel("featured"),
         FieldPanel("body"),
     ]
 
     api_fields = [
         APIField("title"),
+        APIField("featured"),
         APIField("body"),
         APIField("body_html", serializer=APIRichTextSerializer(source="body")),
         APIField(

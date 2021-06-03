@@ -129,7 +129,9 @@ class RelatedNoticePagesSerializer(RelatedPagesSerializer):
             "id": page.id,
             "title": page.title,
             "url": page.url,
+            "featured": page.featured,
             "publication_date": page.last_published_at,
+            "subtitle": page.subtitle,
         }
 
     def to_representation(self, pages):
