@@ -573,6 +573,7 @@ class HomePage(Page):
     subpage_types = [
         "core.ServicesIndexPage",
         "core.MyMuniPage",
+        "core.PrivacyPolicyPage"
     ]
     max_count_per_parent = 1
 
@@ -880,11 +881,8 @@ class ServiceRequestAttachment(models.Model):
     exists_on_collaborator = models.BooleanField(default=False)
 
 
-class PrivacyNotice(Page):
-    subpage_types = [
-        "core.ServicesIndexPage",
-        "core.MyMuniPage",
-    ]
+class PrivacyPolicyPage(Page):
+    subpage_types = []
     max_count_per_parent = 1
 
     body = RichTextField(features=NON_EMBEDS_FEATURES)
