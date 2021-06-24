@@ -573,6 +573,7 @@ class HomePage(Page):
     subpage_types = [
         "core.ServicesIndexPage",
         "core.MyMuniPage",
+        "core.PrivacyPolicyPage"
     ]
     max_count_per_parent = 1
 
@@ -878,3 +879,29 @@ class ServiceRequestAttachment(models.Model):
     file = models.FileField(upload_to=service_request_attachment_file_path)
     content_type = models.CharField(max_length=255)
     exists_on_collaborator = models.BooleanField(default=False)
+
+
+class PrivacyPolicyPage(Page):
+    subpage_types = []
+    max_count_per_parent = 1
+
+    body = RichTextField(features=NON_EMBEDS_FEATURES)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
+
+    api_fields = [
+        APIField("body"),
+        APIField("body_html", serializer=APIRichTextSerializer(source="body")),
+        APIField(
+            "publication_date", serializer=DateTimeField(source="last_published_at")
+        ),
+        APIField(
+            "ancestor_pages",
+            serializer=RelatedPagesSerializer(source="get_ancestors.live"),
+        ),
+        APIField(
+            "child_pages", serializer=RelatedPagesSerializer(source="get_children.live")
+        ),
+    ]
