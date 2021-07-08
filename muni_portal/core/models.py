@@ -27,6 +27,20 @@ from django.shortcuts import redirect
 from django.utils.html import format_html
 import uuid
 
+from django.contrib.auth.models import User
+
+""" HERE BE DRAGONS!
+
+ We want the User's email to be unique, but we're already into an existing project so creating a new custom User
+ class is a bit of a mission. Instead, we use this hack to make this one tiny change for now.
+ 
+ See https://stackoverflow.com/a/12708590 about this solution
+ See https://docs.djangoproject.com/en/3.2/topics/auth/customizing/#auth-custom-user and 
+ https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-AUTH_USER_MODEL about the proper solutions and 
+ the complications involved.
+"""
+User._meta.get_field('email')._unique = True
+
 NON_LINK_FEATURES = ["h2", "h3", "bold", "italic", "ol", "ul", "hr"]
 NON_IMAGE_FEATURES = NON_LINK_FEATURES + ["link"]
 NON_EMBEDS_FEATURES = NON_IMAGE_FEATURES + ["image"]
