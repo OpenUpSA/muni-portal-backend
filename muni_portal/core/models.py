@@ -631,7 +631,7 @@ class NoticeIndexPage(Page):
 class NoticePage(Page):
     subpage_types = []
 
-    body = RichTextField(features=NON_IMAGE_FEATURES)
+    body = RichTextField(features=NON_EMBEDS_FEATURES)
     featured = models.BooleanField(default=False)
     subtitle = models.CharField(max_length=512, default="")
 
