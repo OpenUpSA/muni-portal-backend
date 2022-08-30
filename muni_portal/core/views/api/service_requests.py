@@ -172,6 +172,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F11", "FieldValue": coordinates},
             {"FieldID": "F12", "FieldValue": request_date_iso},
             {"FieldID": "F20", "FieldValue": demarcation_code},
+            {"FieldID": "F37", "FieldValue": True},
         ]
 
         service_request = ServiceRequest.objects.create(
@@ -260,6 +261,8 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
         if attachments_can_be_created:
             chain.append(update_service_request_record, service_request.id, "Initial")
             chain.append(update_service_request_record, service_request.id, "Registered")
+            chain.append(update_service_request_record, service_request.id, False, 'F37')
+            chain.append(update_service_request_record, service_request.id, True, 'F37')
             chain.run()
 
         return Response(status=201)

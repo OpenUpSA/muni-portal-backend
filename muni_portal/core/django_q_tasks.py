@@ -66,7 +66,7 @@ def create_attachment(service_request_image_id: int) -> None:
     service_request_image.save()
 
 
-def update_service_request_record(service_request_id: int, status: str) -> None:
+def update_service_request_record(service_request_id: int, status: str, status_tag="F15") -> None:
     """
     Trigger an upload workflow from Collaborator to On Prem.
 
@@ -84,4 +84,4 @@ def update_service_request_record(service_request_id: int, status: str) -> None:
     if not collaborator_object_id:
         raise AssertionError("Can't update a Service Request that does not have a collaborator_object_id")
 
-    client.create_update_record(collaborator_object_id, status)
+    client.create_update_record(collaborator_object_id, status, status_tag)
