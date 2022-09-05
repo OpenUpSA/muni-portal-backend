@@ -104,6 +104,9 @@ class Client:
             url, headers=self.request_headers, json=request_data
         )
         response.raise_for_status()
+
+        logger.info(request_data)
+
         return response
 
     def get_task(
