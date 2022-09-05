@@ -9,7 +9,6 @@ import logging
 from . import types
 
 logger = logging.getLogger(__name__)
-logger.basicConfig(level=logging.DEBUG)
 
 APP_VERSION = "0.1.0"
 DEVICE_ID = "OpenUp"

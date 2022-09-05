@@ -30,3 +30,4 @@ class ServiceRequestObject(TypedDict):
     F18: str
     F19: str
     F20: str
+    F37: str
