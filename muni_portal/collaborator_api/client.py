@@ -4,13 +4,21 @@ from django.conf import settings
 from django.db.models.fields.files import FieldFile
 from rest_framework.response import Response
 
+import logging
+
 from . import types
+
+logger = logging.getLogger(__name__)
+logger.basicConfig(level=logging.DEBUG)
 
 APP_VERSION = "0.1.0"
 DEVICE_ID = "OpenUp"
 
 
 class Client:
+
+
+
     """ Main Collaborator Web API class.
 
     Usage:
@@ -178,6 +186,8 @@ class Client:
                 </ServiceRequest>
             </Objects>
         """
+
+        logger.info(data)
 
         response = self.session.post(url, headers=headers, data=data)
         response.raise_for_status()
