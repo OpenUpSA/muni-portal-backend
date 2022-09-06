@@ -172,7 +172,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             {"FieldID": "F11", "FieldValue": coordinates},
             {"FieldID": "F12", "FieldValue": request_date_iso},
             {"FieldID": "F20", "FieldValue": demarcation_code},
-            {"FieldID": "F37", "FieldValue": 'Yes'},
+            {"FieldID": "F37", "FieldValue": "Yes"},
         ]
 
         service_request = ServiceRequest.objects.create(
@@ -260,8 +260,8 @@ class ServiceRequestAttachmentListCreateView(views.APIView):
         # we have to first change the status back to initial and then back to registered again to trigger the upload
         if attachments_can_be_created:
             chain.append(update_service_request_record, service_request.id, "Initial")
-            chain.append(update_service_request_record, service_request.id, "Registered")
             chain.append(update_service_request_record, service_request.id, "No", "F37")
+            chain.append(update_service_request_record, service_request.id, "Registered")
             chain.append(update_service_request_record, service_request.id, "Yes", "F37")
             chain.run()
 
