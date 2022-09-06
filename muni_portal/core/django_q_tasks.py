@@ -8,6 +8,10 @@ from muni_portal.collaborator_api.types import FormField
 
 from muni_portal.core.models import ServiceRequestAttachment, ServiceRequest
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def create_service_request(
     service_request_id: int, form_fields: List[FormField]
@@ -19,6 +23,9 @@ def create_service_request(
         settings.COLLABORATOR_API_USERNAME, settings.COLLABORATOR_API_PASSWORD
     )
     client.authenticate()
+
+    logger.info(form_fields)
+
     response = client.create_task(form_fields)
 
     collaborator_object_id = response.json().get("Data").get("ObjID")

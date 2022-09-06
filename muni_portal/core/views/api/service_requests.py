@@ -198,12 +198,7 @@ class ServiceRequestListCreateView(ServiceRequestAPIView):
             service_request.id,
             form_fields,
         )
-
-        chain = Chain()
-
-        chain.append(update_service_request_record, service_request.id, "Registered")
-        chain.append(update_service_request_record, service_request.id, "Yes", "F37")
-        chain.run()
+       
 
         return Response(status=201, data=serializer.data)
 
