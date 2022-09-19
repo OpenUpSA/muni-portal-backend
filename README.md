@@ -103,9 +103,6 @@ to exporting just the necessary data to get a running system.
 
 Running tests
 -------------
-If you haven't yet, you'll first need to run `collectstatic` before running tests
-
-    docker-compose run --rm web python manage.py collectstatic --no-input
 
 Then run the test suite. Make sure to set DJANGO_Q_SYNC to True so that the Django Q tasks run asynchronously. 
 
